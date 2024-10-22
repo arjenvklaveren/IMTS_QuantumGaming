@@ -2,7 +2,9 @@
     "name": "Game.Model",
     "rootNamespace": "Game",
     "references": [
-        "GUID:4a8df955dad3a2b428fbb3b2d35442f3"
+        "GUID:4a8df955dad3a2b428fbb3b2d35442f3",
+        "GUID:84971957b7247f24598d7fa83cf9e720",
+        "GUID:2309658b27225814cb96d792256bc13c"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],
