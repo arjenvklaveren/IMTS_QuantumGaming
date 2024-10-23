@@ -1,111 +1,50 @@
 using Game.Data;
-using System.Collections.Generic;
+using System;
 using UnityEngine;
 
 namespace Game
 {
     public class GridController
     {
-        private readonly HashSet<Vector2Int> occupiedTiles;
-        private readonly List<OpticComponent> placedComponents;
+        public static event Action<GridData> OnGridChanged;
+        public static event Action<OpticComponent> OnComponentAdded;
+        public static event Action<OpticComponent> OnComponentRemoved;
 
-        private readonly GridGenerationData gridGenerationData;
+        private GridData activeGrid;
 
-        #region Contructor
-        public GridController(GridGenerationData gridGenerationData)
+        public void SetActiveGrid(GridData grid)
         {
-            this.gridGenerationData = gridGenerationData;
+            activeGrid = grid;
 
-            occupiedTiles = new();
-            placedComponents = new();
-        }
-        #endregion
-
-        #region Place Components
-        public bool CanPlaceComponent(OpticComponentPreview preview, Vector2Int position)
-        {
-            return CanPlaceComponent(preview.GetTilesToOccupy(position));
+            OnGridChanged?.Invoke(grid);
         }
 
-        private bool CanPlaceComponent(Vector2Int[] tilesToOccupy)
+        #region Add Component
+        public bool TryAddComponent(ComponentPlaceData placeData, Vector2Int position)
         {
+            Vector2Int[] tilesToOccupy = placeData.GetTilesToOccupy(position);
+
             foreach (Vector2Int tile in tilesToOccupy)
-                if (occupiedTiles.Contains(tile))
+                if (activeGrid.occupiedTiles.Contains(tile))
                     return false;
 
+            OpticComponent componentToAdd = placeData.CreateOpticComponent(tilesToOccupy);
+            activeGrid.AddComponent(componentToAdd);
+
+            OnComponentAdded?.Invoke(componentToAdd);
             return true;
-        }
-
-        public bool TryPlaceComponent(OpticComponentPreview preview, Vector2Int position)
-        {
-            Vector2Int[] tilesToOccupy = preview.GetTilesToOccupy(position);
-
-            if (!CanPlaceComponent(tilesToOccupy))
-                return false;
-
-            PlaceComponent(preview, tilesToOccupy);
-            return true;
-        }
-
-        private void PlaceComponent(OpticComponentPreview preview, Vector2Int[] tilesToOccupy)
-        {
-            foreach (Vector2Int tile in tilesToOccupy)
-                occupiedTiles.Add(tile);
-
-            OpticComponent spawnedComponent = SpawnComponentVisuals(preview.componentPrefab, tilesToOccupy[0]);
-
-            spawnedComponent.occupiedTiles = new(tilesToOccupy);
-
-            placedComponents.Add(spawnedComponent);
-        }
-
-        private OpticComponent SpawnComponentVisuals(OpticComponent componentPrefab, Vector2Int position)
-        {
-            Vector2 spawnPosition = position * gridGenerationData.spacing;
-            return Object.Instantiate(componentPrefab, spawnPosition, Quaternion.identity);
         }
         #endregion
 
-        #region Remove Components
-        public void RemoveComponent(OpticComponent component)
+        #region Remove Component
+        public bool TryRemoveComponent(OpticComponent component)
         {
-            if (!placedComponents.Contains(component))
-                return;
-
-            placedComponents.Remove(component);
-
-            foreach (Vector2Int tile in component.occupiedTiles)
-                occupiedTiles.Remove(tile);
-
-            Object.Destroy(component.gameObject);
-        }
-
-        public void RemoveComponent(Vector2Int position)
-        {
-            if (!GetComponentByPosition(position, out OpticComponent component))
-                return;
-
-            RemoveComponent(component);
-        }
-        #endregion
-
-        #region Util
-        public bool GetComponentByPosition(Vector2Int position, out OpticComponent component)
-        {
-            component = null;
-
-            if (!occupiedTiles.Contains(position))
+            if (!activeGrid.placedComponents.Contains(component))
                 return false;
 
-            foreach (OpticComponent placedComponent in placedComponents)
-            {
-                if (placedComponent.occupiedTiles.Contains(position))
-                {
-                    component = placedComponent;
-                    break;
-                }
-            }
+            activeGrid.RemoveComponent(component);
 
+            OnComponentRemoved?.Invoke(component);
             return true;
         }
         #endregion

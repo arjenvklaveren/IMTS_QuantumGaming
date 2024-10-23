@@ -1,17 +1,15 @@
+using Game.Data;
 using UnityEngine;
 
 namespace Game
 {
     public interface IPlayerInputHandler
     {
-        public void HandleLMBDown();
-        public void HandleLMBUp();
+        public void HandleMouseButtonInput(MouseInputCode code, ButtonInputType inputType);
+        public void HandleButtonInput(InputCode code, ButtonInputType inputType);
+        public void HandleScrollInput(float scrollDelta);
+        public void HandleMousePositionDelta(Vector2 mousePositionDelta);
 
-        public void HandleRMBDown();
-        public void HandleRMBUp();
-
-        public void HandleScroll(float delta);
-
-        public void HandleMouseDelta(Vector2 delta);
+        public void OnDiscard();
     }
 }

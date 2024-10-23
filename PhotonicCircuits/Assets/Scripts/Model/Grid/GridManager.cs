@@ -1,22 +1,43 @@
+using Game.Data;
+using SadUtils;
 using System.Collections.Generic;
 using UnityEngine;
 
 namespace Game
 {
-    public class GridManager : MonoBehaviour
+    public class GridManager : Singleton<GridManager>
     {
-        public Vector2Int lastHoveredTile;
+        public WaitUntil WaitUntilGrid { get; private set; }
 
-        private Stack<GridController> grids;
+        private Stack<GridData> grids;
 
-        public GridController GetActiveGrid()
+        private GridController gridController;
+
+        protected override void Awake()
+        {
+            SetDefaultValues();
+
+            SetInstance(this);
+        }
+
+        private void SetDefaultValues()
+        {
+            grids = new();
+            gridController = new();
+
+            WaitUntilGrid = new WaitUntil(() => grids.Count > 0);
+        }
+
+        public GridData GetActiveGrid()
         {
             return grids.Peek();
         }
 
-        public void AddGrid(GridController grid)
+        public void OpenGrid(GridData grid)
         {
             grids.Push(grid);
+
+            gridController.SetActiveGrid(grid);
         }
 
         public void CloseActiveGrid()
@@ -25,6 +46,8 @@ namespace Game
                 return;
 
             grids.Pop();
+
+            gridController.SetActiveGrid(grids.Peek());
         }
     }
 }

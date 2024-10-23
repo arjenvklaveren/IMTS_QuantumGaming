@@ -1,3 +1,4 @@
+using Game.Data;
 using System;
 using System.Collections;
 using UnityEngine;
@@ -6,75 +7,98 @@ namespace Game.Input
 {
     public class PlayerInputReceiver : MonoBehaviour
     {
-        public static event Action OnLMBDown;
-        public static event Action OnLMBUp;
-
-        public static event Action OnRMBDown;
-        public static event Action OnRMBUp;
-
-        public static event Action<float> OnScroll;
-        public static event Action<Vector2> OnMouseDelta;
+        [SerializeField] private MouseInputCode[] mouseButtonIds;
+        [SerializeField] private KeyCode[] keyCodes;
 
         private Vector2 lastMousePosition;
 
         private IEnumerator Start()
         {
-            gameObject.SetActive(false);
+            enabled = false;
 
             yield return PlayerInputManager.WaitForInstance;
 
-            gameObject.SetActive(true);
+            SetDefaultValues();
 
-            // Set default values
+            enabled = true;
+        }
+
+        private void SetDefaultValues()
+        {
             lastMousePosition = UnityEngine.Input.mousePosition;
         }
 
         private void Update()
         {
-            ReceiveLMBInputs();
-            ReceiveRMBInputs();
+            ReceiveMouseButtonInputs();
 
             ReceiveScrollInput();
+            ReceiveMousePositionDelta();
 
-            ReceiveMouseDelta();
+            ReceiveButtonInputs();
         }
 
-        private void ReceiveLMBInputs()
+        #region Receive Inputs
+        private void ReceiveMouseButtonInputs()
         {
-            if (UnityEngine.Input.GetMouseButtonDown(0))
-                OnLMBDown?.Invoke();
+            foreach (MouseInputCode mouseButtonId in mouseButtonIds)
+            {
+                if (UnityEngine.Input.GetMouseButtonDown((int)mouseButtonId))
+                    PlayerInputManager.HandleMouseButtonInput(mouseButtonId, ButtonInputType.Down);
 
-            if (UnityEngine.Input.GetMouseButtonUp(0))
-                OnLMBUp?.Invoke();
-        }
+                else if (UnityEngine.Input.GetMouseButton((int)mouseButtonId))
+                    PlayerInputManager.HandleMouseButtonInput(mouseButtonId, ButtonInputType.Hold);
 
-        private void ReceiveRMBInputs()
-        {
-            if (UnityEngine.Input.GetMouseButtonDown(1))
-                OnLMBDown?.Invoke();
-
-            if (UnityEngine.Input.GetMouseButtonUp(1))
-                OnLMBUp?.Invoke();
+                else if (UnityEngine.Input.GetMouseButtonUp((int)mouseButtonId))
+                    PlayerInputManager.HandleMouseButtonInput(mouseButtonId, ButtonInputType.Up);
+            }
         }
 
         private void ReceiveScrollInput()
         {
             float scrollDelta = UnityEngine.Input.mouseScrollDelta.y;
 
-            if (Mathf.Abs(scrollDelta) > 0)
-                OnScroll?.Invoke(scrollDelta);
+            if (Mathf.Abs(scrollDelta) > 0f)
+                PlayerInputManager.HandleScrollInput(scrollDelta);
         }
 
-        private void ReceiveMouseDelta()
+        private void ReceiveMousePositionDelta()
         {
-            Vector2 mousePosition = UnityEngine.Input.mousePosition;
+            Vector2 currentMousePos = UnityEngine.Input.mousePosition;
 
-            Vector2 delta = mousePosition - lastMousePosition;
-
+            Vector2 delta = currentMousePos - lastMousePosition;
             if (delta.magnitude > 0f)
-                OnMouseDelta?.Invoke(delta);
+                PlayerInputManager.HandleMousePositionDelta(delta);
 
-            lastMousePosition = mousePosition;
+            lastMousePosition = currentMousePos;
         }
+
+        private void ReceiveButtonInputs()
+        {
+            foreach (KeyCode keyCode in keyCodes)
+            {
+                if (!TryParseKeyCodeToInputCode(keyCode, out InputCode inputCode))
+                    continue;
+
+                if (UnityEngine.Input.GetKeyDown(keyCode))
+                    PlayerInputManager.HandleButtonInput(inputCode, ButtonInputType.Down);
+
+                else if (UnityEngine.Input.GetKey(keyCode))
+                    PlayerInputManager.HandleButtonInput(inputCode, ButtonInputType.Hold);
+
+                else if (UnityEngine.Input.GetKeyUp(keyCode))
+                    PlayerInputManager.HandleButtonInput(inputCode, ButtonInputType.Up);
+            }
+        }
+
+        private bool TryParseKeyCodeToInputCode(KeyCode code, out InputCode inputCode)
+        {
+            string codeString = code.ToString();
+
+            return Enum.TryParse<InputCode>(codeString, out inputCode);
+        }
+        #endregion
+
+        private PlayerInputManager PlayerInputManager => PlayerInputManager.Instance;
     }
 }
