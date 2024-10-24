@@ -11,8 +11,11 @@ namespace Game.Data
         public List<OpticComponent> placedComponents;
         public HashSet<Vector2Int> occupiedTiles;
 
-        public GridData()
+        public GridData(Vector2 spacing, Vector2Int size)
         {
+            this.spacing = spacing;
+            this.size = size;
+
             placedComponents = new();
             occupiedTiles = new();
         }

@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace Game.Data
 {
-    public abstract class ComponentPlaceData : ScriptableObject
+    public abstract class ComponentPlaceDataSO : ScriptableObject
     {
         public string title;
 

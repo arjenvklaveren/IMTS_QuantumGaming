@@ -20,7 +20,7 @@ namespace Game
         }
 
         #region Add Component
-        public bool TryAddComponent(ComponentPlaceData placeData, Vector2Int position)
+        public bool TryAddComponent(ComponentPlaceDataSO placeData, Vector2Int position)
         {
             Vector2Int[] tilesToOccupy = placeData.GetTilesToOccupy(position);
 
