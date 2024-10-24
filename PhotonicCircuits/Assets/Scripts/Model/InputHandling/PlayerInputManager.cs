@@ -12,8 +12,14 @@ namespace Game
         protected override void Awake()
         {
             inputHandlers = new();
+            LoadDefaultInputHandler();
 
             SetInstance(this);
+        }
+
+        private void LoadDefaultInputHandler()
+        {
+            inputHandlers.Push(new GridNeutralInputHandler());
         }
 
         #region Manage Input Handlers

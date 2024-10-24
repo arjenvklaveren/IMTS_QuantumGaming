@@ -5,5 +5,6 @@ namespace Game.Data
         Mirror,
         BeamSplitter,
         PhaseShifter,
+        Test,
     }
 }
