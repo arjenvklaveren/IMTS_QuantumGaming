@@ -15,13 +15,19 @@ namespace Game
 
         private Vector2 currentGridSpacing;
 
-        private List<ComponentVisuals> placedComponentVisuals;
+        private Dictionary<OpticComponentType, List<ComponentVisuals>> placedComponentVisuals;
+        private GameObject[,] tiles;
 
-        #region Manage Event Listening
         private void Awake()
         {
             placedComponentVisuals = new();
 
+            SetupEventListeners();
+        }
+
+        #region Manage Event Listening
+        private void SetupEventListeners()
+        {
             GridController.OnGridChanged += GridController_OnGridChanged;
             GridController.OnComponentAdded += GridController_OnComponentAdded;
             GridController.OnComponentRemoved += GridController_OnComponentRemoved;
@@ -32,7 +38,6 @@ namespace Game
             GridController.OnGridChanged -= GridController_OnGridChanged;
             GridController.OnComponentAdded -= GridController_OnComponentAdded;
             GridController.OnComponentRemoved -= GridController_OnComponentRemoved;
-
         }
         #endregion
 
@@ -47,64 +52,75 @@ namespace Game
 
         private void GridController_OnComponentAdded(OpticComponent component)
         {
-
+            AddComponent(component);
         }
 
         private void GridController_OnComponentRemoved(OpticComponent component)
         {
-
+            RemoveComponent(component);
         }
         #endregion
 
         #region Clear Grid
         public void ClearGrid()
         {
-            placedComponentVisuals.Clear();
-
-            DestroyChildren(tileHolder);
-            DestroyChildren(componentHolder);
+            ClearData();
+            DestroyGeneratedObjects();
         }
 
-        private void DestroyChildren(Transform parent)
+        private void ClearData()
         {
-            for (int i = parent.childCount - 1; i >= 0; i--)
-                Destroy(parent.GetChild(i).gameObject);
+            placedComponentVisuals.Clear();
+            tiles = null;
+        }
+
+        private void DestroyGeneratedObjects()
+        {
+            DestroyChildObjects(tileHolder);
+            DestroyChildObjects(componentHolder);
         }
         #endregion
 
         #region Generate Grid
-        public void GenerateGrid(GridData gridData)
+        private void GenerateGrid(GridData gridData)
         {
-            // Generate Tiles.
-            for (int row = 0; row < gridData.size.y; row++)
-                GenerateRow(gridData, row);
+            currentGridSpacing = gridData.spacing;
+            tiles = new GameObject[gridData.size.x, gridData.size.y];
 
-            // Generate Components.
+            GenerateTiles(gridData.size);
+            SetTileStates(gridData.occupiedTiles, false);
+
             GenerateComponents(gridData);
         }
 
         #region Generate Tiles
-        private void GenerateRow(GridData gridData, int row)
+        private void GenerateTiles(Vector2Int gridSize)
+        {
+            for (int i = 0; i < gridSize.y; i++)
+                GenerateRow(i, gridSize.x);
+        }
+
+        private void GenerateRow(int row, int size)
         {
             Transform rowHolder = new GameObject($"row_{row}").transform;
             rowHolder.SetParent(tileHolder);
 
-            for (int column = 0; column < gridData.size.x; column++)
-                TryGenerateTile(gridData, rowHolder, new(column, row));
+            for (int i = 0; i < size; i++)
+                GenerateTile(new(i, row), rowHolder);
         }
 
-        private void TryGenerateTile(GridData gridData, Transform holder, Vector2Int position)
+        private void GenerateTile(Vector2Int position, Transform rowHolder)
         {
-            if (gridData.occupiedTiles.Contains(position))
-                return;
-
-            GridTile spawnedTile = Instantiate(
+            GridTile tile = Instantiate(
                 tilePrefab,
-                GetTileWorldPosition(position),
+                GridToWorldPosition(position),
                 Quaternion.identity,
-                holder);
+                rowHolder);
 
-            spawnedTile.position = position;
+            tile.position = position;
+            tile.transform.name = $"{{{position.x}, {position.y}}}";
+
+            tiles[position.x, position.y] = tile.gameObject;
         }
         #endregion
 
@@ -117,21 +133,107 @@ namespace Game
 
         private void GenerateComponent(OpticComponent component)
         {
-            ComponentVisuals visualsPrefab = visualsLookup.GetPrefabByComponentType(component.Type);
+            ComponentVisuals prefab = GetVisualsPrefabByType(component.Type);
 
-            ComponentVisuals spawnedVisuals = Instantiate(
-                visualsPrefab,
-                GetTileWorldPosition(component.occupiedRootTile),
+            ComponentVisuals visuals = Instantiate(
+                prefab,
+                GridToWorldPosition(component.occupiedRootTile),
                 Quaternion.identity,
                 componentHolder);
 
-            spawnedVisuals.sourceComponent = component;
+            visuals.sourceComponent = component;
+
+            CachePlacedComponent(component, visuals);
+        }
+
+        private void CachePlacedComponent(OpticComponent source, ComponentVisuals visuals)
+        {
+            OpticComponentType type = source.Type;
+
+            if (!placedComponentVisuals.ContainsKey(type))
+                placedComponentVisuals.Add(type, new());
+
+            placedComponentVisuals[type].Add(visuals);
+        }
+        #endregion
+        #endregion
+
+        #region Add Component
+        private void AddComponent(OpticComponent component)
+        {
+            SetTileStates(component.occupiedTiles, false);
+
+            GenerateComponent(component);
+        }
+
+        private void SetTileStates(HashSet<Vector2Int> tilesToSet, bool state)
+        {
+            foreach (Vector2Int tile in tilesToSet)
+                if (IsPositionInBounds(tile))
+                    tiles[tile.x, tile.y].SetActive(state);
         }
         #endregion
 
-        private Vector2 GetTileWorldPosition(Vector2Int gridPosition)
+        #region Remove Component
+        private void RemoveComponent(OpticComponent component)
         {
-            return gridPosition * currentGridSpacing;
+            if (!TryFindMatchingVisuals(component, out ComponentVisuals visuals))
+                return;
+
+            Destroy(visuals.gameObject);
+
+            SetTileStates(component.occupiedTiles, true);
+        }
+
+        private bool TryFindMatchingVisuals(OpticComponent component, out ComponentVisuals visuals)
+        {
+            visuals = null;
+
+            if (!placedComponentVisuals.ContainsKey(component.Type))
+                return false;
+
+            foreach (ComponentVisuals placedVisuals in placedComponentVisuals[component.Type])
+            {
+                if (placedVisuals.sourceComponent != component)
+                    continue;
+
+                visuals = placedVisuals;
+                return true;
+            }
+
+            return false;
+        }
+        #endregion
+
+        #region Util
+        private void DestroyChildObjects(Transform parent)
+        {
+            for (int i = parent.childCount - 1; i >= 0; i++)
+                Destroy(parent.GetChild(i).gameObject);
+        }
+
+        private bool IsPositionInBounds(Vector2Int position)
+        {
+            if (tiles == null)
+                return false;
+
+            if (tiles.Length <= position.x)
+                return false;
+
+            if (tiles.GetLength(1) <= position.y)
+                return false;
+
+            return true;
+        }
+
+        private Vector2 GridToWorldPosition(Vector2Int position)
+        {
+            return position * currentGridSpacing;
+        }
+
+        private ComponentVisuals GetVisualsPrefabByType(OpticComponentType type)
+        {
+            return visualsLookup.GetPrefabByComponentType(type);
         }
         #endregion
     }
