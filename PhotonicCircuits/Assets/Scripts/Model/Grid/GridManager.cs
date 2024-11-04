@@ -9,9 +9,9 @@ namespace Game
     {
         public WaitUntil WaitUntilGrid { get; private set; }
 
-        private Stack<GridData> grids;
+        public GridController gridController { get; private set; }
 
-        private GridController gridController;
+        private Stack<GridData> grids;
 
         protected override void Awake()
         {

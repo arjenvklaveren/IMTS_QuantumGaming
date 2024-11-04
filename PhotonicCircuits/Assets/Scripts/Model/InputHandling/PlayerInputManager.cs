@@ -19,7 +19,7 @@ namespace Game
 
         private void LoadDefaultInputHandler()
         {
-            inputHandlers.Push(new GridNeutralInputHandler());
+            inputHandlers.Push(new GridComponentPaintInputHandler());
         }
 
         #region Manage Input Handlers

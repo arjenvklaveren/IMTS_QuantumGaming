@@ -28,12 +28,25 @@ namespace Game
                 isPainting = true;
             else if (inputType == ButtonInputType.Up)
                 isPainting = false;
+
+            if (!isPainting)
+                return;
+
+            SendPaintInput(GridTile.lastHoveredPosition);
+        }
+
+        private void SendPaintInput(Vector2Int position)
+        {
+            ComponentPaintManager.PaintComponent(position);
         }
 
         #region Painting Event Listening
         private void GridTile_OnHover(Vector2Int position)
         {
+            if (!isPainting)
+                return;
 
+            SendPaintInput(position);
         }
         #endregion
 
@@ -41,5 +54,7 @@ namespace Game
         {
             GridTile.OnHover -= GridTile_OnHover;
         }
+
+        ComponentPaintManager ComponentPaintManager => ComponentPaintManager.Instance;
     }
 }
