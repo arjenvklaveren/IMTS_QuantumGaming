@@ -95,7 +95,7 @@ namespace Game.Input
         {
             string codeString = code.ToString();
 
-            return Enum.TryParse<InputCode>(codeString, out inputCode);
+            return Enum.TryParse(codeString, out inputCode);
         }
         #endregion
 

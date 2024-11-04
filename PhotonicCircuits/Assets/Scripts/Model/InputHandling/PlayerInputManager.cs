@@ -7,7 +7,7 @@ namespace Game
 {
     public class PlayerInputManager : Singleton<PlayerInputManager>
     {
-        private Stack<IPlayerInputHandler> inputHandlers;
+        private Stack<PlayerInputHandler> inputHandlers;
 
         protected override void Awake()
         {
@@ -23,15 +23,15 @@ namespace Game
         }
 
         #region Manage Input Handlers
-        public void AddInputHandler(IPlayerInputHandler inputHandler)
+        public void AddInputHandler(PlayerInputHandler inputHandler)
         {
             inputHandlers.Push(inputHandler);
         }
 
         public void PopInputHandler()
         {
-            IPlayerInputHandler destroyedHandler = inputHandlers.Pop();
-            destroyedHandler.OnDiscard();
+            PlayerInputHandler destroyedHandler = inputHandlers.Pop();
+            destroyedHandler.OnDestroy();
         }
         #endregion
 

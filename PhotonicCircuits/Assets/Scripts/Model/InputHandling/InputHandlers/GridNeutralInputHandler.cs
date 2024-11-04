@@ -1,39 +1,21 @@
-using Game.Data;
-using UnityEngine;
-
 namespace Game
 {
-    public class GridNeutralInputHandler : IPlayerInputHandler
+    public class GridNeutralInputHandler : PlayerInputHandler
     {
-        public void HandleButtonInput(InputCode code, ButtonInputType inputType)
+        #region constructor
+        public GridNeutralInputHandler() : base()
         {
-            // Send inputs to camera.
-            CameraInputDecoder.DecodeButtonInput(code, inputType);
         }
 
-        public void HandleMouseButtonInput(MouseInputCode code, ButtonInputType inputType)
+        protected override IInputDecoder[] CreateInputDecoders()
         {
-            // Send inputs to camera.
-            CameraInputDecoder.DecodeMouseButtonInput(code, inputType);
+            return new IInputDecoder[]
+            {
+                new CameraButtonInputDecoder(),
+                new CameraDragInputDecoder(),
+                new CameraScrollInputDecoder(),
+            };
         }
-
-        public void HandleMousePositionDelta(Vector2 mousePositionDelta)
-        {
-            // Send inputs to camera.
-            CameraInputDecoder.DecodeMousePositionDeltaInput(mousePositionDelta);
-        }
-
-        public void HandleScrollInput(float scrollDelta)
-        {
-            // Send inputs to camera.
-            CameraInputDecoder.DecodeScrollInput(scrollDelta);
-        }
-
-        public void OnDiscard()
-        {
-
-        }
-
-        private CameraInputDecoder CameraInputDecoder => CameraInputDecoder.Instance;
+        #endregion
     }
 }
