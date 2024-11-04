@@ -8,7 +8,7 @@ namespace Game.Data
 
         [Header("Preview Settings")]
         public Sprite previewSprite;
-        private Vector2 previewScale;
+        public Vector2 previewScale;
 
         [Header("Grid Settings")]
         public Vector2Int[] tileOffsetsToOccupy;

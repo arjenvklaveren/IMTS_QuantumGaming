@@ -3,13 +3,13 @@ using UnityEngine;
 
 namespace Game
 {
-    public class CameraButtonInputDecoder : IButtonInputDecoder
+    public class CameraButtonMoveInputDecoder : IButtonInputDecoder
     {
         private readonly CameraController camController;
 
         private Vector2 moveDir;
 
-        public CameraButtonInputDecoder()
+        public CameraButtonMoveInputDecoder()
         {
             // Cache camera.
             Camera cam = Camera.main;

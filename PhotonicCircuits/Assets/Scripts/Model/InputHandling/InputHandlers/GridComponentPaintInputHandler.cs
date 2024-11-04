@@ -1,12 +1,7 @@
 namespace Game
 {
-    public class GridNeutralInputHandler : PlayerInputHandler
+    public class GridComponentPaintInputHandler : PlayerInputHandler
     {
-        #region constructor
-        public GridNeutralInputHandler() : base()
-        {
-        }
-
         protected override IInputDecoder[] CreateInputDecoders()
         {
             return new IInputDecoder[]
@@ -14,8 +9,8 @@ namespace Game
                 new CameraButtonMoveInputDecoder(),
                 new CameraDragInputDecoder(),
                 new CameraZoomInputDecoder(),
+                new ComponentPaintInputDecoder(),
             };
         }
-        #endregion
     }
 }

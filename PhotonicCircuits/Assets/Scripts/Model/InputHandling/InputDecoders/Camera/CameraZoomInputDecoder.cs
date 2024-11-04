@@ -2,11 +2,11 @@ using UnityEngine;
 
 namespace Game
 {
-    public class CameraScrollInputDecoder : IScrollInputDecoder
+    public class CameraZoomInputDecoder : IScrollInputDecoder
     {
         private CameraController camController;
 
-        public CameraScrollInputDecoder()
+        public CameraZoomInputDecoder()
         {
             Camera cam = Camera.main;
             camController = cam.GetComponent<CameraController>();
