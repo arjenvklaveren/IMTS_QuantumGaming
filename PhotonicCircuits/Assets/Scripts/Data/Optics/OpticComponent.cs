@@ -31,6 +31,9 @@ namespace Game
 
         private void CompilePorts(ComponentPort[] ports)
         {
+            if (ports == null)
+                return;
+
             foreach (ComponentPort port in ports)
                 port.owner = this;
         }
