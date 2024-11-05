@@ -13,4 +13,6 @@ MonoBehaviour:
   m_Name: ComponentVisualsLookup
   m_EditorClassIdentifier: 
   visualsLookup:
-    dictionary: []
+    dictionary:
+    - key: 3
+      value: {fileID: 327033050537385543, guid: 0dec2e08c11f4944890d2cde705fc2ba, type: 3}

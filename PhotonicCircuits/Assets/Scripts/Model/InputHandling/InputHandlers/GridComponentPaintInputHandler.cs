@@ -7,9 +7,9 @@ namespace Game
             return new IInputDecoder[]
             {
                 new CameraButtonMoveInputDecoder(),
-                new CameraDragInputDecoder(),
                 new CameraZoomInputDecoder(),
                 new ComponentPaintInputDecoder(),
+                new ComponentDeleteInputDecoder(),
             };
         }
     }

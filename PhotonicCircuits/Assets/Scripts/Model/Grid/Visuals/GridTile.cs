@@ -13,8 +13,8 @@ namespace Game
 
         public void OnPointerEnter(PointerEventData eventData)
         {
-            lastHoveredPosition = position;
             OnHover?.Invoke(position);
+            lastHoveredPosition = position;
         }
     }
 }

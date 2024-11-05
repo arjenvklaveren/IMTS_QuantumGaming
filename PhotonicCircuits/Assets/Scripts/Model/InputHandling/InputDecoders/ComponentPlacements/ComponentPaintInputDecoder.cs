@@ -17,30 +17,34 @@ namespace Game
         {
             GridTile.OnHover += GridTile_OnHover;
         }
+
+        private void RemoveListeners()
+        {
+            GridTile.OnHover -= GridTile_OnHover;
+        }
         #endregion
 
+        #region Handle Input
         public void DecodeInput(MouseInputCode code, ButtonInputType inputType)
         {
             if (code != MouseInputCode.LeftMouseButton)
                 return;
 
-            if (inputType == ButtonInputType.Down)
-                isPainting = true;
-            else if (inputType == ButtonInputType.Up)
-                isPainting = false;
+            switch (inputType)
+            {
+                case ButtonInputType.Up:
+                    isPainting = false;
+                    break;
 
-            if (!isPainting)
-                return;
-
-            SendPaintInput(GridTile.lastHoveredPosition);
+                case ButtonInputType.Down:
+                    isPainting = true;
+                    SendPaintInput(GridTile.lastHoveredPosition);
+                    break;
+            }
         }
+        #endregion
 
-        private void SendPaintInput(Vector2Int position)
-        {
-            ComponentPaintManager.PaintComponent(position);
-        }
-
-        #region Painting Event Listening
+        #region Handle Events
         private void GridTile_OnHover(Vector2Int position)
         {
             if (!isPainting)
@@ -50,9 +54,14 @@ namespace Game
         }
         #endregion
 
+        private void SendPaintInput(Vector2Int position)
+        {
+            ComponentPaintManager.PaintComponent(position);
+        }
+
         public void Destroy()
         {
-            GridTile.OnHover -= GridTile_OnHover;
+            RemoveListeners();
         }
 
         ComponentPaintManager ComponentPaintManager => ComponentPaintManager.Instance;
