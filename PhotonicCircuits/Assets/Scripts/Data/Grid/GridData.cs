@@ -11,6 +11,8 @@ namespace Game.Data
         public List<OpticComponent> placedComponents;
         public HashSet<Vector2Int> occupiedTiles;
 
+        public Dictionary<Vector2Int, ChunkPortData> inPortData;
+
         public GridData(Vector2 spacing, Vector2Int size)
         {
             this.spacing = spacing;
@@ -18,6 +20,8 @@ namespace Game.Data
 
             placedComponents = new();
             occupiedTiles = new();
+
+            inPortData = new();
         }
 
         public void AddComponent(OpticComponent component)

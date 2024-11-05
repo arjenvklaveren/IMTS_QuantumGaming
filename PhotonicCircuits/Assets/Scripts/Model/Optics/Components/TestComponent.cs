@@ -7,7 +7,14 @@ namespace Game
     {
         public override OpticComponentType Type => OpticComponentType.Test;
 
-        public TestComponent(Vector2Int[] tilesToOccupy) : base(tilesToOccupy)
+        public TestComponent(
+            Vector2Int[] tilesToOccupy,
+            ComponentPort[] inPorts,
+            ComponentPort[] outPorts
+            ) : base(
+                tilesToOccupy,
+                inPorts,
+                outPorts)
         {
         }
     }
