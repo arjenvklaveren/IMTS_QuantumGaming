@@ -41,7 +41,8 @@ namespace Game
 
                 case ButtonInputType.Down:
                     isDeleting = true;
-                    SendDeleteInput(ComponentVisuals.lastHoveredVisuals.sourceComponent);
+                    if (ComponentVisuals.TryGetHoveredComponent(out ComponentVisuals componentVisuals))
+                        SendDeleteInput(componentVisuals);
                     break;
             }
         }
@@ -53,13 +54,13 @@ namespace Game
             if (!isDeleting)
                 return;
 
-            SendDeleteInput(componentVisuals.sourceComponent);
+            SendDeleteInput(componentVisuals);
         }
         #endregion
 
-        private void SendDeleteInput(OpticComponent component)
+        private void SendDeleteInput(ComponentVisuals componentVisuals)
         {
-            gridController.TryRemoveComponent(component);
+            gridController.TryRemoveComponent(componentVisuals.sourceComponent);
         }
 
         public void Destroy()

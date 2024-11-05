@@ -38,7 +38,8 @@ namespace Game
 
                 case ButtonInputType.Down:
                     isPainting = true;
-                    SendPaintInput(GridTile.lastHoveredPosition);
+                    if (GridTile.TryGetHoveredPosition(out Vector2Int position))
+                        SendPaintInput(position);
                     break;
             }
         }
