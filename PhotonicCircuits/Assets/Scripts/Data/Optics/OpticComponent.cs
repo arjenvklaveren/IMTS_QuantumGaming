@@ -22,6 +22,9 @@ namespace Game
             occupiedTiles = new(tilesToOccupy);
             occupiedRootTile = GetOccupiedRootTile(tilesToOccupy);
 
+            inPorts ??= new ComponentPort[0];
+            outPorts ??= new ComponentPort[0];
+
             this.inPorts = inPorts;
             this.outPorts = outPorts;
 
@@ -31,11 +34,11 @@ namespace Game
 
         private void CompilePorts(ComponentPort[] ports)
         {
-            if (ports == null)
-                return;
-
             foreach (ComponentPort port in ports)
+            {
                 port.owner = this;
+                port.position += occupiedRootTile;
+            }
         }
 
         protected virtual Vector2Int GetOccupiedRootTile(Vector2Int[] tilesToOccupy)

@@ -6,8 +6,6 @@ namespace Game
 {
     public class ComponentPortsManager : Singleton<ComponentPortsManager>
     {
-        [field: SerializeField] public Vector2Int portChunkSize { get; private set; }
-
         #region Awake / Destroy
         protected override void Awake()
         {
@@ -54,20 +52,12 @@ namespace Game
 
         private void RegisterPort(ComponentPort port, GridData grid)
         {
-            Vector2Int chunkPos = GetChunkPosByWorldPos(port.position);
+            Vector2Int chunkPos = GridUtils.GridPos2ChunkPos(port.position);
 
-            if (!grid.inPortData.ContainsKey(chunkPos))
-                grid.inPortData.Add(chunkPos, new());
+            if (!grid.inPortsData.ContainsKey(chunkPos))
+                grid.inPortsData.Add(chunkPos, new());
 
-            grid.inPortData[chunkPos].RegisterPorts(port);
-        }
-
-        private Vector2Int GetChunkPosByWorldPos(Vector2Int worldPos)
-        {
-            Vector2 worldPosFloat = worldPos;
-            int chunkXPos = Mathf.FloorToInt(worldPosFloat.x / portChunkSize.x);
-            int chunkYPos = Mathf.FloorToInt(worldPosFloat.y / portChunkSize.y);
-            return new(chunkXPos, chunkYPos);
+            grid.inPortsData[chunkPos].RegisterPorts(port);
         }
         #endregion
     }

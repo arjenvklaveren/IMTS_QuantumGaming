@@ -113,7 +113,7 @@ namespace Game
         {
             GridTile tile = Instantiate(
                 tilePrefab,
-                GridToWorldPosition(position),
+                GridUtils.GridPos2WorldPos(position, currentGridSpacing),
                 Quaternion.identity,
                 rowHolder);
 
@@ -137,7 +137,7 @@ namespace Game
 
             ComponentVisuals visuals = Instantiate(
                 prefab,
-                GridToWorldPosition(component.occupiedRootTile),
+                GridUtils.GridPos2WorldPos(component.occupiedRootTile, currentGridSpacing),
                 Quaternion.identity,
                 componentHolder);
 
@@ -224,11 +224,6 @@ namespace Game
                 return false;
 
             return true;
-        }
-
-        private Vector2 GridToWorldPosition(Vector2Int position)
-        {
-            return position * currentGridSpacing;
         }
 
         private ComponentVisuals GetVisualsPrefabByType(OpticComponentType type)

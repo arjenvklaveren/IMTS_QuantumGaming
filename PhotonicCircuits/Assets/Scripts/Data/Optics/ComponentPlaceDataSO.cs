@@ -13,6 +13,11 @@ namespace Game.Data
         [Header("Grid Settings")]
         public Vector2Int[] tileOffsetsToOccupy;
 
+        // Port positions are relative!
+        [Header("Port Settings")]
+        public ComponentPort[] inPorts;
+        public ComponentPort[] outPorts;
+
         public abstract OpticComponent CreateOpticComponent(Vector2Int[] tilesToOccupy);
 
         public Vector2Int[] GetTilesToOccupy(Vector2Int position)
