@@ -1,21 +1,176 @@
-public class Photon
+using System;
+using UnityEngine;
+
+namespace Game.Data
 {
-    float waveLength;
-    float amplitude;
-    float phase;
-
-    public Photon(float waveLength, float amplitude, float phase)
+    [System.Serializable]
+    public class Photon
     {
-        this.waveLength = waveLength;
-        this.amplitude = amplitude;
-        this.phase = phase;
-    }
-    public Photon() { }
+        public event Action<OpticComponent> OnEnterComponent;
+        public event Action<OpticComponent> OnExitComponent;
 
-    public void SetWaveLength(float waveLength) { this.waveLength = waveLength; }
-    public void SetAmplitude(float amplitude) { this.amplitude = amplitude; }
-    public void SetPhase(float phase) { this.phase = phase; }
-    public float GetWaveLength() { return waveLength; }
-    public float GetAmplitude() { return amplitude; }
-    public float GetPhase() { return phase; }
+        const float MIN_PHOTON_WAVELENGTH = 380;
+        const float MAX_PHOTON_WAVELENGTH = 750;
+        const float MAX_PHOTON_PHASE = 2f * Mathf.PI;
+        const float MAX_PHOTON_POLARISATION = 90;
+
+        float wavelength;
+        float amplitude;
+        float phase;
+        float polarization;
+        Vector2Int position;
+        Orientation propagation;
+
+        public Photon(
+            Vector2Int position,
+            Orientation propagation,
+            float wavelength = 565f,
+            float amplitude = 0.5f,
+            float phase = 0f,
+            float polarization = 0f)
+        {
+            this.position = position;
+            this.propagation = propagation;
+            this.wavelength = wavelength;
+            this.amplitude = amplitude;
+            this.phase = phase;
+            this.polarization = polarization;
+        }
+
+        // TEMP
+        public Photon(Photon source)
+        {
+
+        }
+
+        public void SetWavelength(float waveLength) { this.wavelength = Mathf.Clamp(waveLength, MIN_PHOTON_WAVELENGTH, MAX_PHOTON_WAVELENGTH); }
+        public void SetAmplitude(float amplitude) { this.amplitude = Mathf.Clamp(amplitude, 0, 1.0f); }
+        public void SetPhase(float phase) { this.phase = Mathf.Clamp(phase, 0, MAX_PHOTON_PHASE); }
+        public void SetPolarisation(float polarisation) { this.polarization = Mathf.Clamp(polarisation, 0, MAX_PHOTON_POLARISATION); }
+        public void SetPosition(Vector2Int position) { this.position = position; }
+        public void SetPropagation(Orientation propagation) { this.propagation = propagation; }
+
+        public float GetWaveLength() { return wavelength; }
+        public float GetAmplitude() { return amplitude; }
+        public float GetPhase() { return phase; }
+        public float GetPolarisation() { return polarization; }
+        public Vector2Int GetPosition() { return position; }
+
+        public Orientation GetPropagation() => propagation;
+        public Vector2 GetPropagationVector() => propagation.ToVector2();
+        public Vector2Int GetPropagationIntVector() => propagation.ToVector2Int();
+
+        public float GetWavelengthNormalized()
+        {
+            return (wavelength - MIN_PHOTON_WAVELENGTH) / (MAX_PHOTON_WAVELENGTH - MIN_PHOTON_WAVELENGTH);
+        }
+        public Color GetColor()
+        {
+            //academo.org/demos/wavelength-to-colour-relationship (converted to C# and adjusted using ChatGPT)
+            float r = 0f, g = 0f, b = 0f;
+
+            if (wavelength >= MIN_PHOTON_WAVELENGTH && wavelength <= MAX_PHOTON_WAVELENGTH)
+            {
+                if (wavelength < 440)
+                {
+                    r = Mathf.Lerp(1f, 0f, (wavelength - 380) / (440 - 380));
+                    g = 0f;
+                    b = 1f;
+                }
+                else if (wavelength < 490)
+                {
+                    r = 0f;
+                    g = Mathf.Lerp(0f, 1f, (wavelength - 440) / (490 - 440));
+                    b = 1f;
+                }
+                else if (wavelength < 510)
+                {
+                    r = 0f;
+                    g = 1f;
+                    b = Mathf.Lerp(1f, 0f, (wavelength - 490) / (510 - 490));
+                }
+                else if (wavelength < 580)
+                {
+                    r = Mathf.Lerp(0f, 1f, (wavelength - 510) / (580 - 510));
+                    g = 1f;
+                    b = 0f;
+                }
+                else if (wavelength < 645)
+                {
+                    r = 1f;
+                    g = Mathf.Lerp(1f, 0f, (wavelength - 580) / (645 - 580));
+                    b = 0f;
+                }
+                else
+                {
+                    r = 1f;
+                    g = 0f;
+                    b = 0f;
+                }
+            }
+            else
+            {
+                r = 0f;
+                g = 0f;
+                b = 0f;
+            }
+
+            return new Color(r, g, b);
+        }
+
+        public void Move()
+        {
+            this.position += propagation.ToVector2Int();
+        }
+
+        //public void SetPropagationByAngle(float angleDeg)
+        //{
+        //    float angleRad = Mathf.Deg2Rad * angleDeg;
+        //    propagation = -Vector2.up * propagation.magnitude;
+        //    propagation = new Vector2(
+        //    propagation.x * Mathf.Cos(angleRad) - propagation.y * Mathf.Sin(angleRad),
+        //    propagation.x * Mathf.Sin(angleRad) + propagation.y * Mathf.Cos(angleRad));
+        //}
+
+        public void RotateClockwise(int increments)
+        {
+            propagation.RotateClockwise(increments);
+        }
+        public void RotateCounterClockwise(int increments)
+        {
+            propagation.RotateCounterClockwise(increments);
+        }
+
+        public void RotatePolarisation(float angleDeg)
+        {
+            float newAngle = polarization + angleDeg;
+            SetPolarisation(newAngle);
+        }
+        public void RotatePhase(float radians)
+        {
+            float norm = radians % MAX_PHOTON_PHASE;
+            float remain = MAX_PHOTON_PHASE - (phase + radians);
+            SetPhase(phase + remain);
+        }
+
+        public Photon Split()
+        {
+            return new Photon(this);
+        }
+        public Photon Interfere(Photon photon)
+        {
+            return new Photon(photon);
+        }
+
+        // Event Triggering
+        public void TriggerEnterComponent(OpticComponent component)
+        {
+            OnEnterComponent?.Invoke(component);
+        }
+
+        public void TriggerExitComponent(OpticComponent component)
+        {
+            OnExitComponent?.Invoke(component);
+        }
+    }
 }

@@ -1,5 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
+using Game.Data;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -21,10 +20,10 @@ public class WaveSliderManager : MonoBehaviour
     void InitEventListeners()
     {
         Photon photon = WaveOperationTool.Instance.GetPhoton();
-        wavelengthSlider.onValueChanged.AddListener((float arg0) => { photon.SetWaveLength(wavelengthSlider.value); WaveOperationTool.Instance.UpdateVisuals(); });
+        wavelengthSlider.onValueChanged.AddListener((float arg0) => { photon.SetWavelength(wavelengthSlider.value); WaveOperationTool.Instance.UpdateVisuals(); });
         amplitudeSlider.onValueChanged.AddListener((float arg0) => { photon.SetAmplitude(amplitudeSlider.value); WaveOperationTool.Instance.UpdateVisuals(); });
         phaseSlider.onValueChanged.AddListener((float arg0) => { photon.SetPhase(phaseSlider.value); WaveOperationTool.Instance.UpdateVisuals(); });
-        wavelengthInput.onValueChanged.AddListener((string arg0) => { photon.SetWaveLength(float.Parse(wavelengthInput.text)); WaveOperationTool.Instance.UpdateVisuals(); });
+        wavelengthInput.onValueChanged.AddListener((string arg0) => { photon.SetWavelength(float.Parse(wavelengthInput.text)); WaveOperationTool.Instance.UpdateVisuals(); });
         amplitudeInput.onValueChanged.AddListener((string arg0) => { photon.SetAmplitude(float.Parse(amplitudeInput.text)); WaveOperationTool.Instance.UpdateVisuals(); });
         phaseInput.onValueChanged.AddListener((string arg0) => { photon.SetPhase(float.Parse(phaseInput.text)); WaveOperationTool.Instance.UpdateVisuals(); });
     }

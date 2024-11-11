@@ -1,4 +1,5 @@
-﻿using TMPro;
+﻿using Game.Data;
+using TMPro;
 using UnityEngine;
 
 public class DiracNotationVisualiser : MonoBehaviour

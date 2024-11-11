@@ -17,5 +17,10 @@ namespace Game
                 outPorts)
         {
         }
+
+        protected override void HandlePhoton(ComponentPort port, Photon photon)
+        {
+            Debug.Log($"Port {port.portId} detected Photon!");
+        }
     }
 }

@@ -141,7 +141,7 @@ namespace Game
                 Quaternion.identity,
                 componentHolder);
 
-            visuals.sourceComponent = component;
+            visuals.SetSource(component);
 
             CachePlacedComponent(component, visuals);
         }

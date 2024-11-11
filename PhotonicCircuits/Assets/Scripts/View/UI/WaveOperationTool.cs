@@ -1,3 +1,4 @@
+using Game.Data;
 using SadUtils;
 using UnityEngine;
 
@@ -13,7 +14,7 @@ public class WaveOperationTool : Singleton<WaveOperationTool>
     protected override void Awake()
     {
         SetInstance(this);
-        photon = new Photon(5.0f, 0.5f, 0.0f);
+        photon = new Photon(Vector2Int.zero, Orientation.Up);
         UpdateVisuals();
     }
 

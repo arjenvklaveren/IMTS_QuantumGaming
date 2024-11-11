@@ -1,18 +1,12 @@
 using Game.Data;
-using SadUtils;
 using UnityEngine;
 
 namespace Game
 {
-    public class PhotonPathManager : Singleton<PhotonPathManager>
+    public static class PhotonPathFinder
     {
-        protected override void Awake()
-        {
-            SetInstance(this);
-        }
-
         #region Find In Port
-        public bool TryFindNextInPort(
+        public static bool TryFindNextInPort(
             Vector2Int startPosition,
             Orientation photonOrientation,
             GridData grid,
@@ -35,7 +29,7 @@ namespace Game
             }
         }
 
-        private bool TrySearchChunk(
+        private static bool TrySearchChunk(
             Vector2Int chunkPos,
             Orientation desiredOrientation,
             GridData grid,

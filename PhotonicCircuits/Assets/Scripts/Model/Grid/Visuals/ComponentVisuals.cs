@@ -4,15 +4,55 @@ using UnityEngine.EventSystems;
 
 namespace Game
 {
-    public class ComponentVisuals : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
+    public abstract class ComponentVisuals : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     {
         public static event Action<ComponentVisuals> OnHover;
 
-        public OpticComponent sourceComponent;
+        public OpticComponent sourceComponent { get; private set; }
 
         private static ComponentVisuals lastHoveredVisuals;
         private static bool isHovered;
 
+        #region Awake / Destroy
+        protected virtual void Awake()
+        {
+            SetupListeners();
+        }
+
+        protected virtual void OnDestroy()
+        {
+            RemoveListeners();
+        }
+
+        private void SetupListeners()
+        {
+            PhotonVisuals.OnEnterComponent += PhotonVisuals_OnEnterComponent; ;
+        }
+
+        private void RemoveListeners()
+        {
+            PhotonVisuals.OnEnterComponent -= PhotonVisuals_OnEnterComponent;
+        }
+        #endregion
+
+        #region Handle Events
+        private void PhotonVisuals_OnEnterComponent(PhotonVisuals photon, OpticComponent component)
+        {
+            if (sourceComponent != component)
+                return;
+
+            HandlePhoton(photon);
+        }
+        #endregion
+
+        public virtual void SetSource(OpticComponent component)
+        {
+            sourceComponent = component;
+        }
+
+        protected virtual void HandlePhoton(PhotonVisuals photon) { }
+
+        #region Hover Logic
         public void OnPointerEnter(PointerEventData eventData)
         {
             OnHover?.Invoke(this);
@@ -31,5 +71,6 @@ namespace Game
             componentVisuals = lastHoveredVisuals;
             return isHovered;
         }
+        #endregion
     }
 }

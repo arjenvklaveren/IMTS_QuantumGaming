@@ -6,5 +6,6 @@ namespace Game.Data
         BeamSplitter,
         PhaseShifter,
         Test,
+        Source,
     }
 }

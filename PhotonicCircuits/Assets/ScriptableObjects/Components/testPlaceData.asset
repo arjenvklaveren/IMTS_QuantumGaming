@@ -12,8 +12,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 426e13a84f88d1e459669d69b6c81ba5, type: 3}
   m_Name: testPlaceData
   m_EditorClassIdentifier: 
-  title: yes
+  title: Test Component
   previewSprite: {fileID: 0}
   previewScale: {x: 1, y: 1}
   tileOffsetsToOccupy:
   - {x: 0, y: 0}
+  inPorts:
+  - portId: 0
+    position: {x: 0, y: 0}
+    orientation: 0
+  - portId: 0
+    position: {x: 0, y: 0}
+    orientation: 1
+  - portId: 0
+    position: {x: 0, y: 0}
+    orientation: 2
+  - portId: 0
+    position: {x: 0, y: 0}
+    orientation: 3
+  outPorts: []
