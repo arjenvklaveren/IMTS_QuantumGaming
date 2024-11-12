@@ -15,4 +15,6 @@ MonoBehaviour:
   visualsLookup:
     dictionary:
     - key: 3
-      value: {fileID: 327033050537385543, guid: 0dec2e08c11f4944890d2cde705fc2ba, type: 3}
+      value: {fileID: 4034768743633279551, guid: 0dec2e08c11f4944890d2cde705fc2ba, type: 3}
+    - key: 4
+      value: {fileID: 8674023782413764237, guid: 36a7ea9484601db4db8a0948d8bc9243, type: 3}

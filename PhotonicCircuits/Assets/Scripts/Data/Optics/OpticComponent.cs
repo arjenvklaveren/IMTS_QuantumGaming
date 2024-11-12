@@ -25,17 +25,28 @@ namespace Game
             occupiedTiles = new(tilesToOccupy);
             occupiedRootTile = GetOccupiedRootTile(tilesToOccupy);
 
-            inPorts ??= new ComponentPort[0];
-            outPorts ??= new ComponentPort[0];
-
-            this.inPorts = inPorts;
-            this.outPorts = outPorts;
-
-            CompilePorts(this.inPorts);
-            CompilePorts(this.outPorts);
+            this.inPorts = GetPortCopies(inPorts);
+            this.outPorts = GetPortCopies(outPorts);
+            InitPorts();
         }
 
-        private void CompilePorts(ComponentPort[] ports)
+        private ComponentPort[] GetPortCopies(ComponentPort[] ports)
+        {
+            ComponentPort[] copies = new ComponentPort[ports.Length];
+
+            for (int i = 0; i < ports.Length; i++)
+                copies[i] = new(ports[i]);
+
+            return copies;
+        }
+
+        private void InitPorts()
+        {
+            InitPortValues(inPorts);
+            InitPortValues(outPorts);
+        }
+
+        private void InitPortValues(ComponentPort[] ports)
         {
             int idCounter = 0;
 

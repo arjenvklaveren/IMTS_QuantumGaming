@@ -33,24 +33,35 @@ namespace Game
 
         private void SetupListeners()
         {
-            SimulationManager.OnSimulationInitialize += SimulationManager_OnSimulationInitialize; ;
+            SimulationManager.OnSimulationInitialize += SimulationManager_OnSimulationInitialize;
+            SimulationManager.OnSimulationStop += SimulationManager_OnSimulationStop;
             OpticComponent.OnPhotonExit += OpticComponent_OnPhotonExit;
         }
 
         private void RemoveListeners()
         {
             SimulationManager.OnSimulationInitialize -= SimulationManager_OnSimulationInitialize;
+            SimulationManager.OnSimulationStop -= SimulationManager_OnSimulationStop;
             OpticComponent.OnPhotonExit -= OpticComponent_OnPhotonExit;
         }
         #endregion
 
         #region Handle Events
         private void SimulationManager_OnSimulationInitialize() => HandleSimulationInit();
+        private void SimulationManager_OnSimulationStop() => HandleSimulationStop();
         private void OpticComponent_OnPhotonExit(Photon photon) => HandlePhotonExit(photon);
 
         private void HandleSimulationInit()
         {
             openGrid = GridManager.Instance.GetActiveGrid();
+        }
+
+        private void HandleSimulationStop()
+        {
+            foreach (KeyValuePair<Photon, Coroutine> pair in runningRoutines)
+                StopCoroutine(pair.Value);
+
+            runningRoutines.Clear();
         }
 
         private void HandlePhotonExit(Photon photon)

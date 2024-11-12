@@ -9,7 +9,7 @@ namespace Game.Data
 
         public Vector2 spacing;
         public Vector2Int size;
-        public Vector2Int chunksSize { get; private set; }
+        public Vector2Int ChunksCount { get; private set; }
 
         public List<OpticComponent> placedComponents;
         public HashSet<Vector2Int> occupiedTiles;
@@ -32,7 +32,7 @@ namespace Game.Data
         {
             Vector2 floatSize = size;
 
-            chunksSize = new(
+            ChunksCount = new(
                 Mathf.CeilToInt(floatSize.x / CHUNK_SIZE),
                 Mathf.CeilToInt(floatSize.y / CHUNK_SIZE));
         }

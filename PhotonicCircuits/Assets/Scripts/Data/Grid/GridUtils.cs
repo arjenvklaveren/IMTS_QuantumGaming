@@ -31,8 +31,8 @@ namespace Game.Data
             if (chunkPos.x < 0 || chunkPos.y < 0)
                 return false;
 
-            return chunkPos.x < grid.chunksSize.x &&
-                chunkPos.y < grid.chunksSize.y;
+            return chunkPos.x < grid.ChunksCount.x &&
+                chunkPos.y < grid.ChunksCount.y;
         }
         #endregion
     }

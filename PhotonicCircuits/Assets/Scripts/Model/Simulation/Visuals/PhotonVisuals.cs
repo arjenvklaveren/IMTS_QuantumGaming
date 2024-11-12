@@ -51,18 +51,23 @@ namespace Game
         {
             source.OnEnterComponent += Photon_OnEnterComponent;
             source.OnExitComponent += Photon_OnExitComponent;
+
+            SimulationManager.OnSimulationStop += SimulationManager_OnSimulationStop;
         }
 
         private void RemoveListeners()
         {
             source.OnEnterComponent -= Photon_OnEnterComponent;
             source.OnExitComponent -= Photon_OnExitComponent;
+
+            SimulationManager.OnSimulationStop -= SimulationManager_OnSimulationStop;
         }
         #endregion
 
         #region Handle Events
         private void Photon_OnEnterComponent(OpticComponent component) => HandleEnterComponent(component);
         private void Photon_OnExitComponent(OpticComponent component) => HandleExitComponent(component);
+        private void SimulationManager_OnSimulationStop() => HandleSimulationStop();
 
         private void HandleEnterComponent(OpticComponent component)
         {
@@ -85,6 +90,11 @@ namespace Game
 
             isInComponent = false;
             SyncVisuals();
+        }
+
+        private void HandleSimulationStop()
+        {
+            Destroy(gameObject);
         }
         #endregion
 

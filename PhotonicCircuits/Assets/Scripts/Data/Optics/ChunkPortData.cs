@@ -5,7 +5,7 @@ namespace Game.Data
 {
     public class ChunkPortData
     {
-        private Dictionary<Orientation, List<ComponentPort>> portsDict;
+        private readonly Dictionary<Orientation, List<ComponentPort>> portsDict;
 
         public ChunkPortData()
         {

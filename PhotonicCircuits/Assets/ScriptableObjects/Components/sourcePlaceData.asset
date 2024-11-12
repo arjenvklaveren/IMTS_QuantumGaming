@@ -9,25 +9,16 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 426e13a84f88d1e459669d69b6c81ba5, type: 3}
-  m_Name: testPlaceData
+  m_Script: {fileID: 11500000, guid: f88a873b8e807d640a0ac11a5e8478b9, type: 3}
+  m_Name: sourcePlaceData
   m_EditorClassIdentifier: 
-  title: Test Component
+  title: Simple Photon Source
   previewSprite: {fileID: 0}
-  previewScale: {x: 1, y: 1}
+  previewScale: {x: 0, y: 0}
   tileOffsetsToOccupy:
   - {x: 0, y: 0}
-  inPorts:
+  inPorts: []
+  outPorts:
   - portId: 0
     position: {x: 0, y: 0}
-    orientation: 0
-  - portId: 1
-    position: {x: 0, y: 0}
     orientation: 1
-  - portId: 2
-    position: {x: 0, y: 0}
-    orientation: 2
-  - portId: 3
-    position: {x: 0, y: 0}
-    orientation: 3
-  outPorts: []
