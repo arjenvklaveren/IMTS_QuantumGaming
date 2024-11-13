@@ -123,7 +123,7 @@ namespace Game
             }
 
             runningRoutines.Remove(photon);
-            // DELETE PHOTON HERE
+            PhotonManager.RemovePhoton(photon, false);
         }
 
         private bool IsPositionInGrid(Vector2Int position, Orientation propagation)
