@@ -5,15 +5,21 @@ Shader "Custom/PhotonWaveShader"
         _LineColor ("Line Color", Color) = (1, 1, 1, 1)
         _BackgroundColor ("Background Color", Color) = (0, 0, 0, 1)
         _LineThickness ("Line Thickness", Range(0.005, 0.05)) = 0.01
+        _MiddleDivideThickness ("Middle Thickness", Range(0.01, 0.03)) = 0.02
         _Wavelength ("Wavelength", Range(1.0, 10)) = 5.0
         _Amplitude ("Amplitude", Range(0.0, 1.0)) = 0.5
         _Phase ("Phase", Range(0, 6.28318)) = 0.0
-        _Test ("Test", Range(1.0, 10.0)) = 1.0
+        _LineWidthCorrection ("LineWidth Correction", Range(1.0, 3.0)) = 1.5
+        _DrawDepthVisuals("Draw Depth Visuals", int) = 1
     }
     SubShader
     {
-        Tags { "RenderType"="Opaque" }
+        Tags { "Queue"="Transparent" "RenderType"="Transparent" }
         LOD 100
+        ZWrite Off
+        Cull Off
+
+        Blend SrcAlpha OneMinusSrcAlpha
 
         Pass
         {
@@ -45,30 +51,50 @@ Shader "Custom/PhotonWaveShader"
             fixed4 _LineColor;
             fixed4 _BackgroundColor;
             float _LineThickness;
+            float _MiddleDivideThickness;
             float _Wavelength;
             float _Amplitude;
             float _Phase;
-            float _Test;
+            float _LineWidthCorrection;
+            float _DrawDepthVisuals;
 
             fixed4 frag (v2f i) : SV_Target
             {
                 fixed4 col = _BackgroundColor;
 
                 float x = i.uv.x * _Wavelength * 2.0 * UNITY_PI; 
-                float sineWaveY = 0.5 + sin(x + _Phase) * _Amplitude * 0.25;
+                float sineWaveY = 0.5 + sin(x + _Phase) * _Amplitude * 0.375;
 
                 float sineSlope = abs(cos(x + _Phase) * _Wavelength * _Amplitude);
                 float adjustedThickness = _LineThickness * (1.0 + sineSlope);
 
                 float distanceFromLine = abs(i.uv.y - sineWaveY);
 
-                if(i.uv.y > 0.49 && i.uv.y < 0.51) col = fixed4(0,0,0,1);
+                if(_DrawDepthVisuals == 1){
+                    if((i.uv.y > sineWaveY + _LineThickness && i.uv.y < 0.5) || (i.uv.y < sineWaveY - _LineThickness && i.uv.y > 0.5)){
+                        col = _LineColor * 0.5;
 
-                if (distanceFromLine < _LineThickness || distanceFromLine < (adjustedThickness / _Test))
+                        float stripePosition = fmod(i.uv.x, 0.02);
+
+                        if (stripePosition < _LineThickness / 2)
+                        {
+                            col = _LineColor;
+                        }
+                    }
+                }
+
+                if(_DrawDepthVisuals == 0){
+                    if(i.uv.y > (0.5 - _MiddleDivideThickness) && i.uv.y < (0.5 + _MiddleDivideThickness)) col = fixed4(0,0,0,1);
+                }
+
+                if (distanceFromLine < _LineThickness || distanceFromLine < (adjustedThickness / _LineWidthCorrection))
                 {
                     col = _LineColor;
                 }
 
+                if(_DrawDepthVisuals == 1){
+                    if(i.uv.y > (0.5 - _MiddleDivideThickness) && i.uv.y < (0.5 + _MiddleDivideThickness)) col = fixed4(0,0,0,1);
+                }
                 return col;
             }
             ENDCG

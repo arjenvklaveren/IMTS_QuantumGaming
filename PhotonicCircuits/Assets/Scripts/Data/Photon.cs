@@ -37,11 +37,10 @@ namespace Game.Data
             this.polarization = polarization;
         }
 
-        // TEMP
-        public Photon(Photon source)
-        {
-
-        }
+    public Photon Clone()
+    {
+        return new Photon(this.wavelength, this.amplitude, this.phase, this.polarization, this.position, this.propagation);
+    }
 
         public void SetWavelength(float waveLength) { this.wavelength = Mathf.Clamp(waveLength, MIN_PHOTON_WAVELENGTH, MAX_PHOTON_WAVELENGTH); }
         public void SetAmplitude(float amplitude) { this.amplitude = Mathf.Clamp(amplitude, 0, 1.0f); }

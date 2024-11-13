@@ -12,6 +12,7 @@ public class DiracNotationVisualiser : MonoBehaviour
         float phase = photon.GetPhase();
         float zeroStateProb = (float)System.Math.Round(1.0f - amplitude, 2);
         float oneStateProb = (float)System.Math.Round(1.0f - zeroStateProb, 2);
+
         string operationString = " + ";
 
         if (amplitude != 0 && amplitude != 1.0f)
