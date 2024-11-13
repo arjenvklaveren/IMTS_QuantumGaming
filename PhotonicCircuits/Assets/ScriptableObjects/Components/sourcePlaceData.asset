@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   title: Simple Photon Source
   previewSprite: {fileID: 0}
-  previewScale: {x: 0, y: 0}
+  previewScale: {x: 1, y: 1}
   tileOffsetsToOccupy:
   - {x: 0, y: 0}
   inPorts: []
