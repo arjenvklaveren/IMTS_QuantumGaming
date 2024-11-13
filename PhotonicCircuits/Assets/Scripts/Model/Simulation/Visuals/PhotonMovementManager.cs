@@ -89,16 +89,16 @@ namespace Game
             Vector2Int photonPos = photon.GetPosition();
             Vector2Int propagation = photon.GetPropagationIntVector();
             Vector2Int targetPos = port.position;
+            bool isGhostPort = port.IsGhostPort;
 
             while (photonPos != targetPos)
             {
-                yield return waitForMoveTile;
+                yield return GetTimeToWait(photonPos, targetPos);
 
                 photonPos += propagation;
                 photon.SetPosition(photonPos);
             }
 
-            bool isGhostPort = port.IsGhostPort;
             if (!isGhostPort)
                 port.ProcessPhoton(photon);
 
@@ -106,6 +106,14 @@ namespace Game
 
             if (isGhostPort)
                 PhotonManager.RemovePhoton(photon, false);
+        }
+
+        private WaitForSeconds GetTimeToWait(Vector2Int currentPos, Vector2Int targetPos)
+        {
+            if (Vector2Int.Distance(currentPos, targetPos) <= 1f)
+                return new WaitForSeconds(1f / (MoveSpeed * 2f));
+
+            return waitForMoveTile;
         }
 
         private IEnumerator MovePhotonToGridEdgeCo(Photon photon)

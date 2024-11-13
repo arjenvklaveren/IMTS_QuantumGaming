@@ -167,7 +167,6 @@ namespace Game.Data
 
         public void Destroy()
         {
-            Debug.Log("Destroying photon...");
             OnDestroy?.Invoke();
         }
     }

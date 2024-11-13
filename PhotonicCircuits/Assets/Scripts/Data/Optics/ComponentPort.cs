@@ -40,8 +40,6 @@ namespace Game.Data
 
         public void ProcessPhoton(Photon photon)
         {
-            Debug.Log("Processing Photon...\nisGhost? " + IsGhostPort);
-
             if (IsGhostPort)
                 return;
 
