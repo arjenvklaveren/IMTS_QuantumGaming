@@ -11,7 +11,7 @@ namespace Game
         #region Constructor
         public ComponentDeleteInputDecoder()
         {
-            gridController = GridManager.Instance.gridController;
+            gridController = GridManager.Instance.GridController;
 
             SetupListeners();
         }
@@ -60,7 +60,7 @@ namespace Game
 
         private void SendDeleteInput(ComponentVisuals componentVisuals)
         {
-            gridController.TryRemoveComponent(componentVisuals.sourceComponent);
+            gridController.TryRemoveComponent(componentVisuals.SourceComponent);
         }
 
         public void Destroy()

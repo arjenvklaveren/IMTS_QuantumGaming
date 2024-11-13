@@ -8,7 +8,7 @@ namespace Game
     {
         public static event Action<ComponentVisuals> OnHover;
 
-        public OpticComponent sourceComponent { get; private set; }
+        public OpticComponent SourceComponent { get; private set; }
 
         private static ComponentVisuals lastHoveredVisuals;
         private static bool isHovered;
@@ -26,7 +26,7 @@ namespace Game
 
         private void SetupListeners()
         {
-            PhotonVisuals.OnEnterComponent += PhotonVisuals_OnEnterComponent; ;
+            PhotonVisuals.OnEnterComponent += PhotonVisuals_OnEnterComponent;
         }
 
         private void RemoveListeners()
@@ -38,7 +38,7 @@ namespace Game
         #region Handle Events
         private void PhotonVisuals_OnEnterComponent(PhotonVisuals photon, OpticComponent component)
         {
-            if (sourceComponent != component)
+            if (SourceComponent != component)
                 return;
 
             HandlePhoton(photon);
@@ -47,7 +47,7 @@ namespace Game
 
         public virtual void SetSource(OpticComponent component)
         {
-            sourceComponent = component;
+            SourceComponent = component;
         }
 
         protected virtual void HandlePhoton(PhotonVisuals photon) { }

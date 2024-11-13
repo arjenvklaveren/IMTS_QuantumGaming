@@ -9,7 +9,7 @@ namespace Game
     {
         public WaitUntil WaitUntilGrid { get; private set; }
 
-        public GridController gridController { get; private set; }
+        public GridController GridController { get; private set; }
 
         private Stack<GridData> grids;
 
@@ -23,7 +23,7 @@ namespace Game
         private void SetDefaultValues()
         {
             grids = new();
-            gridController = new();
+            GridController = new();
 
             WaitUntilGrid = new WaitUntil(() => grids.Count > 0);
         }
@@ -37,7 +37,7 @@ namespace Game
         {
             grids.Push(grid);
 
-            gridController.SetActiveGrid(grid);
+            GridController.SetActiveGrid(grid);
         }
 
         public void CloseActiveGrid()
@@ -47,7 +47,7 @@ namespace Game
 
             grids.Pop();
 
-            gridController.SetActiveGrid(grids.Peek());
+            GridController.SetActiveGrid(grids.Peek());
         }
     }
 }

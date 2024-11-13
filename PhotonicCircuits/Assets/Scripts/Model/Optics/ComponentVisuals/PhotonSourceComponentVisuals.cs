@@ -24,13 +24,13 @@ namespace Game
 
         private void SetupListeners()
         {
-            PhotonSourceComponent source = sourceComponent as PhotonSourceComponent;
+            PhotonSourceComponent source = SourceComponent as PhotonSourceComponent;
             source.OnCreatePhoton += Source_OnCreatePhoton;
         }
 
         private void RemoveListeners()
         {
-            PhotonSourceComponent source = sourceComponent as PhotonSourceComponent;
+            PhotonSourceComponent source = SourceComponent as PhotonSourceComponent;
             source.OnCreatePhoton -= Source_OnCreatePhoton;
         }
         #endregion

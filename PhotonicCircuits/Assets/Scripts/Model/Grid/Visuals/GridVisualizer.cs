@@ -194,7 +194,7 @@ namespace Game
 
             foreach (ComponentVisuals placedVisuals in placedComponentVisuals[component.Type])
             {
-                if (placedVisuals.sourceComponent != component)
+                if (placedVisuals.SourceComponent != component)
                     continue;
 
                 visuals = placedVisuals;

@@ -23,7 +23,7 @@ namespace Game
         private IEnumerator Start()
         {
             yield return GridManager.WaitForInstance;
-            gridController = GridManager.Instance.gridController;
+            gridController = GridManager.Instance.GridController;
         }
 
         public void PaintComponent(Vector2Int position)
