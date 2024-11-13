@@ -9,6 +9,8 @@ namespace Game.Data
         public event Action<OpticComponent> OnEnterComponent;
         public event Action<OpticComponent> OnExitComponent;
 
+        public event Action OnDestroy;
+
         const float MIN_PHOTON_WAVELENGTH = 380;
         const float MAX_PHOTON_WAVELENGTH = 750;
         const float MAX_PHOTON_PHASE = 2f * Mathf.PI;
@@ -37,10 +39,10 @@ namespace Game.Data
             this.polarization = polarization;
         }
 
-    public Photon Clone()
-    {
-        return new Photon(this.position, this.propagation, this.wavelength, this.amplitude, this.phase, this.polarization);
-    }
+        public Photon Clone()
+        {
+            return new Photon(this.position, this.propagation, this.wavelength, this.amplitude, this.phase, this.polarization);
+        }
 
         public void SetWavelength(float waveLength) { this.wavelength = Mathf.Clamp(waveLength, MIN_PHOTON_WAVELENGTH, MAX_PHOTON_WAVELENGTH); }
         public void SetAmplitude(float amplitude) { this.amplitude = Mathf.Clamp(amplitude, 0, 1.0f); }
@@ -161,6 +163,11 @@ namespace Game.Data
         public void TriggerExitComponent(OpticComponent component)
         {
             OnExitComponent?.Invoke(component);
+        }
+
+        public void Destroy()
+        {
+            OnDestroy?.Invoke();
         }
     }
 }

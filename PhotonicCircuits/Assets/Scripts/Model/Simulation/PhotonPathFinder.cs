@@ -5,7 +5,6 @@ namespace Game
 {
     public static class PhotonPathFinder
     {
-        #region Find In Port
         public static bool TryFindNextInPort(
             Vector2Int startPosition,
             Orientation photonOrientation,
@@ -127,6 +126,5 @@ namespace Game
                 _ => Vector2Int.zero,
             };
         }
-        #endregion
     }
 }

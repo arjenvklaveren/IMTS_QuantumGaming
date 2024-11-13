@@ -1,5 +1,6 @@
 using Game.Data;
 using SadUtils;
+using System.Collections;
 using UnityEngine;
 
 namespace Game
@@ -19,8 +20,9 @@ namespace Game
             SetInstance(this);
         }
 
-        private void Start()
+        private IEnumerator Start()
         {
+            yield return GridManager.WaitForInstance;
             gridController = GridManager.Instance.gridController;
         }
 
@@ -30,6 +32,7 @@ namespace Game
                 return;
 
             // Show error
+            Debug.Log("can't paint at " + position);
         }
 
         public void SelectComponent(ComponentPlaceDataSO placeData)

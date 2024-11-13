@@ -36,7 +36,7 @@ namespace Game
             openGrid = GridManager.Instance.GetActiveGrid();
 
             // Cache move speed based on open grid
-            float tilesPerSecond = PhotonMovementManager.Instance.moveSpeed;
+            float tilesPerSecond = PhotonMovementManager.Instance.MoveSpeed;
             Vector2 tileSize = openGrid.spacing;
 
             moveSpeed = tilesPerSecond * tileSize;
@@ -51,23 +51,21 @@ namespace Game
         {
             source.OnEnterComponent += Photon_OnEnterComponent;
             source.OnExitComponent += Photon_OnExitComponent;
-
-            SimulationManager.OnSimulationStop += SimulationManager_OnSimulationStop;
+            source.OnDestroy += Source_OnDestroy;
         }
 
         private void RemoveListeners()
         {
             source.OnEnterComponent -= Photon_OnEnterComponent;
             source.OnExitComponent -= Photon_OnExitComponent;
-
-            SimulationManager.OnSimulationStop -= SimulationManager_OnSimulationStop;
+            source.OnDestroy -= Source_OnDestroy;
         }
         #endregion
 
         #region Handle Events
         private void Photon_OnEnterComponent(OpticComponent component) => HandleEnterComponent(component);
         private void Photon_OnExitComponent(OpticComponent component) => HandleExitComponent(component);
-        private void SimulationManager_OnSimulationStop() => HandleSimulationStop();
+        private void Source_OnDestroy() => HandleDestroy();
 
         private void HandleEnterComponent(OpticComponent component)
         {
@@ -92,7 +90,7 @@ namespace Game
             SyncVisuals();
         }
 
-        private void HandleSimulationStop()
+        private void HandleDestroy()
         {
             Destroy(gameObject);
         }

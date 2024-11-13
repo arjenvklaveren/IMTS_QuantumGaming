@@ -21,7 +21,7 @@ namespace Game
         protected override void HandlePhoton(ComponentPort port, Photon photon)
         {
             Debug.Log($"Port {port.portId} detected Photon!");
-            Debug.Log("Destroy Photon Here!");
+            PhotonManager.Instance.RemovePhoton(photon, true);
         }
     }
 }

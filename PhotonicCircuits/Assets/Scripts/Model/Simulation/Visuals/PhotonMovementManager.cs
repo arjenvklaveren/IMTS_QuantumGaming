@@ -9,7 +9,7 @@ namespace Game
     public class PhotonMovementManager : Singleton<PhotonMovementManager>
     {
         // Expressed in tiles/second
-        [field: SerializeField] public float moveSpeed { get; private set; }
+        [field: SerializeField] public float MoveSpeed { get; private set; }
 
         private GridData openGrid;
 
@@ -20,7 +20,7 @@ namespace Game
         protected override void Awake()
         {
             runningRoutines = new();
-            waitForMoveTile = new WaitForSeconds(1f / moveSpeed);
+            waitForMoveTile = new WaitForSeconds(1f / MoveSpeed);
 
             SetInstance(this);
             SetupListeners();
@@ -98,8 +98,14 @@ namespace Game
                 photon.SetPosition(photonPos);
             }
 
-            port.ProcessPhoton(photon);
+            bool isGhostPort = port.IsGhostPort;
+            if (!isGhostPort)
+                port.ProcessPhoton(photon);
+
             runningRoutines.Remove(photon);
+
+            if (isGhostPort)
+                PhotonManager.RemovePhoton(photon, false);
         }
 
         private IEnumerator MovePhotonToGridEdgeCo(Photon photon)
@@ -132,5 +138,7 @@ namespace Game
             };
         }
         #endregion
+
+        PhotonManager PhotonManager => PhotonManager.Instance;
     }
 }

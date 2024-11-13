@@ -39,10 +39,11 @@ namespace Game
         {
             ComponentPort spawnPort = outPorts[0];
 
-            Photon photon = new Photon(
+            Photon photon = new(
                 spawnPort.position,
                 spawnPort.orientation);
 
+            PhotonManager.Instance.AddPhoton(photon);
             OnCreatePhoton?.Invoke(photon);
 
             photon.TriggerExitComponent(this);

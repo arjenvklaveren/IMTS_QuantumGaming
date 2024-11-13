@@ -14,6 +14,8 @@ namespace Game.Data
         public Vector2Int position;
         public Orientation orientation;
 
+        public bool IsGhostPort { get; private set; }
+
         /// <summary>
         /// Constructor for creating a "ghost" port
         /// </summary>
@@ -23,6 +25,8 @@ namespace Game.Data
         {
             this.position = position;
             this.orientation = orientation;
+
+            IsGhostPort = true;
         }
 
         public ComponentPort(ComponentPort copy)
@@ -36,12 +40,8 @@ namespace Game.Data
 
         public void ProcessPhoton(Photon photon)
         {
-            if (owner == null)
-            {
-                // Destroy Photon here.
-                Debug.Log("Destroying Photon...");
+            if (IsGhostPort)
                 return;
-            }
 
             photon.TriggerEnterComponent(owner);
 
