@@ -74,5 +74,7 @@ namespace Game
         {
             OnPhotonExit?.Invoke(photon);
         }
+
+        public virtual void Destroy() { }
     }
 }

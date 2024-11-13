@@ -43,6 +43,7 @@ namespace Game
                 return false;
 
             activeGrid.RemoveComponent(component);
+            component.Destroy();
 
             OnComponentRemoved?.Invoke(component);
             return true;

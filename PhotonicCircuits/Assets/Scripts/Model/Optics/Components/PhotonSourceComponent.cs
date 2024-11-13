@@ -28,6 +28,11 @@ namespace Game
             SimulationManager.OnSimulationStart += SimulationManager_OnSimulationStart;
         }
 
+        public override void Destroy()
+        {
+            SimulationManager.OnSimulationStart -= SimulationManager_OnSimulationStart;
+        }
+
         private void SimulationManager_OnSimulationStart()
         {
             CreatePhoton();
