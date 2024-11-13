@@ -39,7 +39,7 @@ namespace Game.Data
 
     public Photon Clone()
     {
-        return new Photon(this.wavelength, this.amplitude, this.phase, this.polarization, this.position, this.propagation);
+        return new Photon(this.position, this.propagation, this.wavelength, this.amplitude, this.phase, this.polarization);
     }
 
         public void SetWavelength(float waveLength) { this.wavelength = Mathf.Clamp(waveLength, MIN_PHOTON_WAVELENGTH, MAX_PHOTON_WAVELENGTH); }
@@ -150,15 +150,6 @@ namespace Game.Data
             float norm = radians % MAX_PHOTON_PHASE;
             float remain = MAX_PHOTON_PHASE - (phase + radians);
             SetPhase(phase + remain);
-        }
-
-        public Photon Split()
-        {
-            return new Photon(this);
-        }
-        public Photon Interfere(Photon photon)
-        {
-            return new Photon(photon);
         }
 
         // Event Triggering
