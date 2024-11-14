@@ -33,6 +33,9 @@ namespace Game
         private void SimulationManager_OnSimulationInitialize()
         {
             GridData openGrid = GridManager.Instance.GetActiveGrid();
+            // Reset port data.
+            openGrid.inPortsData.Clear();
+
             CompileComponentPorts(openGrid);
         }
         #endregion

@@ -93,8 +93,11 @@ namespace Game
                 chunkPos,
                 searchOrientation);
 
+            bool isSearchingStartChunk = GridUtils.GridPos2ChunkPos(checkPos) == chunkPos;
+            int stepsToSearch = isSearchingStartChunk ? GetStepsToSearch(checkPos, searchOrientation) : GridData.CHUNK_SIZE;
+
             // Search Chunk
-            for (int i = 0; i < GridData.CHUNK_SIZE; i++)
+            for (int i = 0; i < stepsToSearch; i++)
             {
                 if (!grid.occupiedTiles.Contains(checkPos))
                 {
@@ -124,6 +127,22 @@ namespace Game
                 Orientation.Down => new(searchPos.x, Mathf.Min((chunkPos.y * chunkSize) + chunkSize - 1, searchPos.y - 1)),
                 Orientation.Left => new(Mathf.Min((chunkPos.x * chunkSize) + chunkSize - 1, searchPos.x - 1), searchPos.y),
                 _ => Vector2Int.zero,
+            };
+        }
+
+        private static int GetStepsToSearch(
+            Vector2Int checkPos,
+            Orientation searchOrientation)
+        {
+            int chunkSize = GridData.CHUNK_SIZE;
+
+            return searchOrientation switch
+            {
+                Orientation.Up => chunkSize - (checkPos.y % chunkSize),
+                Orientation.Right => chunkSize - (checkPos.x % chunkSize),
+                Orientation.Down => checkPos.y % chunkSize,
+                Orientation.Left => checkPos.x % chunkSize,
+                _ => 0,
             };
         }
     }
