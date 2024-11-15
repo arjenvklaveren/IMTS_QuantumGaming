@@ -112,12 +112,13 @@ namespace Game
         }
 
         //Photon replacing
-        public void ReplacePhoton(Photon photon, List<Photon> replacements)
+        public void ReplacePhoton(Photon photon, params Photon[] replacements)
         {
             Vector2Int? photonIndex = FindPhotonIndex2D(photon);
             if (!photonIndex.HasValue) return;
             photons[photonIndex.Value.x].RemoveAt(photonIndex.Value.y);
             photons[photonIndex.Value.x].InsertRange(photonIndex.Value.y, replacements);
+            photon.Destroy();
         }
 
         //Photon receiving
