@@ -93,7 +93,11 @@ namespace Game
                 chunkPos,
                 searchOrientation);
 
-            bool isSearchingStartChunk = GridUtils.GridPos2ChunkPos(checkPos) == chunkPos;
+            bool isCheckInChunkToSearch = GridUtils.GridPos2ChunkPos(checkPos) == chunkPos;
+            if (!isCheckInChunkToSearch)
+                return false;
+
+            bool isSearchingStartChunk = GridUtils.GridPos2ChunkPos(searchPos) == chunkPos;
             int stepsToSearch = isSearchingStartChunk ? GetStepsToSearch(checkPos, searchOrientation) : GridData.CHUNK_SIZE;
 
             // Search Chunk
