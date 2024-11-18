@@ -1,9 +1,9 @@
-using Game.Data;
 using System;
 using System.Collections.Generic;
+using Unity.Plastic.Newtonsoft.Json;
 using UnityEngine;
 
-namespace Game
+namespace Game.Data
 {
     public abstract class OpticComponent
     {
@@ -17,6 +17,7 @@ namespace Game
         public readonly ComponentPort[] inPorts;
         public readonly ComponentPort[] outPorts;
 
+        #region Init
         public OpticComponent(
             Vector2Int[] tilesToOccupy,
             ComponentPort[] inPorts,
@@ -28,6 +29,11 @@ namespace Game
             this.inPorts = GetPortCopies(inPorts);
             this.outPorts = GetPortCopies(outPorts);
             InitPorts();
+        }
+
+        protected virtual Vector2Int GetOccupiedRootTile(Vector2Int[] tilesToOccupy)
+        {
+            return tilesToOccupy[0];
         }
 
         private ComponentPort[] GetPortCopies(ComponentPort[] ports)
@@ -62,19 +68,67 @@ namespace Game
                 idCounter++;
             }
         }
+        #endregion
 
-        protected virtual Vector2Int GetOccupiedRootTile(Vector2Int[] tilesToOccupy)
-        {
-            return tilesToOccupy[0];
-        }
-
+        #region Handle Photon
         protected virtual void HandlePhoton(ComponentPort port, Photon photon) { }
 
         protected void TriggerOnPhotonExit(Photon photon)
         {
             OnPhotonExit?.Invoke(photon);
         }
+        #endregion
 
         public virtual void Destroy() { }
+
+        #region Serialization
+        #region Read
+        #endregion
+
+        #region Write
+        protected JsonWriter writer;
+        protected JsonSerializer writeSerializer;
+
+        public void SerializeToJson(
+            JsonWriter writer,
+            JsonSerializer serializer)
+        {
+            this.writer = writer;
+            writeSerializer = serializer;
+
+            writer.WriteStartObject();
+
+            WriteProperty(nameof(Type), Type);
+            WriteProperty(nameof(occupiedTiles), occupiedTiles);
+
+            WriteProperty(nameof(inPorts), inPorts);
+            WriteProperty(nameof(outPorts), outPorts);
+
+            // inherit seralization logic
+            WriteToJson();
+
+            writer.WriteEndObject();
+
+            DisposeWriteVars();
+        }
+
+        private void DisposeWriteVars()
+        {
+            writer = null;
+            writeSerializer = null;
+        }
+
+        private void WriteProperty<T>(string name, T value)
+        {
+            JsonWriteUtils.WriteProperty(
+                writer,
+                writeSerializer,
+                name,
+                value);
+        }
+
+        protected virtual void WriteToJson() { }
+        #endregion
+        #endregion
     }
 }

@@ -7,6 +7,8 @@ namespace Game.Data
     {
         public const int CHUNK_SIZE = 5;
 
+        public string gridName;
+
         public Vector2 spacing;
         public Vector2Int size;
         public Vector2Int ChunksCount { get; private set; }
@@ -16,8 +18,13 @@ namespace Game.Data
 
         public Dictionary<Vector2Int, ChunkPortData> inPortsData;
 
-        public GridData(Vector2 spacing, Vector2Int size)
+        public GridData(
+            string gridName,
+            Vector2 spacing,
+            Vector2Int size)
         {
+            this.gridName = gridName;
+
             this.spacing = spacing;
             this.size = size;
             CacheChunksSize();

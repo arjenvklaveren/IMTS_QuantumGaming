@@ -13,7 +13,11 @@ namespace Game.Test
         {
             yield return GridManager.WaitForInstance;
 
-            GridData data = new(gridSpacing, gridSize);
+            GridData data = new(
+                "testGrid",
+                gridSpacing,
+                gridSize);
+
             GridManager.Instance.OpenGrid(data);
         }
     }
