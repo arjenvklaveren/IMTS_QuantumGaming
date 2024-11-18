@@ -116,7 +116,7 @@ namespace Game
             Vector3 orientation = source.GetPropagationVector();
             Vector3 lookAtTarget = transform.position + orientation;
 
-            transform.rotation = LookAt2D.GetLookAtRotation(transform, lookAtTarget);
+            sprite.transform.rotation = LookAt2D.GetLookAtRotation(transform, lookAtTarget);
         }
 
         private void SyncColor()
