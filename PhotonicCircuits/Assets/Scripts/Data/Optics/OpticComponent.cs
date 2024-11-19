@@ -8,10 +8,14 @@ namespace Game.Data
     {
         public static event Action<Photon> OnPhotonExit;
 
+        public event Action<Orientation> OnRotationChanged;
+
         public abstract OpticComponentType Type { get; }
 
         public readonly HashSet<Vector2Int> occupiedTiles;
         public readonly Vector2Int occupiedRootTile;
+
+        public Orientation orientation;
 
         public readonly ComponentPort[] inPorts;
         public readonly ComponentPort[] outPorts;
@@ -19,11 +23,14 @@ namespace Game.Data
         #region Init
         public OpticComponent(
             Vector2Int[] tilesToOccupy,
+            Orientation orientation,
             ComponentPort[] inPorts,
             ComponentPort[] outPorts)
         {
             occupiedTiles = new(tilesToOccupy);
             occupiedRootTile = GetOccupiedRootTile(tilesToOccupy);
+
+            this.orientation = orientation;
 
             this.inPorts = GetPortCopies(inPorts);
             this.outPorts = GetPortCopies(outPorts);
@@ -66,6 +73,42 @@ namespace Game.Data
 
                 idCounter++;
             }
+        }
+        #endregion
+
+        #region Rotation
+        public void RotateClockwise(int increments = 1)
+        {
+            Orientation targetOrientation = orientation.RotateClockwise(increments);
+
+            int incrementsToRotate = OrientationUtils.GetRotationDifferenceInClockwiseIncrements(orientation, targetOrientation);
+
+            for (int i = 0; i < incrementsToRotate; i++)
+                RotatePorts90Degrees();
+
+            orientation = targetOrientation;
+            OnRotationChanged?.Invoke(orientation);
+        }
+
+        private void RotatePorts90Degrees()
+        {
+            foreach (ComponentPort port in inPorts)
+                RotatePort90Degrees(port);
+
+            foreach (ComponentPort port in outPorts)
+                RotatePort90Degrees(port);
+        }
+
+        private void RotatePort90Degrees(ComponentPort port)
+        {
+            // Bring port to origin.
+            port.position -= occupiedRootTile;
+
+            // Rotate 90 degrees.
+            port.position = new(port.position.y, -port.position.x);
+
+            // Bring port back to component.
+            port.position += occupiedRootTile;
         }
         #endregion
 

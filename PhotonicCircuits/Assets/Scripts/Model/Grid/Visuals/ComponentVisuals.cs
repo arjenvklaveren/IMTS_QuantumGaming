@@ -15,8 +15,10 @@ namespace Game
         private static bool isHovered;
 
         #region Awake / Destroy
-        protected virtual void Awake()
+        // Visuals don't function until this is called!
+        public virtual void SetSource(OpticComponent component)
         {
+            SourceComponent = component;
             SetupListeners();
         }
 
@@ -28,11 +30,13 @@ namespace Game
         private void SetupListeners()
         {
             PhotonVisuals.OnEnterComponent += PhotonVisuals_OnEnterComponent;
+            SourceComponent.OnRotationChanged += OpticComponent_OnRotationChanged;
         }
 
         private void RemoveListeners()
         {
             PhotonVisuals.OnEnterComponent -= PhotonVisuals_OnEnterComponent;
+            SourceComponent.OnRotationChanged -= OpticComponent_OnRotationChanged;
         }
         #endregion
 
@@ -44,14 +48,12 @@ namespace Game
 
             HandlePhoton(photon);
         }
+
+        private void OpticComponent_OnRotationChanged(Orientation orientation) => HandleRotationChanged(orientation);
         #endregion
 
-        public virtual void SetSource(OpticComponent component)
-        {
-            SourceComponent = component;
-        }
-
         protected virtual void HandlePhoton(PhotonVisuals photon) { }
+        protected virtual void HandleRotationChanged(Orientation orientation) { }
 
         #region Hover Logic
         public void OnPointerEnter(PointerEventData eventData)

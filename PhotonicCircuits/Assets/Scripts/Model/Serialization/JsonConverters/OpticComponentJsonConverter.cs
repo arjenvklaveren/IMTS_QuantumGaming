@@ -13,6 +13,8 @@ namespace Game
             public OpticComponentType type;
             public Vector2Int[] occupiedTiles;
 
+            public Orientation orientation;
+
             public ComponentPort[] inPorts;
             public ComponentPort[] outPorts;
 
@@ -40,12 +42,20 @@ namespace Game
         #region Load Component Types
         private TestComponent LoadTestComponent(OpticComponentData data)
         {
-            return new TestComponent(data.occupiedTiles, data.inPorts, data.outPorts);
+            return new TestComponent(
+                data.occupiedTiles,
+                data.orientation,
+                data.inPorts,
+                data.outPorts);
         }
 
         private PhotonSourceComponent LoadSourceComponent(OpticComponentData data)
         {
-            return new PhotonSourceComponent(data.occupiedTiles, data.inPorts, data.outPorts);
+            return new PhotonSourceComponent(
+                data.occupiedTiles,
+                data.orientation,
+                data.inPorts,
+                data.outPorts);
         }
         #endregion
         #endregion
@@ -61,6 +71,7 @@ namespace Game
             {
                 type = value.Type,
                 occupiedTiles = OccupiedTilesToArray(value.occupiedTiles),
+                orientation = value.orientation,
                 inPorts = value.inPorts,
                 outPorts = value.outPorts,
                 args = value.SerializeArgs()

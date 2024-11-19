@@ -12,10 +12,12 @@ namespace Game
 
         public PhotonSourceComponent(
             Vector2Int[] tilesToOccupy,
+            Orientation orientation,
             ComponentPort[] inPorts,
             ComponentPort[] outPorts
             ) : base(
                 tilesToOccupy,
+                orientation,
                 inPorts,
                 outPorts)
         {

@@ -9,10 +9,12 @@ namespace Game
 
         public TestComponent(
             Vector2Int[] tilesToOccupy,
+            Orientation orientation,
             ComponentPort[] inPorts,
             ComponentPort[] outPorts
             ) : base(
                 tilesToOccupy,
+                orientation,
                 inPorts,
                 outPorts)
         {

@@ -46,6 +46,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   photonPrefab: {fileID: 2330733071325848398, guid: bed9709cd1adb9a40801087d54f0b24e, type: 3}
+  visualsHolder: {fileID: 3720716149337550600}
 --- !u!1 &2040705677007875364
 GameObject:
   m_ObjectHideFlags: 0

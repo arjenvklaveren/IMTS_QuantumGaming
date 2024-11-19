@@ -11,7 +11,7 @@ namespace Game.Data
 
             // Rotate in increments of 90 degrees.
             // Keep result in 0 - 3 range and handle negative values.
-            dir = (dir + ((increments % 4) + 4)) % 4;
+            dir = (dir + (increments % 4) + 4) % 4;
 
             return (Orientation)dir;
         }
@@ -19,6 +19,19 @@ namespace Game.Data
         public static Orientation RotateCounterClockwise(this Orientation orientation, int increments = 1)
         {
             return orientation.RotateClockwise(-increments);
+        }
+
+        public static int GetRotationDifferenceInClockwiseIncrements(Orientation currentOrientation, Orientation targetOrientation)
+        {
+            int dir = (int)currentOrientation;
+            int targetDir = (int)targetOrientation;
+
+            int difference = targetDir - dir;
+
+            if (difference < 0)
+                difference += 4;
+
+            return difference;
         }
         #endregion
 

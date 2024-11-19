@@ -10,6 +10,7 @@ namespace Game
         {
             return new PhotonSourceComponent(
                 tilesToOccupy,
+                orientation,
                 inPorts,
                 outPorts);
         }

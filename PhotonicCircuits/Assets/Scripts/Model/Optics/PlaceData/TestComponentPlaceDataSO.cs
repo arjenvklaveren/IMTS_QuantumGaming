@@ -10,6 +10,7 @@ namespace Game
         {
             return new TestComponent(
                 tilesToOccupy,
+                orientation,
                 inPorts,
                 outPorts);
         }

@@ -8,6 +8,9 @@ namespace Game
         [Header("Photon Visuals Settings")]
         [SerializeField] private PhotonVisuals photonPrefab;
 
+        [Header("Visuals Holder")]
+        [SerializeField] private Transform visualsHolder;
+
         #region Awake / Destroy
         public override void SetSource(OpticComponent component)
         {
@@ -43,6 +46,13 @@ namespace Game
 
             photonVisuals.SetSource(photon);
             photonVisuals.SyncVisuals();
+        }
+        #endregion
+
+        #region Handle Rotation
+        protected override void HandleRotationChanged(Orientation orientation)
+        {
+            // TODO rotate sprite here
         }
         #endregion
     }

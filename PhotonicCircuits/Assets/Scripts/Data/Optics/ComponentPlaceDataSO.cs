@@ -13,6 +13,9 @@ namespace Game.Data
         [Header("Grid Settings")]
         public Vector2Int[] tileOffsetsToOccupy;
 
+        [Header("Orientation")]
+        public Orientation orientation;
+
         // Port positions are relative!
         [Header("Port Settings")]
         public ComponentPort[] inPorts;
