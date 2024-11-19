@@ -40,6 +40,13 @@ namespace Game
             GridController.SetActiveGrid(grid);
         }
 
+        public void LoadRootGrid(GridData grid)
+        {
+            grids.Clear();
+
+            OpenGrid(grid);
+        }
+
         public void CloseActiveGrid()
         {
             if (grids.Count <= 1)

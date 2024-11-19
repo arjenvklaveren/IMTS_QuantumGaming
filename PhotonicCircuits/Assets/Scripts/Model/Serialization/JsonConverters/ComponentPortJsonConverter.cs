@@ -1,15 +1,29 @@
 using Game.Data;
 using System;
 using Unity.Plastic.Newtonsoft.Json;
+using UnityEngine;
 
 namespace Game
 {
     public class ComponentPortJsonConverter : JsonConverter<ComponentPort>
     {
-        #region Read
-        public override ComponentPort ReadJson(JsonReader reader, Type objectType, ComponentPort existingValue, bool hasExistingValue, JsonSerializer serializer)
+        private struct PortData
         {
-            throw new NotImplementedException();
+            public Vector2Int position;
+            public Orientation orientation;
+        }
+
+        #region Read
+        public override ComponentPort ReadJson(
+            JsonReader reader,
+            Type objectType,
+            ComponentPort existingValue,
+            bool hasExistingValue,
+            JsonSerializer serializer)
+        {
+            PortData portData = serializer.Deserialize<PortData>(reader);
+
+            return new ComponentPort(portData.position, portData.orientation);
         }
         #endregion
 
@@ -19,21 +33,13 @@ namespace Game
             ComponentPort value,
             JsonSerializer serializer)
         {
-            writer.WriteStartObject();
+            PortData portData = new()
+            {
+                position = value.position - value.owner.occupiedRootTile,
+                orientation = value.orientation,
+            };
 
-            JsonWriteUtils.WriteProperty(
-                writer,
-                serializer,
-                nameof(value.position),
-                value.position);
-
-            JsonWriteUtils.WriteProperty(
-                writer,
-                serializer,
-                nameof(value.orientation),
-                value.orientation);
-
-            writer.WriteEndObject();
+            serializer.Serialize(writer, portData);
         }
         #endregion
     }

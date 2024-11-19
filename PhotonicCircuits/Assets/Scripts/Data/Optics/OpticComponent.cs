@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using Unity.Plastic.Newtonsoft.Json;
 using UnityEngine;
 
 namespace Game.Data
@@ -81,54 +80,6 @@ namespace Game.Data
 
         public virtual void Destroy() { }
 
-        #region Serialization
-        #region Read
-        #endregion
-
-        #region Write
-        protected JsonWriter writer;
-        protected JsonSerializer writeSerializer;
-
-        public void SerializeToJson(
-            JsonWriter writer,
-            JsonSerializer serializer)
-        {
-            this.writer = writer;
-            writeSerializer = serializer;
-
-            writer.WriteStartObject();
-
-            WriteProperty(nameof(Type), Type);
-            WriteProperty(nameof(occupiedTiles), occupiedTiles);
-
-            WriteProperty(nameof(inPorts), inPorts);
-            WriteProperty(nameof(outPorts), outPorts);
-
-            // inherit seralization logic
-            WriteToJson();
-
-            writer.WriteEndObject();
-
-            DisposeWriteVars();
-        }
-
-        private void DisposeWriteVars()
-        {
-            writer = null;
-            writeSerializer = null;
-        }
-
-        private void WriteProperty<T>(string name, T value)
-        {
-            JsonWriteUtils.WriteProperty(
-                writer,
-                writeSerializer,
-                name,
-                value);
-        }
-
-        protected virtual void WriteToJson() { }
-        #endregion
-        #endregion
+        public virtual string SerializeArgs() { return ""; }
     }
 }
