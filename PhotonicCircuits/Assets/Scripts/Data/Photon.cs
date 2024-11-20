@@ -149,9 +149,16 @@ namespace Game.Data
         }
         public void RotatePhase(float radians)
         {
-            float norm = radians % MAX_PHOTON_PHASE;
-            float remain = MAX_PHOTON_PHASE - (phase + radians);
-            SetPhase(phase + remain);
+            if(radians > MAX_PHOTON_PHASE)
+            {
+                radians = radians % MAX_PHOTON_PHASE;
+            }
+            float outRadians = phase + radians;
+            if (outRadians > MAX_PHOTON_PHASE)
+            {
+                outRadians = (phase + radians) - MAX_PHOTON_PHASE;
+            }
+            SetPhase(outRadians);
         }
 
         // Event Triggering

@@ -3,12 +3,12 @@ using UnityEngine;
 
 namespace Game
 {
-    [CreateAssetMenu(fileName = "beamSplitterPlaceData", menuName = "ScriptableObjects/Components/Place Data/beamSplitter")]
-    public class BeamSplitterPlaceDataSO : ComponentPlaceDataSO
+    [CreateAssetMenu(fileName = "photonDetectorPlaceData", menuName = "ScriptableObjects/Components/Place Data/photonDetector")]
+    public class PhotonDetectorComponentPlaceDataSO : ComponentPlaceDataSO
     {
         public override OpticComponent CreateOpticComponent(Vector2Int[] tilesToOccupy)
         {
-            return new BeamSplitterComponent(
+            return new PhotonDetectorComponent(
                 tilesToOccupy,
                 inPorts,
                 outPorts);

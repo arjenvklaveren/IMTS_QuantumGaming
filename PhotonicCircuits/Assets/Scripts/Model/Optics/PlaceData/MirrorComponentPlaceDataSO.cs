@@ -3,12 +3,12 @@ using UnityEngine;
 
 namespace Game
 {
-    [CreateAssetMenu(fileName = "beamSplitterPlaceData", menuName = "ScriptableObjects/Components/Place Data/beamSplitter")]
-    public class BeamSplitterPlaceDataSO : ComponentPlaceDataSO
+    [CreateAssetMenu(fileName = "mirrorPlaceData", menuName = "ScriptableObjects/Components/Place Data/mirror")]
+    public class MirrorComponentPlaceDataSO : ComponentPlaceDataSO
     {
         public override OpticComponent CreateOpticComponent(Vector2Int[] tilesToOccupy)
         {
-            return new BeamSplitterComponent(
+            return new MirrorComponent(
                 tilesToOccupy,
                 inPorts,
                 outPorts);

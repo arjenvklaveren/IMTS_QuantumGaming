@@ -78,36 +78,35 @@ namespace Game
         }
 
         //Photon removing
-        public void RemovePhoton(Photon photon, bool isMeasure, bool undestructiveMeasure = false)
+        public void RemovePhoton(Photon photon, bool isMeasure)
         {
             Vector2Int? photonIndex = FindPhotonIndex2D(photon);
             if (!photonIndex.HasValue) return;
 
-            if (isMeasure && !undestructiveMeasure)
+            if (isMeasure)
             {
-                photons.RemoveAt(photonIndex.Value.x);
+                foreach(Photon sPhoton in GetPhotonSuperpositions(photon))
+                {
+                    sPhoton.Destroy();
+                }
                 ShiftEntanglementIndexes(photonIndex.Value.x);
 
                 List<Photon> entangled = GetPhotonEntanglements(photon);
-                if (entangled.Count > 0)
+                foreach (Photon ePhoton in GetPhotonEntanglements(photon))
                 {
-                    //TODO Entanglement measurement trigger logic
-                    for (int i = 0; i < entangled.Count; i++)
-                    {
-
-                    }
+                    //TODO photon entanglement logic
+    
                 }
             }
             else
             {
+                photon.Destroy();
                 photons[photonIndex.Value.x].RemoveAt(photonIndex.Value.y);
                 if (photons[photonIndex.Value.x].Count == 0)
                 {
                     photons.RemoveAt(photonIndex.Value.x);
                     ShiftEntanglementIndexes(photonIndex.Value.x);
                 }
-
-                photon.Destroy();
             }
         }
 

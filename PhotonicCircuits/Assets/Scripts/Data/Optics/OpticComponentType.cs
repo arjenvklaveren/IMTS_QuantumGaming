@@ -7,5 +7,6 @@ namespace Game.Data
         PhaseShifter,
         Test,
         Source,
+        Detector,
     }
 }

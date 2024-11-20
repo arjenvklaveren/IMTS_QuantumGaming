@@ -99,10 +99,11 @@ namespace Game
                 photon.SetPosition(photonPos);
             }
 
+            runningRoutines.Remove(photon);
+
             if (!isGhostPort)
                 port.ProcessPhoton(photon);
 
-            runningRoutines.Remove(photon);
 
             if (isGhostPort)
                 PhotonManager.RemovePhoton(photon, false);

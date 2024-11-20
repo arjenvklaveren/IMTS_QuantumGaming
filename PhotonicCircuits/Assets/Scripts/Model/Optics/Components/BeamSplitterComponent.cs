@@ -31,7 +31,6 @@ namespace Game
         private void SplitPhoton(Photon photon, int inPortIndex)
         {
             int[] outPortIndexes = GetOutPorts(inPortIndex);
-            Debug.Log("IN: " + inPortIndex + " | " + "OUT: " + outPortIndexes[0]);
             ComponentPort reflectOutPort = outPorts[outPortIndexes[0]];
             ComponentPort passOutPort = outPorts[outPortIndexes[1]];
 
@@ -39,18 +38,19 @@ namespace Game
             Photon reflectPhoton = photon.Clone();
             PhotonManager.Instance.ReplacePhoton(photon, passPhoton, reflectPhoton);
             reflectPhoton.SetPropagation(reflectOutPort.orientation);
-            Debug.Log(reflectPhoton.GetPropagation());
-
-            Debug.Log(PhotonManager.Instance.GetAllPhotons().Count);
-
             OnSplitPhoton?.Invoke(passPhoton, reflectPhoton);
+
+            passPhoton.TriggerExitComponent(this);
+            TriggerOnPhotonExit(passPhoton);
+            reflectPhoton.TriggerExitComponent(this);
+            TriggerOnPhotonExit(reflectPhoton);
         }
 
-        public int[] GetOutPorts(int inPort)
+        private int[] GetOutPorts(int inPort)
         {
             return inPort switch
             {
-                3 => new int[] { 2, 1 },
+                3 => new int[] { 2, 1 }, 
                 2 => new int[] { 3, 0 },
                 1 => new int[] { 0, 3 },
                 0 => new int[] { 1, 2 },
