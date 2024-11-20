@@ -9,6 +9,7 @@ namespace Game.Data
     {
         public static event Action<IEnumerator> OnStartProcessPhotonRoutine;
         public static event Action<Photon> OnPhotonExit;
+        public static event Action<IEnumerator> OnStartProcessPhotonRoutine;
 
         public abstract OpticComponentType Type { get; }
 
