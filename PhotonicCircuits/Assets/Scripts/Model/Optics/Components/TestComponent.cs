@@ -1,4 +1,5 @@
 using Game.Data;
+using System.Collections;
 using UnityEngine;
 
 namespace Game
@@ -20,9 +21,11 @@ namespace Game
         {
         }
 
-        protected override void HandlePhoton(ComponentPort port, Photon photon)
+        protected override IEnumerator HandlePhotonCo(ComponentPort port, Photon photon)
         {
             PhotonManager.Instance.RemovePhoton(photon, false);
+
+            yield break;
         }
     }
 }

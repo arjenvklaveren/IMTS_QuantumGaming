@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -7,6 +8,7 @@ namespace Game.Data
     public abstract class OpticComponent
     {
         public static event Action<Photon> OnPhotonExit;
+        public static event Action<IEnumerator> OnStartProcessPhotonRoutine;
 
         public event Action<Orientation> OnRotationChanged;
 
@@ -69,7 +71,7 @@ namespace Game.Data
 
                 port.position += occupiedRootTile;
 
-                port.OnDetectPhoton += HandlePhoton;
+                port.OnDetectPhoton += StartHandlePhotonRoutine;
 
                 idCounter++;
             }
@@ -113,7 +115,12 @@ namespace Game.Data
         #endregion
 
         #region Handle Photon
-        protected virtual void HandlePhoton(ComponentPort port, Photon photon) { }
+        private void StartHandlePhotonRoutine(ComponentPort port, Photon photon)
+        {
+            OnStartProcessPhotonRoutine?.Invoke(HandlePhotonCo(port, photon));
+        }
+
+        protected virtual IEnumerator HandlePhotonCo(ComponentPort port, Photon photon) { yield break; }
 
         protected void TriggerOnPhotonExit(Photon photon)
         {
