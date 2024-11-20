@@ -1,4 +1,5 @@
 using Game.Data;
+using SadUtils;
 using UnityEngine;
 
 namespace Game
@@ -15,7 +16,9 @@ namespace Game
         public override void SetSource(OpticComponent component)
         {
             base.SetSource(component);
+
             SetupListeners();
+            RotateVisualsToOrientation(component.orientation);
         }
 
         protected override void OnDestroy()
@@ -50,9 +53,10 @@ namespace Game
         #endregion
 
         #region Handle Rotation
-        protected override void HandleRotationChanged(Orientation orientation)
+        private void RotateVisualsToOrientation(Orientation orientation)
         {
-            // TODO rotate sprite here
+            Vector3 targetLookAt = visualsHolder.position + (Vector3)orientation.ToVector2();
+            visualsHolder.rotation = LookAt2D.GetLookAtRotation(visualsHolder, targetLookAt);
         }
         #endregion
     }

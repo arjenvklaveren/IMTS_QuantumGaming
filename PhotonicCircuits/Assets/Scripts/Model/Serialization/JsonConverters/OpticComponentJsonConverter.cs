@@ -70,7 +70,7 @@ namespace Game
             OpticComponentData data = new()
             {
                 type = value.Type,
-                occupiedTiles = OccupiedTilesToArray(value.occupiedTiles),
+                occupiedTiles = OccupiedTilesToArray(value.OccupiedTiles),
                 orientation = value.orientation,
                 inPorts = value.inPorts,
                 outPorts = value.outPorts,

@@ -30,13 +30,11 @@ namespace Game
         private void SetupListeners()
         {
             PhotonVisuals.OnEnterComponent += PhotonVisuals_OnEnterComponent;
-            SourceComponent.OnRotationChanged += OpticComponent_OnRotationChanged;
         }
 
         private void RemoveListeners()
         {
             PhotonVisuals.OnEnterComponent -= PhotonVisuals_OnEnterComponent;
-            SourceComponent.OnRotationChanged -= OpticComponent_OnRotationChanged;
         }
         #endregion
 
@@ -48,8 +46,6 @@ namespace Game
 
             HandlePhoton(photon);
         }
-
-        private void OpticComponent_OnRotationChanged(Orientation orientation) => HandleRotationChanged(orientation);
         #endregion
 
         protected virtual void HandlePhoton(PhotonVisuals photon) { }

@@ -161,7 +161,7 @@ namespace Game
         #region Add Component
         private void AddComponent(OpticComponent component)
         {
-            SetTileStates(component.occupiedTiles, false);
+            SetTileStates(component.OccupiedTiles, false);
 
             GenerateComponent(component);
         }
@@ -182,7 +182,7 @@ namespace Game
 
             Destroy(visuals.gameObject);
 
-            SetTileStates(component.occupiedTiles, true);
+            SetTileStates(component.OccupiedTiles, true);
         }
 
         private bool TryFindMatchingVisuals(OpticComponent component, out ComponentVisuals visuals)

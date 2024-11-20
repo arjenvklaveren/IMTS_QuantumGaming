@@ -7,14 +7,12 @@ namespace Game.Data
 {
     public abstract class OpticComponent
     {
-        public static event Action<Photon> OnPhotonExit;
         public static event Action<IEnumerator> OnStartProcessPhotonRoutine;
-
-        public event Action<Orientation> OnRotationChanged;
+        public static event Action<Photon> OnPhotonExit;
 
         public abstract OpticComponentType Type { get; }
 
-        public readonly HashSet<Vector2Int> occupiedTiles;
+        public HashSet<Vector2Int> OccupiedTiles { get; protected set; }
         public readonly Vector2Int occupiedRootTile;
 
         public Orientation orientation;
@@ -29,7 +27,7 @@ namespace Game.Data
             ComponentPort[] inPorts,
             ComponentPort[] outPorts)
         {
-            occupiedTiles = new(tilesToOccupy);
+            OccupiedTiles = new(tilesToOccupy);
             occupiedRootTile = GetOccupiedRootTile(tilesToOccupy);
 
             this.orientation = orientation;
@@ -79,19 +77,54 @@ namespace Game.Data
         #endregion
 
         #region Rotation
+        /// <summary>
+        /// This function should only be called throught the GridController class!
+        /// </summary>
+        /// <param name="increments"></param>
         public void RotateClockwise(int increments = 1)
         {
             Orientation targetOrientation = orientation.RotateClockwise(increments);
-
             int incrementsToRotate = OrientationUtils.GetRotationDifferenceInClockwiseIncrements(orientation, targetOrientation);
 
             for (int i = 0; i < incrementsToRotate; i++)
-                RotatePorts90Degrees();
+                RotateComponent90Degrees();
 
             orientation = targetOrientation;
-            OnRotationChanged?.Invoke(orientation);
         }
 
+        private void RotateComponent90Degrees()
+        {
+            RotateOccupiedTiles90Degrees();
+            RotatePorts90Degrees();
+        }
+
+        #region Rotate Occupied Tiles
+        private void RotateOccupiedTiles90Degrees()
+        {
+            HashSet<Vector2Int> rotatedOccupiedTiles = new();
+
+            foreach (Vector2Int tile in OccupiedTiles)
+                rotatedOccupiedTiles.Add(Get90DegreeRotatedTile(tile));
+
+            OccupiedTiles = rotatedOccupiedTiles;
+        }
+
+        private Vector2Int Get90DegreeRotatedTile(Vector2Int tile)
+        {
+            // Bring position back to origin.
+            tile -= occupiedRootTile;
+
+            // Rotate 90 degrees.
+            tile = new(tile.y, -tile.x);
+
+            // Bring back to root tile.
+            tile += occupiedRootTile;
+
+            return tile;
+        }
+        #endregion
+
+        #region Rotate Ports
         private void RotatePorts90Degrees()
         {
             foreach (ComponentPort port in inPorts)
@@ -112,6 +145,7 @@ namespace Game.Data
             // Bring port back to component.
             port.position += occupiedRootTile;
         }
+        #endregion
         #endregion
 
         #region Handle Photon

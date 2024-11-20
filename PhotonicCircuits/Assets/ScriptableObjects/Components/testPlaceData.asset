@@ -17,6 +17,7 @@ MonoBehaviour:
   previewScale: {x: 1, y: 1}
   tileOffsetsToOccupy:
   - {x: 0, y: 0}
+  orientation: 1
   inPorts:
   - portId: 0
     position: {x: 0, y: 0}

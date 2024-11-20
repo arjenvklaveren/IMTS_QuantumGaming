@@ -48,7 +48,7 @@ namespace Game.Data
         {
             placedComponents.Add(component);
 
-            foreach (Vector2Int tile in component.occupiedTiles)
+            foreach (Vector2Int tile in component.OccupiedTiles)
                 occupiedTiles.Add(tile);
         }
 
@@ -56,7 +56,7 @@ namespace Game.Data
         {
             placedComponents.Remove(component);
 
-            foreach (Vector2Int tile in component.occupiedTiles)
+            foreach (Vector2Int tile in component.OccupiedTiles)
                 occupiedTiles.Remove(tile);
         }
     }
