@@ -1,5 +1,6 @@
 using Game.Data;
 using SadUtils;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -8,6 +9,8 @@ namespace Game
 {
     public class PhotonMovementManager : Singleton<PhotonMovementManager>
     {
+        public event Action<Photon> OnPhotonDisplace;
+
         // Expressed in tiles/second
         [field: SerializeField] public float MoveSpeed { get; private set; }
 
@@ -97,6 +100,7 @@ namespace Game
 
                 photonPos += propagation;
                 photon.SetPosition(photonPos);
+                OnPhotonDisplace?.Invoke(photon);
             }
 
             runningRoutines.Remove(photon);
@@ -129,6 +133,7 @@ namespace Game
 
                 photonPos += propagationVector;
                 photon.SetPosition(photonPos);
+                OnPhotonDisplace?.Invoke(photon);
             }
 
             runningRoutines.Remove(photon);
