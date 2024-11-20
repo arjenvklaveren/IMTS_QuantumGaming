@@ -102,7 +102,7 @@ namespace Game
             runningRoutines.Remove(photon);
 
             if (!isGhostPort)
-                port.ProcessPhoton(photon);
+                 port.ProcessPhoton(photon);
 
 
             if (isGhostPort)

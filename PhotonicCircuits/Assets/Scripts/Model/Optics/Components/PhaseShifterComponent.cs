@@ -20,7 +20,7 @@ namespace Game
 
         protected override void HandlePhoton(ComponentPort port, Photon photon)
         {
-            photon.RotatePhase(3);
+            photon.RotatePhase(Mathf.PI / 2);
             photon.TriggerExitComponent(this);
             TriggerOnPhotonExit(photon);
         }
