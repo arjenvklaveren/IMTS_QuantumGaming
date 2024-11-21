@@ -11,6 +11,8 @@ namespace Game
         protected IMousePositionDeltaInputDecoder[] mousePositionDecoders;
         protected IScrollInputDecoder[] scrollDecoders;
 
+        protected IInputDecoder[] decoders;
+
         #region constructor
         public PlayerInputHandler()
         {
@@ -40,6 +42,7 @@ namespace Game
                     scrollDecoderList.Add(decoder as IScrollInputDecoder);
             }
 
+            this.decoders = decoders;
             buttonDecoders = buttonDecoderList.ToArray();
             mouseButtonDecoders = mouseButtonDecoderList.ToArray();
             mousePositionDecoders = mousePositionDecoderList.ToArray();
@@ -72,6 +75,12 @@ namespace Game
                 decoder.DecodeInput(scrollDelta);
         }
         #endregion
+
+        public virtual void Reset()
+        {
+            foreach (IInputDecoder decoder in decoders)
+                decoder.Reset();
+        }
 
         public virtual void OnDestroy()
         {

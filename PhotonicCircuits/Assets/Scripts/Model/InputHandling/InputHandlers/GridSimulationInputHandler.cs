@@ -1,15 +1,13 @@
 namespace Game
 {
-    public class GridComponentPaintInputHandler : PlayerInputHandler
+    public class GridSimulationInputHandler : PlayerInputHandler
     {
         protected override IInputDecoder[] CreateInputDecoders()
         {
-            return new IInputDecoder[4]
+            return new IInputDecoder[2]
             {
                 new CameraButtonMoveInputDecoder(),
                 new CameraZoomInputDecoder(),
-                new ComponentPaintInputDecoder(),
-                new ComponentDeleteInputDecoder(),
             };
         }
     }

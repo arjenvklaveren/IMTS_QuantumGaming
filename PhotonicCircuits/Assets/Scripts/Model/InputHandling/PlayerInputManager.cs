@@ -28,6 +28,9 @@ namespace Game
         #region Manage Input Handlers
         public void AddInputHandler(PlayerInputHandler inputHandler)
         {
+            if (inputHandlers.Count > 0)
+                inputHandlers.Peek().Reset();
+
             inputHandlers.Push(inputHandler);
         }
 

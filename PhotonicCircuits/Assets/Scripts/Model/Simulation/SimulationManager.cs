@@ -1,5 +1,6 @@
 using SadUtils;
 using System;
+using UnityEngine;
 
 namespace Game
 {
@@ -29,6 +30,9 @@ namespace Game
             isSimulating = true;
             OnSimulationInitialize?.Invoke();
             OnSimulationStart?.Invoke();
+
+            PlayerInputManager.AddInputHandler(
+                new GridSimulationInputHandler());
         }
 
         public void TogglePause()
@@ -37,6 +41,7 @@ namespace Game
                 return;
 
             isPaused = !isPaused;
+            Time.timeScale = isPaused ? 0f : 1f;
 
             if (isPaused)
                 OnSimulationPaused?.Invoke();
@@ -54,6 +59,10 @@ namespace Game
 
             isSimulating = false;
             OnSimulationStop?.Invoke();
+
+            PlayerInputManager.PopInputHandler();
         }
+
+        private PlayerInputManager PlayerInputManager => PlayerInputManager.Instance;
     }
 }

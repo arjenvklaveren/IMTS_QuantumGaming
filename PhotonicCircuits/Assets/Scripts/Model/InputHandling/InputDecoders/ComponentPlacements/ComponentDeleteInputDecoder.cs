@@ -63,6 +63,11 @@ namespace Game
             gridController.TryRemoveComponent(componentVisuals.SourceComponent);
         }
 
+        public void Reset()
+        {
+            isDeleting = false;
+        }
+
         public void Destroy()
         {
             RemoveListeners();

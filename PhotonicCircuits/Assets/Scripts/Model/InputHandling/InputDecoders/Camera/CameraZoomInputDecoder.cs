@@ -18,6 +18,7 @@ namespace Game
             camController.UpdateZoom(-scrollDelta);
         }
 
+        public void Reset() { }
         public void Destroy() { }
     }
 }

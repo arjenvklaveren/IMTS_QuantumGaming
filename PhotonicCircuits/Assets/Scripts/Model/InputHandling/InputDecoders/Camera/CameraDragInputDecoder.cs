@@ -15,6 +15,7 @@ namespace Game
 
         }
 
+        public void Reset() { }
         public void Destroy() { }
     }
 }

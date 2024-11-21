@@ -47,6 +47,11 @@ namespace Game
         }
         #endregion
 
+        public void Reset()
+        {
+            moveDir = Vector2.zero;
+        }
+
         public void Destroy() { }
     }
 }

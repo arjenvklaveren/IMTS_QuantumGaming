@@ -60,6 +60,11 @@ namespace Game
             ComponentPaintManager.PaintComponent(position);
         }
 
+        public void Reset()
+        {
+            isPainting = false;
+        }
+
         public void Destroy()
         {
             RemoveListeners();
