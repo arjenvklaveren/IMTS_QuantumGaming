@@ -118,7 +118,7 @@ namespace Game
 
             displacementsEntry.Add(photon);
 
-            if (displacementsEntry.Count > 2)
+            if (displacementsEntry.Count > 1)
                 HandlePhotonCollisionsAtPosition(displacementsEntry);
         }
 
