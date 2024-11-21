@@ -12,9 +12,12 @@ namespace Game
         protected override void Awake()
         {
             inputHandlers = new();
-            LoadDefaultInputHandler();
-
             SetInstance(this);
+        }
+
+        private void Start()
+        {
+            LoadDefaultInputHandler();
         }
 
         private void LoadDefaultInputHandler()
