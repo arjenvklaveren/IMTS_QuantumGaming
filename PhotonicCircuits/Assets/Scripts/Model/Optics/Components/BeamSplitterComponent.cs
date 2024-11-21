@@ -1,5 +1,6 @@
 using Game.Data;
 using System;
+using System.Collections;
 using UnityEngine;
 
 namespace Game
@@ -11,21 +12,27 @@ namespace Game
         public override OpticComponentType Type => OpticComponentType.BeamSplitter;
 
         public BeamSplitterComponent(
+            GridData hostGrid,
             Vector2Int[] tilesToOccupy,
+            Orientation orientation,
             ComponentPort[] inPorts,
             ComponentPort[] outPorts
             ) : base(
+                hostGrid,
                 tilesToOccupy,
+                orientation,
                 inPorts,
                 outPorts)
         {
 
         }
 
-        protected override void HandlePhoton(ComponentPort port, Photon photon)
+        protected override IEnumerator HandlePhotonCo(ComponentPort port, Photon photon)
         {
             SplitPhoton(photon, port.portId);
             PhotonManager.Instance.RemovePhoton(photon, false);
+
+            yield break;
         }
 
         private void SplitPhoton(Photon photon, int inPortIndex)
@@ -50,7 +57,7 @@ namespace Game
         {
             return inPort switch
             {
-                3 => new int[] { 2, 1 }, 
+                3 => new int[] { 2, 1 },
                 2 => new int[] { 3, 0 },
                 1 => new int[] { 0, 3 },
                 0 => new int[] { 1, 2 },
