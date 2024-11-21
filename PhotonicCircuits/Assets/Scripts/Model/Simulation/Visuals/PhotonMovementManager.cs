@@ -9,12 +9,13 @@ namespace Game
 {
     public class PhotonMovementManager : Singleton<PhotonMovementManager>
     {
-        public event Action<Photon> OnPhotonDisplace;
+        /// <summary>
+        /// Passes the photon displaced and if the displacement reaches the destination.
+        /// </summary>
+        public event Action<Photon, bool> OnPhotonDisplace;
 
         // Expressed in tiles/second
         [field: SerializeField] public float MoveSpeed { get; private set; }
-
-        private GridData openGrid;
 
         private Dictionary<Photon, Coroutine> runningRoutines;
         private WaitForSeconds waitForMoveTile;
@@ -36,28 +37,20 @@ namespace Game
 
         private void SetupListeners()
         {
-            SimulationManager.OnSimulationInitialize += SimulationManager_OnSimulationInitialize;
             SimulationManager.OnSimulationStop += SimulationManager_OnSimulationStop;
             OpticComponent.OnPhotonExit += OpticComponent_OnPhotonExit;
         }
 
         private void RemoveListeners()
         {
-            SimulationManager.OnSimulationInitialize -= SimulationManager_OnSimulationInitialize;
             SimulationManager.OnSimulationStop -= SimulationManager_OnSimulationStop;
             OpticComponent.OnPhotonExit -= OpticComponent_OnPhotonExit;
         }
         #endregion
 
         #region Handle Events
-        private void SimulationManager_OnSimulationInitialize() => HandleSimulationInit();
         private void SimulationManager_OnSimulationStop() => HandleSimulationStop();
         private void OpticComponent_OnPhotonExit(Photon photon) => HandlePhotonExit(photon);
-
-        private void HandleSimulationInit()
-        {
-            openGrid = GridManager.Instance.GetActiveGrid();
-        }
 
         private void HandleSimulationStop()
         {
@@ -72,7 +65,7 @@ namespace Game
             bool hasTarget = PhotonPathFinder.TryFindNextInPort(
                 photon.GetPosition(),
                 photon.GetPropagation(),
-                openGrid,
+                photon.currentGrid,
                 out ComponentPort port);
 
             Coroutine routine;
@@ -100,7 +93,7 @@ namespace Game
 
                 photonPos += propagation;
                 photon.SetPosition(photonPos);
-                OnPhotonDisplace?.Invoke(photon);
+                OnPhotonDisplace?.Invoke(photon, photonPos == targetPos);
             }
 
             runningRoutines.Remove(photon);
@@ -126,26 +119,27 @@ namespace Game
             Vector2Int photonPos = photon.GetPosition();
             Orientation propagation = photon.GetPropagation();
             Vector2Int propagationVector = propagation.ToVector2Int();
+            Vector2Int gridSize = photon.currentGrid.size;
 
-            while (IsPositionInGrid(photonPos, propagation))
+            while (IsPositionInGrid(photonPos, propagation, gridSize))
             {
                 yield return waitForMoveTile;
 
                 photonPos += propagationVector;
                 photon.SetPosition(photonPos);
-                OnPhotonDisplace?.Invoke(photon);
+                OnPhotonDisplace?.Invoke(photon, !IsPositionInGrid(photonPos, propagation, gridSize));
             }
 
             runningRoutines.Remove(photon);
             PhotonManager.RemovePhoton(photon, false);
         }
 
-        private bool IsPositionInGrid(Vector2Int position, Orientation propagation)
+        private bool IsPositionInGrid(Vector2Int position, Orientation propagation, Vector2Int gridSize)
         {
             return propagation switch
             {
-                Orientation.Up => position.y < openGrid.size.y,
-                Orientation.Right => position.x < openGrid.size.x,
+                Orientation.Up => position.y < gridSize.y,
+                Orientation.Right => position.x < gridSize.x,
                 Orientation.Down => position.y >= 0,
                 Orientation.Left => position.x >= 0,
                 _ => true

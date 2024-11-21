@@ -28,8 +28,12 @@ namespace Game
 
             GridData grid = new(data.gridName, data.spacing, data.size);
 
+            // Register grid components.
             foreach (OpticComponent component in data.placedComponents)
+            {
                 grid.AddComponent(component);
+                component.AssignHostGrid(grid);
+            }
 
             return grid;
         }

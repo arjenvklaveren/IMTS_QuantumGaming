@@ -11,6 +11,8 @@ namespace Game.Data
 
         public event Action OnDestroy;
 
+        public GridData currentGrid;
+
         const float MIN_PHOTON_WAVELENGTH = 380;
         const float MAX_PHOTON_WAVELENGTH = 750;
         const float MAX_PHOTON_PHASE = 2f * Mathf.PI;
@@ -24,6 +26,7 @@ namespace Game.Data
         Orientation propagation;
 
         public Photon(
+            GridData currentGrid,
             Vector2Int position,
             Orientation propagation,
             float wavelength = 565f,
@@ -31,6 +34,7 @@ namespace Game.Data
             float phase = 0f,
             float polarization = 0f)
         {
+            this.currentGrid = currentGrid;
             this.position = position;
             this.propagation = propagation;
             this.wavelength = wavelength;
@@ -41,7 +45,7 @@ namespace Game.Data
 
         public Photon Clone()
         {
-            return new Photon(this.position, this.propagation, this.wavelength, this.amplitude, this.phase, this.polarization);
+            return new Photon(currentGrid, this.position, this.propagation, this.wavelength, this.amplitude, this.phase, this.polarization);
         }
 
         public void SetWavelength(float waveLength) { this.wavelength = Mathf.Clamp(waveLength, MIN_PHOTON_WAVELENGTH, MAX_PHOTON_WAVELENGTH); }
@@ -135,11 +139,11 @@ namespace Game.Data
 
         public void RotateClockwise(int increments)
         {
-            propagation.RotateClockwise(increments);
+            propagation = propagation.RotateClockwise(increments);
         }
         public void RotateCounterClockwise(int increments)
         {
-            propagation.RotateCounterClockwise(increments);
+            propagation = propagation.RotateCounterClockwise(increments);
         }
 
         public void RotatePolarisation(float angleDeg)

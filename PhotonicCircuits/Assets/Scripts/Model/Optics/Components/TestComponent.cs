@@ -9,11 +9,13 @@ namespace Game
         public override OpticComponentType Type => OpticComponentType.Test;
 
         public TestComponent(
+            GridData hostGrid,
             Vector2Int[] tilesToOccupy,
             Orientation orientation,
             ComponentPort[] inPorts,
             ComponentPort[] outPorts
             ) : base(
+                hostGrid,
                 tilesToOccupy,
                 orientation,
                 inPorts,

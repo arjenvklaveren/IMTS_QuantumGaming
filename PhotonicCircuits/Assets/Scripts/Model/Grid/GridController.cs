@@ -28,7 +28,7 @@ namespace Game
             if (!AreTilesEmpty(tilesToOccupy))
                 return false;
 
-            OpticComponent componentToAdd = placeData.CreateOpticComponent(tilesToOccupy);
+            OpticComponent componentToAdd = placeData.CreateOpticComponent(activeGrid, tilesToOccupy);
             AddComponent(componentToAdd);
 
             return true;

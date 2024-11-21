@@ -14,7 +14,7 @@ public class WaveOperationTool : Singleton<WaveOperationTool>
     protected override void Awake()
     {
         SetInstance(this);
-        photon = new Photon(Vector2Int.zero, Orientation.Up);
+        photon = new Photon(null, Vector2Int.zero, Orientation.Up);
         UpdateVisuals();
     }
 

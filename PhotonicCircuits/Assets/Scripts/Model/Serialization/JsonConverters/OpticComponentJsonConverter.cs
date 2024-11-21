@@ -43,6 +43,7 @@ namespace Game
         private TestComponent LoadTestComponent(OpticComponentData data)
         {
             return new TestComponent(
+                null,
                 data.occupiedTiles,
                 data.orientation,
                 data.inPorts,
@@ -52,6 +53,7 @@ namespace Game
         private PhotonSourceComponent LoadSourceComponent(OpticComponentData data)
         {
             return new PhotonSourceComponent(
+                null,
                 data.occupiedTiles,
                 data.orientation,
                 data.inPorts,

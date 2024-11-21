@@ -11,11 +11,13 @@ namespace Game
         public override OpticComponentType Type => OpticComponentType.Source;
 
         public PhotonSourceComponent(
+            GridData hostGrid,
             Vector2Int[] tilesToOccupy,
             Orientation orientation,
             ComponentPort[] inPorts,
             ComponentPort[] outPorts
             ) : base(
+                hostGrid,
                 tilesToOccupy,
                 orientation,
                 inPorts,
@@ -47,6 +49,7 @@ namespace Game
             ComponentPort spawnPort = outPorts[0];
 
             Photon photon = new(
+                HostGrid,
                 spawnPort.position,
                 spawnPort.orientation);
 

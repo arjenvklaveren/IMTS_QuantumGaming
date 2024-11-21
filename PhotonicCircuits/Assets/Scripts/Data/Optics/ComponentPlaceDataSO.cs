@@ -21,7 +21,7 @@ namespace Game.Data
         public ComponentPort[] inPorts;
         public ComponentPort[] outPorts;
 
-        public abstract OpticComponent CreateOpticComponent(Vector2Int[] tilesToOccupy);
+        public abstract OpticComponent CreateOpticComponent(GridData hostGrid, Vector2Int[] tilesToOccupy);
 
         public Vector2Int[] GetTilesToOccupy(Vector2Int position)
         {

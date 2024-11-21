@@ -12,6 +12,8 @@ namespace Game.Data
 
         public abstract OpticComponentType Type { get; }
 
+        public GridData HostGrid { get; private set; }
+
         public HashSet<Vector2Int> OccupiedTiles { get; protected set; }
         public readonly Vector2Int occupiedRootTile;
 
@@ -22,11 +24,14 @@ namespace Game.Data
 
         #region Init
         public OpticComponent(
+            GridData hostGrid,
             Vector2Int[] tilesToOccupy,
             Orientation orientation,
             ComponentPort[] inPorts,
             ComponentPort[] outPorts)
         {
+            HostGrid = hostGrid;
+
             OccupiedTiles = new(tilesToOccupy);
             occupiedRootTile = GetOccupiedRootTile(tilesToOccupy);
 
@@ -74,6 +79,10 @@ namespace Game.Data
                 idCounter++;
             }
         }
+        #endregion
+
+        #region Host Grid
+        public void AssignHostGrid(GridData hostGrid) => HostGrid = hostGrid;
         #endregion
 
         #region Rotation
