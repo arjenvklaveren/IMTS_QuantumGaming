@@ -205,7 +205,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1989828670}
+      - m_Target: {fileID: 1209119153}
         m_TargetAssemblyTypeName: Game.SimulationManager, Game.Model
         m_MethodName: StartSimulation
         m_Mode: 1
@@ -649,7 +649,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1989828670}
+      - m_Target: {fileID: 1209119153}
         m_TargetAssemblyTypeName: Game.SimulationManager, Game.Model
         m_MethodName: StopSimulation
         m_Mode: 1
@@ -1066,8 +1066,8 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 1989828666}
   - {fileID: 1673572089}
+  - {fileID: 1209119148}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &667914324
@@ -1153,7 +1153,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1989828669}
+      - m_Target: {fileID: 1209119154}
         m_TargetAssemblyTypeName: Game.ComponentPaintManager, Game.Model
         m_MethodName: SelectComponent
         m_Mode: 2
@@ -1639,7 +1639,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1989828669}
+      - m_Target: {fileID: 1209119154}
         m_TargetAssemblyTypeName: Game.ComponentPaintManager, Game.Model
         m_MethodName: SelectComponent
         m_Mode: 2
@@ -1720,6 +1720,90 @@ Transform:
   m_Children: []
   m_Father: {fileID: 2041609899}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1001 &1206723318
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 633686875}
+    m_Modifications:
+    - target: {fileID: 2212741880860176344, guid: a30327617b2795c4ea8a1d37aa79e209, type: 3}
+      propertyPath: m_Name
+      value: Managers
+      objectReference: {fileID: 0}
+    - target: {fileID: 5527170954982257649, guid: a30327617b2795c4ea8a1d37aa79e209, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5527170954982257649, guid: a30327617b2795c4ea8a1d37aa79e209, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5527170954982257649, guid: a30327617b2795c4ea8a1d37aa79e209, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5527170954982257649, guid: a30327617b2795c4ea8a1d37aa79e209, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5527170954982257649, guid: a30327617b2795c4ea8a1d37aa79e209, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5527170954982257649, guid: a30327617b2795c4ea8a1d37aa79e209, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5527170954982257649, guid: a30327617b2795c4ea8a1d37aa79e209, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5527170954982257649, guid: a30327617b2795c4ea8a1d37aa79e209, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5527170954982257649, guid: a30327617b2795c4ea8a1d37aa79e209, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5527170954982257649, guid: a30327617b2795c4ea8a1d37aa79e209, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: a30327617b2795c4ea8a1d37aa79e209, type: 3}
+--- !u!4 &1209119148 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 5527170954982257649, guid: a30327617b2795c4ea8a1d37aa79e209, type: 3}
+  m_PrefabInstance: {fileID: 1206723318}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1209119153 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1621376957184106166, guid: a30327617b2795c4ea8a1d37aa79e209, type: 3}
+  m_PrefabInstance: {fileID: 1206723318}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f3e28f0575299a2418904f693842f27d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1209119154 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1047154892087997128, guid: a30327617b2795c4ea8a1d37aa79e209, type: 3}
+  m_PrefabInstance: {fileID: 1206723318}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d1b625c48f754624f976d1397aeacba7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1227321154
 GameObject:
   m_ObjectHideFlags: 0
@@ -1937,7 +2021,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1989828669}
+      - m_Target: {fileID: 1209119154}
         m_TargetAssemblyTypeName: Game.ComponentPaintManager, Game.Model
         m_MethodName: SelectComponent
         m_Mode: 2
@@ -2070,7 +2154,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1989828669}
+      - m_Target: {fileID: 1209119154}
         m_TargetAssemblyTypeName: Game.ComponentPaintManager, Game.Model
         m_MethodName: SelectComponent
         m_Mode: 2
@@ -2587,7 +2671,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1989828669}
+      - m_Target: {fileID: 1209119154}
         m_TargetAssemblyTypeName: Game.ComponentPaintManager, Game.Model
         m_MethodName: SelectComponent
         m_Mode: 2
@@ -2908,130 +2992,6 @@ Transform:
   - {fileID: 785090059}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &1989828664
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1989828666}
-  - component: {fileID: 1989828665}
-  - component: {fileID: 1989828667}
-  - component: {fileID: 1989828669}
-  - component: {fileID: 1989828670}
-  - component: {fileID: 1989828671}
-  - component: {fileID: 1989828672}
-  - component: {fileID: 1989828673}
-  m_Layer: 0
-  m_Name: Managers
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &1989828665
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1989828664}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b897b8d9eec4a0c4dbaf9fca2285c46c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!4 &1989828666
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1989828664}
-  serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 633686875}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1989828667
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1989828664}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a0da4e35fdb433046b20d3ebed8be442, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &1989828669
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1989828664}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d1b625c48f754624f976d1397aeacba7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  testSO: {fileID: 11400000, guid: 75c379c789e73084ea305447c21750c9, type: 2}
---- !u!114 &1989828670
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1989828664}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f3e28f0575299a2418904f693842f27d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &1989828671
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1989828664}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fae59fadde84c3b4e880c8cbe6bfa88a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &1989828672
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1989828664}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 80e74a38f9d5b1746a7d8885174e58e7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  <MoveSpeed>k__BackingField: 5
---- !u!114 &1989828673
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1989828664}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a405741a94ef2644f89b511e537b60be, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &2041609897
 GameObject:
   m_ObjectHideFlags: 0
@@ -3165,7 +3125,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1989828669}
+      - m_Target: {fileID: 1209119154}
         m_TargetAssemblyTypeName: Game.ComponentPaintManager, Game.Model
         m_MethodName: SelectComponent
         m_Mode: 2

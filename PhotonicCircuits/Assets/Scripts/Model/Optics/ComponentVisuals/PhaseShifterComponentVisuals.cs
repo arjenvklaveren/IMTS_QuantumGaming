@@ -6,7 +6,7 @@ namespace Game
     {
         protected override void HandlePhoton(PhotonVisuals photon)
         {
-            
+
         }
     }
 }
