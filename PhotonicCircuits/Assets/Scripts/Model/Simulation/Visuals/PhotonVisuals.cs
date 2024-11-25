@@ -1,7 +1,10 @@
 using Game.Data;
 using SadUtils;
 using System;
+using System.Collections;
 using UnityEngine;
+using UnityEngine.UIElements;
+using DG.Tweening;
 
 namespace Game
 {
@@ -16,10 +19,12 @@ namespace Game
         private GridData openGrid;
 
         private OpticComponent hostComponent;
-        private bool isInComponent;
+        private bool isInComponent = true;
 
         private Vector2 moveDir;
         private Vector2 moveSpeed;
+
+        private bool lateStopCoroutine = false;
 
         #region Awake / Destroy
         public void SetSource(Photon photon)
@@ -40,6 +45,8 @@ namespace Game
             Vector2 tileSize = openGrid.spacing;
 
             moveSpeed = tilesPerSecond * tileSize;
+
+            moveCoroutine = Move();
         }
 
         private void OnDestroy()
@@ -67,6 +74,8 @@ namespace Game
         private void Photon_OnExitComponent(OpticComponent component) => HandleExitComponent(component);
         private void Source_OnDestroy() => HandleDestroy();
 
+        IEnumerator moveCoroutine = null;
+
         private void HandleEnterComponent(OpticComponent component)
         {
             if (isInComponent)
@@ -74,6 +83,14 @@ namespace Game
 
             isInComponent = true;
             hostComponent = component;
+
+            if (moveCoroutine != null)
+            {
+                StopCoroutine(moveCoroutine);
+                lateStopCoroutine = true;
+            }
+
+            SyncVisuals();
 
             OnEnterComponent?.Invoke(this, component);
         }
@@ -83,11 +100,14 @@ namespace Game
             if (!isInComponent)
                 return;
 
-            if (hostComponent != component)
+            if (hostComponent != component && hostComponent != null)
                 return;
 
+
             isInComponent = false;
+
             SyncVisuals();
+            StartCoroutine(moveCoroutine);
         }
 
         private void HandleDestroy()
@@ -135,14 +155,46 @@ namespace Game
         {
             if (isInComponent)
                 return;
-
-            Move();
+            //MoveUpdate();
         }
 
-        private void Move()
+        void MoveUpdate()
         {
             Vector3 translation = moveDir * moveSpeed * Time.deltaTime;
             transform.Translate(translation);
+        }
+
+        private IEnumerator Move()
+        {
+            if (isInComponent) yield break;
+
+            Vector2 startPos = new Vector2(transform.position.x, transform.position.y);
+            Vector2 targetPos = startPos + (moveDir.normalized);
+
+            Vector2 timeSteps = new Vector2(1.0f / moveSpeed.x, 1.0f / moveSpeed.y);
+            Vector2 elapsedTimes = new Vector2(0.0f, 0.0f);
+
+            while (elapsedTimes.x < 1f || elapsedTimes.y < 1f)
+            {
+                if (lateStopCoroutine)
+                {
+                    lateStopCoroutine = false;
+                    break;
+                }
+
+                elapsedTimes += new Vector2(Time.deltaTime / timeSteps.x, Time.deltaTime / timeSteps.y);
+                if (elapsedTimes.x > 1.0f) elapsedTimes.x = 1.0f;
+                if (elapsedTimes.y > 1.0f) elapsedTimes.y = 1.0f;
+
+                transform.position = new Vector3(Mathf.Lerp(startPos.x, targetPos.x, elapsedTimes.x), Mathf.Lerp(startPos.y, targetPos.y, elapsedTimes.y), 0);
+                yield return null;
+            }
+
+            if (!isInComponent)
+            {
+                moveCoroutine = Move();
+                StartCoroutine(moveCoroutine);
+            }
         }
         #endregion
     }

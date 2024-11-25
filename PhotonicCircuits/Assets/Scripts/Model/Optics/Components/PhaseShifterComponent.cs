@@ -28,7 +28,6 @@ namespace Game
             photon.RotatePhase(Mathf.PI / 2);
             photon.TriggerExitComponent(this);
             TriggerOnPhotonExit(photon);
-
             yield break;
         }
     }

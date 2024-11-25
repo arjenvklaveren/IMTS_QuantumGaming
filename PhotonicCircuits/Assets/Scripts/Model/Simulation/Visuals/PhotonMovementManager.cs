@@ -107,8 +107,8 @@ namespace Game
 
         private WaitForSeconds GetTimeToWait(Vector2Int currentPos, Vector2Int targetPos)
         {
-            if (Vector2Int.Distance(currentPos, targetPos) <= 1f)
-                return new WaitForSeconds(1f / (MoveSpeed * 2f));
+            //if (Vector2Int.Distance(currentPos, targetPos) <= 1f)
+                //return new WaitForSeconds(1f / (MoveSpeed * 2f));
 
             return waitForMoveTile;
         }
