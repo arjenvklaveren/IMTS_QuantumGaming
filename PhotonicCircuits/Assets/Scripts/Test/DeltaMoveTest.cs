@@ -44,7 +44,7 @@ namespace Game.Test
             canMove = true;
             yield return new WaitForSeconds(1);
             canMove = false;
-            //Debug.Log("STOP: " + transform.position.ToString("F4"));
+            Debug.Log("STOP: " + transform.position.ToString("F4"));
         }
     }
 }

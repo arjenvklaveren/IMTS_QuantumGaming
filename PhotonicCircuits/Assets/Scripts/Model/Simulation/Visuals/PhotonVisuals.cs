@@ -151,19 +151,6 @@ namespace Game
         #endregion
 
         #region Update Loop
-        private void Update()
-        {
-            if (isInComponent)
-                return;
-            //MoveUpdate();
-        }
-
-        void MoveUpdate()
-        {
-            Vector3 translation = moveDir * moveSpeed * Time.deltaTime;
-            transform.Translate(translation);
-        }
-
         private IEnumerator Move()
         {
             if (isInComponent) yield break;
