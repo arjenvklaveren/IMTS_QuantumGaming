@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 4588381303040805398}
   - component: {fileID: 1349004208966254728}
   - component: {fileID: 7337984199258601118}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Visuals
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -141,7 +141,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1554139365094234161}
   - component: {fileID: 5842117542995915691}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: BeamSplitterComponent
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -187,7 +187,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1653429391678111531}
   - component: {fileID: 8135327527584815798}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Image
   m_TagString: Untagged
   m_Icon: {fileID: 0}

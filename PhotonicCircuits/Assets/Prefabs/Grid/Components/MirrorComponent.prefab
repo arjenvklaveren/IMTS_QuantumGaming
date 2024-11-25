@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4588381303040805398}
   - component: {fileID: 1349004208966254728}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Visuals
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -88,7 +88,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1554139365094234161}
   - component: {fileID: 5056304702217098563}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: MirrorComponent
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -133,7 +133,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1653429391678111531}
   - component: {fileID: 8135327527584815798}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Image
   m_TagString: Untagged
   m_Icon: {fileID: 0}
