@@ -33,15 +33,13 @@ namespace Game
 
         private float timeToTravelTile;
 
+        private WaitForEndOfFrame waitForEndOfFrame;
+
         #region Awake / Destroy
         protected override void Awake()
         {
             SetInstance(this);
-
-            recentPhotonDisplacements = new();
-            flyingPhotons = new();
-            collisionDelayRoutines = new();
-            collisionCounter = 0;
+            SetDefaultValues();
         }
 
         private IEnumerator Start()
@@ -55,6 +53,15 @@ namespace Game
         private void OnDestroy()
         {
             RemoveListeners();
+        }
+
+        private void SetDefaultValues()
+        {
+            recentPhotonDisplacements = new();
+            flyingPhotons = new();
+            collisionDelayRoutines = new();
+            collisionCounter = 0;
+            waitForEndOfFrame = new();
         }
 
         private void SetupListeners()
@@ -259,14 +266,12 @@ namespace Game
         private void HandlePhotonCollision(Photon photonA, Photon photonB)
         {
             // TODO
-            Debug.Log("Found Photon Collision at " + photonA.GetPosition());
+            //Debug.Log("Found Photon Collision at " + photonA.GetPosition());
         }
 
         #region Routines
         private IEnumerator ClearDisplacementsCo()
         {
-            WaitForEndOfFrame waitForEndOfFrame = new();
-
             while (true)
             {
                 yield return waitForEndOfFrame;

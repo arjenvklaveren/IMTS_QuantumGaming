@@ -23,6 +23,8 @@ namespace Game
 
         private float timeToTravelTile;
 
+        private WaitForEndOfFrame waitForEndOfFrame;
+
         #region Awake / Destroy
         public void SetSource(Photon photon)
         {
@@ -40,6 +42,8 @@ namespace Game
             // Set time to travel vars
             float tilesPerSecond = PhotonMovementManager.MoveSpeed;
             timeToTravelTile = 1f / tilesPerSecond;
+
+            waitForEndOfFrame = new();
         }
 
         private void OnDestroy()
@@ -159,7 +163,7 @@ namespace Game
 
             while (timer > 0f)
             {
-                yield return null;
+                yield return waitForEndOfFrame;
                 timer -= Time.deltaTime;
 
                 transform.position = Vector2.Lerp(startPos, endPos, 1f - (timer / duration));
@@ -183,7 +187,7 @@ namespace Game
 
                 while (timer >= 0f)
                 {
-                    yield return null;
+                    yield return waitForEndOfFrame;
                     timer -= Time.deltaTime;
 
                     transform.position = Vector2.Lerp(startPos, endPos, 1f - (timer / timeToTravelTile));

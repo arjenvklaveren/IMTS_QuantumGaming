@@ -1,6 +1,8 @@
 using Game.Data;
 using SadUtils;
+using System.Diagnostics;
 using System.IO;
+using System.Threading.Tasks;
 using Unity.Plastic.Newtonsoft.Json;
 using UnityEngine;
 
@@ -18,24 +20,40 @@ namespace Game
         #region Deserialize
         public void LoadCircuit(string fileName)
         {
-            Debug.Log("Loading Circuit...");
-
             if (isLoading)
                 return;
 
+            LoadCircuitContents(fileName);
+        }
+
+        private async void LoadCircuitContents(string fileName)
+        {
+            UnityEngine.Debug.Log("Loading Circuit...");
+            Stopwatch timer = new();
+            timer.Start();
+
             isLoading = true;
 
-            string json = LoadFileContents(fileName);
-
-            GridData grid = JsonConvert.DeserializeObject<GridData>(
-                json,
-                SerializationManager.GetAllConverters());
+            GridData grid = await DeserializeAsync(fileName);
 
             GridManager.Instance.LoadRootGrid(grid);
 
             isLoading = false;
 
-            Debug.Log("Loaded Circuit!");
+            UnityEngine.Debug.Log($"Loaded Circuit in {timer.ElapsedMilliseconds}ms!");
+            timer.Stop();
+        }
+
+        private Task<GridData> DeserializeAsync(string fileName)
+        {
+            return Task.Run(() =>
+            {
+                string json = LoadFileContents(fileName);
+
+                return JsonConvert.DeserializeObject<GridData>(
+                    json,
+                    SerializationManager.GetAllConverters());
+            });
         }
 
         private string LoadFileContents(string fileName)

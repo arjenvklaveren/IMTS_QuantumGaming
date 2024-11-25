@@ -35,6 +35,10 @@ namespace Game
             {
                 OpticComponentType.Test => LoadTestComponent(data),
                 OpticComponentType.Source => LoadSourceComponent(data),
+                OpticComponentType.Mirror => LoadMirrorComponent(data),
+                OpticComponentType.BeamSplitter => LoadBeamSplitterComponent(data),
+                OpticComponentType.PhaseShifter => LoadPhaseShifterComponent(data),
+                OpticComponentType.Detector => LoadDetectorComponent(data),
                 _ => throw new NotImplementedException($"Deserialization for component type {data.type} has not been implemented!"),
             };
         }
@@ -53,6 +57,46 @@ namespace Game
         private PhotonSourceComponent LoadSourceComponent(OpticComponentData data)
         {
             return new PhotonSourceComponent(
+                null,
+                data.occupiedTiles,
+                data.orientation,
+                data.inPorts,
+                data.outPorts);
+        }
+
+        private MirrorComponent LoadMirrorComponent(OpticComponentData data)
+        {
+            return new MirrorComponent(
+                null,
+                data.occupiedTiles,
+                data.orientation,
+                data.inPorts,
+                data.outPorts);
+        }
+
+        private BeamSplitterComponent LoadBeamSplitterComponent(OpticComponentData data)
+        {
+            return new BeamSplitterComponent(
+                null,
+                data.occupiedTiles,
+                data.orientation,
+                data.inPorts,
+                data.outPorts);
+        }
+
+        private PhaseShifterComponent LoadPhaseShifterComponent(OpticComponentData data)
+        {
+            return new PhaseShifterComponent(
+                null,
+                data.occupiedTiles,
+                data.orientation,
+                data.inPorts,
+                data.outPorts);
+        }
+
+        private PhotonDetectorComponent LoadDetectorComponent(OpticComponentData data)
+        {
+            return new PhotonDetectorComponent(
                 null,
                 data.occupiedTiles,
                 data.orientation,

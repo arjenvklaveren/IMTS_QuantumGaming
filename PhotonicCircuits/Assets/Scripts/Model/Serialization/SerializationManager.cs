@@ -1,6 +1,7 @@
 using Game.Data;
 using SadUtils;
 using System.IO;
+using System.Threading.Tasks;
 using Unity.Plastic.Newtonsoft.Json;
 using UnityEngine;
 
@@ -18,28 +19,28 @@ namespace Game
         }
 
         #region Serialize Grid
-        // This function is REALLY slow. Consider looking into multithreading or making a loading graphic.
         public void SerializeGrid(GridData grid)
         {
             if (isSaving)
                 return;
 
-            Debug.Log("Saving File...");
+            SaveGridContents(grid);
+        }
+
+        private async void SaveGridContents(GridData grid)
+        {
+            Debug.Log("Saving file...");
+            System.Diagnostics.Stopwatch timer = new();
+            timer.Start();
 
             isSaving = true;
 
-            // Convert data to Json.
-            string jsonString = JsonConvert.SerializeObject(
-                grid,
-                GetAllConverters());
-
-            Debug.Log("Serialized Data!");
-
-            SaveFile(jsonString, grid.gridName);
+            await SerializeAsync(grid);
 
             isSaving = false;
 
-            Debug.Log("Finished Saving File!");
+            Debug.Log($"Finished saving file in {timer.ElapsedMilliseconds}ms!");
+            timer.Stop();
         }
 
         public static JsonConverter[] GetAllConverters()
@@ -55,6 +56,18 @@ namespace Game
                 new OpticComponentJsonConverter(),
                 new ComponentPortJsonConverter(),
             };
+        }
+
+        private Task SerializeAsync(GridData grid)
+        {
+            return Task.Run(() =>
+            {
+                string jsonString = JsonConvert.SerializeObject(
+                grid,
+                GetAllConverters());
+
+                SaveFile(jsonString, grid.gridName);
+            });
         }
 
         private void SaveFile(string json, string gridName)

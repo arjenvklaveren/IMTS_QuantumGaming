@@ -22,7 +22,6 @@ namespace Game
         public WaitForSeconds WaitForMoveTile { get; private set; }
         public WaitForSeconds WaitForMoveHalfTile { get; private set; }
 
-
         #region Awake / Destroy
         protected override void Awake()
         {
@@ -95,7 +94,6 @@ namespace Game
             Vector2Int photonPos = photon.GetPosition();
             Vector2Int propagation = photon.GetPropagationIntVector();
             Vector2Int targetPos = port.position;
-            bool isGhostPort = port.IsGhostPort;
 
             while (photonPos != targetPos)
             {
@@ -103,15 +101,16 @@ namespace Game
 
                 photonPos += propagation;
                 photon.SetPosition(photonPos);
-                OnPhotonDisplace?.Invoke(photon, photonPos == targetPos);
+
+                bool reachedTarget = photonPos == targetPos;
+                OnPhotonDisplace?.Invoke(photon, reachedTarget);
             }
 
             runningRoutines.Remove(photon);
 
-            if (!isGhostPort)
+            if (!port.IsGhostPort)
                 port.ProcessPhoton(photon);
-
-            if (isGhostPort)
+            else
                 PhotonManager.RemovePhoton(photon, false);
         }
 
