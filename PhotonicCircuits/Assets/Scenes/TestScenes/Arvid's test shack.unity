@@ -2756,7 +2756,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   mouseButtonIds: 0000000001000000
-  keyCodes: 77000000610000007300000064000000
+  keyCodes: 770000006100000073000000640000001b000000
 --- !u!4 &1673572089
 Transform:
   m_ObjectHideFlags: 0

@@ -68,6 +68,7 @@ namespace Game
         public void Destroy()
         {
             RemoveListeners();
+            ComponentPaintManager.SelectComponent(null);
         }
 
         ComponentPaintManager ComponentPaintManager => ComponentPaintManager.Instance;

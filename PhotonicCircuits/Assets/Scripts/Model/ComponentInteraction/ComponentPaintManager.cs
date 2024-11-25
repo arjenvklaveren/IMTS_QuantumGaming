@@ -7,16 +7,12 @@ namespace Game
 {
     public class ComponentPaintManager : Singleton<ComponentPaintManager>
     {
-        [SerializeField] private ComponentPlaceDataSO testSO;
-
         private ComponentPlaceDataSO selectedComponent;
 
         private GridController gridController;
 
         protected override void Awake()
         {
-            selectedComponent = testSO;
-
             SetInstance(this);
         }
 
@@ -37,7 +33,13 @@ namespace Game
 
         public void SelectComponent(ComponentPlaceDataSO placeData)
         {
+            // Set paint control scheme.
+            if (selectedComponent == null)
+                PlayerInputManager.AddInputHandler(new GridComponentPaintInputHandler());
+
             selectedComponent = placeData;
         }
+
+        private PlayerInputManager PlayerInputManager => PlayerInputManager.Instance;
     }
 }
