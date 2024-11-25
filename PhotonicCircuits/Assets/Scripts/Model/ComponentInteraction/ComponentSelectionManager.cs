@@ -22,11 +22,15 @@ namespace Game
             SelectedVisuals = selected;
 
             HasSelection = true;
+
+            OnSelectedComponent?.Invoke(SelectedVisuals);
         }
 
         public void Deselect()
         {
             HasSelection = false;
+
+            OnDeselect?.Invoke();
         }
     }
 }
