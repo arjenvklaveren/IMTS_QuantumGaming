@@ -29,10 +29,10 @@ namespace Game
 
         protected override IEnumerator HandlePhotonCo(ComponentPort port, Photon photon)
         {
+            yield return PhotonMovementManager.Instance.WaitForMoveHalfTile;
+
             SplitPhoton(photon, port.portId);
             PhotonManager.Instance.RemovePhoton(photon, false);
-
-            yield break;
         }
 
         private void SplitPhoton(Photon photon, int inPortIndex)

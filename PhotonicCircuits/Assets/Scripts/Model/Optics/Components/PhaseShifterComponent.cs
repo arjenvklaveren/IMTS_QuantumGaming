@@ -25,10 +25,11 @@ namespace Game
 
         protected override IEnumerator HandlePhotonCo(ComponentPort port, Photon photon)
         {
+            yield return PhotonMovementManager.Instance.WaitForMoveHalfTile;
+
             photon.RotatePhase(Mathf.PI / 2);
             photon.TriggerExitComponent(this);
             TriggerOnPhotonExit(photon);
-            yield break;
         }
     }
 }

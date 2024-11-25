@@ -49,6 +49,7 @@ namespace Game
 
             photonVisuals.SetSource(photon);
             photonVisuals.SyncVisuals();
+            photonVisuals.StartMovement();
         }
         #endregion
 

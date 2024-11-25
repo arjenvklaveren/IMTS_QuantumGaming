@@ -26,13 +26,13 @@ namespace Game
 
         protected override IEnumerator HandlePhotonCo(ComponentPort port, Photon photon)
         {
+            yield return PhotonMovementManager.Instance.WaitForMoveHalfTile;
+
             int outportID = GetOutPort(port.portId);
             photon.SetPropagation(outPorts[outportID].orientation);
 
             photon.TriggerExitComponent(this);
             TriggerOnPhotonExit(photon);
-
-            yield break;
         }
 
         private int GetOutPort(int inPort)
@@ -45,6 +45,9 @@ namespace Game
                 0 => 1,
                 _ => throw new ArgumentException("Invalid inPort")
             };
+
+            // could look like this:
+            // return inPort += inPort % 2 == 0 ? 1 : -1;
         }
     }
 }

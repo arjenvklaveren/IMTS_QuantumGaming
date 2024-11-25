@@ -3083,8 +3083,9 @@ RectTransform:
   m_Pivot: {x: 1, y: 1}
 --- !u!114 &1978277792
 MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 1047154892087997128, guid: a30327617b2795c4ea8a1d37aa79e209, type: 3}
-  m_PrefabInstance: {fileID: 5847968212519959720}
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1978277790}
   m_Enabled: 1
@@ -3441,7 +3442,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7682823541844361029, guid: a30327617b2795c4ea8a1d37aa79e209, type: 3}
       propertyPath: <MoveSpeed>k__BackingField
-      value: 0.5
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

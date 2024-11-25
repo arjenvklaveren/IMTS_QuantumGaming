@@ -3,8 +3,6 @@ using SadUtils;
 using System;
 using System.Collections;
 using UnityEngine;
-using UnityEngine.UIElements;
-using DG.Tweening;
 
 namespace Game
 {
@@ -18,13 +16,12 @@ namespace Game
         private Photon source;
         private GridData openGrid;
 
+        private Coroutine moveRoutine;
+
         private OpticComponent hostComponent;
-        private bool isInComponent = true;
+        private bool isInComponent;
 
-        private Vector2 moveDir;
-        private Vector2 moveSpeed;
-
-        private bool lateStopCoroutine = false;
+        private float timeToTravelTile;
 
         #region Awake / Destroy
         public void SetSource(Photon photon)
@@ -40,13 +37,9 @@ namespace Game
             // Cache opened grid for simulation
             openGrid = GridManager.Instance.GetActiveGrid();
 
-            // Cache move speed based on open grid
-            float tilesPerSecond = PhotonMovementManager.Instance.MoveSpeed;
-            Vector2 tileSize = openGrid.spacing;
-
-            moveSpeed = tilesPerSecond * tileSize;
-
-            moveCoroutine = Move();
+            // Set time to travel vars
+            float tilesPerSecond = PhotonMovementManager.MoveSpeed;
+            timeToTravelTile = 1f / tilesPerSecond;
         }
 
         private void OnDestroy()
@@ -74,8 +67,6 @@ namespace Game
         private void Photon_OnExitComponent(OpticComponent component) => HandleExitComponent(component);
         private void Source_OnDestroy() => HandleDestroy();
 
-        IEnumerator moveCoroutine = null;
-
         private void HandleEnterComponent(OpticComponent component)
         {
             if (isInComponent)
@@ -84,13 +75,8 @@ namespace Game
             isInComponent = true;
             hostComponent = component;
 
-            if (moveCoroutine != null)
-            {
-                StopCoroutine(moveCoroutine);
-                lateStopCoroutine = true;
-            }
-
-            SyncVisuals();
+            if (moveRoutine != null)
+                StopCoroutine(moveRoutine);
 
             OnEnterComponent?.Invoke(this, component);
         }
@@ -100,18 +86,20 @@ namespace Game
             if (!isInComponent)
                 return;
 
-            if (hostComponent != component && hostComponent != null)
+            if (hostComponent != component)
                 return;
 
-
             isInComponent = false;
-
             SyncVisuals();
-            StartCoroutine(moveCoroutine);
+
+            StartMovement();
         }
 
         private void HandleDestroy()
         {
+            if (moveRoutine != null)
+                StopCoroutine(moveRoutine);
+
             Destroy(gameObject);
         }
         #endregion
@@ -122,7 +110,6 @@ namespace Game
             SyncPosition();
             SyncRotation();
             SyncColor();
-            SyncMoveDir();
         }
 
         private void SyncPosition()
@@ -144,45 +131,70 @@ namespace Game
             sprite.color = source.GetColor();
         }
 
-        private void SyncMoveDir()
+        public void StartMovement()
         {
-            moveDir = source.GetPropagationVector();
+            if (moveRoutine != null)
+                StopCoroutine(moveRoutine);
+
+            moveRoutine = StartCoroutine(MoveCo());
         }
         #endregion
 
-        #region Update Loop
-        private IEnumerator Move()
+        #region Overwrite Movement
+        public void ForceMoveTile(Vector2 startPos, Vector2 endPos) => ForceMove(startPos, endPos, timeToTravelTile);
+        public void ForceMoveHalfTile(Vector2 startPos, Vector2 endPos) => ForceMove(startPos, endPos, timeToTravelTile / 2f);
+
+        public void ForceMove(Vector2 startPos, Vector2 endPos, float duration)
         {
-            if (isInComponent) yield break;
+            if (moveRoutine != null)
+                StopCoroutine(moveRoutine);
 
-            Vector2 startPos = new Vector2(transform.position.x, transform.position.y);
-            Vector2 targetPos = startPos + (moveDir.normalized);
+            moveRoutine = StartCoroutine(ForceMoveCo(startPos, endPos, duration));
+        }
 
-            Vector2 timeSteps = new Vector2(1.0f / moveSpeed.x, 1.0f / moveSpeed.y);
-            Vector2 elapsedTimes = new Vector2(0.0f, 0.0f);
+        private IEnumerator ForceMoveCo(Vector2 startPos, Vector2 endPos, float duration)
+        {
+            float timer = duration;
+            transform.position = startPos;
 
-            while (elapsedTimes.x < 1f || elapsedTimes.y < 1f)
+            while (timer > 0f)
             {
-                if (lateStopCoroutine)
+                yield return null;
+                timer -= Time.deltaTime;
+
+                transform.position = Vector2.Lerp(startPos, endPos, 1f - (timer / duration));
+            }
+
+            transform.position = endPos;
+        }
+        #endregion
+
+        #region Move Loops
+        private IEnumerator MoveCo()
+        {
+            float timer = timeToTravelTile;
+            Vector2 moveStep = source.GetPropagationIntVector() * openGrid.spacing;
+
+            while (true)
+            {
+                Vector2 startPos = transform.position;
+                Vector2 endPos = startPos + moveStep;
+                transform.position = Vector2.Lerp(startPos, endPos, 1f - (timer / timeToTravelTile));
+
+                while (timer >= 0f)
                 {
-                    lateStopCoroutine = false;
-                    break;
+                    yield return null;
+                    timer -= Time.deltaTime;
+
+                    transform.position = Vector2.Lerp(startPos, endPos, 1f - (timer / timeToTravelTile));
                 }
 
-                elapsedTimes += new Vector2(Time.deltaTime / timeSteps.x, Time.deltaTime / timeSteps.y);
-                if (elapsedTimes.x > 1.0f) elapsedTimes.x = 1.0f;
-                if (elapsedTimes.y > 1.0f) elapsedTimes.y = 1.0f;
-
-                transform.position = new Vector3(Mathf.Lerp(startPos.x, targetPos.x, elapsedTimes.x), Mathf.Lerp(startPos.y, targetPos.y, elapsedTimes.y), 0);
-                yield return null;
-            }
-
-            if (!isInComponent)
-            {
-                moveCoroutine = Move();
-                StartCoroutine(moveCoroutine);
+                // Reset for next tile, carry extra progress!
+                timer += timeToTravelTile;
             }
         }
         #endregion
+
+        PhotonMovementManager PhotonMovementManager => PhotonMovementManager.Instance;
     }
 }

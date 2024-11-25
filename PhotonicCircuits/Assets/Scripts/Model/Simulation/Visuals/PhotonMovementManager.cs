@@ -18,13 +18,15 @@ namespace Game
         [field: SerializeField] public float MoveSpeed { get; private set; }
 
         private Dictionary<Photon, Coroutine> runningRoutines;
-        private WaitForSeconds waitForMoveTile;
+
+        public WaitForSeconds WaitForMoveTile { get; private set; }
+        public WaitForSeconds WaitForMoveHalfTile { get; private set; }
+
 
         #region Awake / Destroy
         protected override void Awake()
         {
-            runningRoutines = new();
-            waitForMoveTile = new WaitForSeconds(1f / MoveSpeed);
+            SetDefaultValues();
 
             SetInstance(this);
             SetupListeners();
@@ -33,6 +35,14 @@ namespace Game
         private void OnDestroy()
         {
             RemoveListeners();
+        }
+
+        private void SetDefaultValues()
+        {
+            runningRoutines = new();
+
+            WaitForMoveTile = new(1f / MoveSpeed);
+            WaitForMoveHalfTile = new(1f / (MoveSpeed * 2f));
         }
 
         private void SetupListeners()
@@ -107,10 +117,10 @@ namespace Game
 
         private WaitForSeconds GetTimeToWait(Vector2Int currentPos, Vector2Int targetPos)
         {
-            //if (Vector2Int.Distance(currentPos, targetPos) <= 1f)
-                //return new WaitForSeconds(1f / (MoveSpeed * 2f));
+            if (Vector2Int.Distance(currentPos, targetPos) <= 1f)
+                return WaitForMoveHalfTile;
 
-            return waitForMoveTile;
+            return WaitForMoveTile;
         }
 
         private IEnumerator MovePhotonToGridEdgeCo(Photon photon)
@@ -122,7 +132,7 @@ namespace Game
 
             while (IsPositionInGrid(photonPos, propagation, gridSize))
             {
-                yield return waitForMoveTile;
+                yield return WaitForMoveTile;
 
                 photonPos += propagationVector;
                 photon.SetPosition(photonPos);
