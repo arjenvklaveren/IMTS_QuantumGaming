@@ -11,16 +11,12 @@ namespace Game
             GridData hostGrid,
             Vector2Int[] tilesToOccupy,
             Orientation orientation,
-            ComponentPort[] inPorts,
-            ComponentPort[] outPorts,
             Vector2Int internalGridSize,
             Vector2 internalGridSpacing,
             string title) : base(
                 hostGrid,
                 tilesToOccupy,
                 orientation,
-                inPorts,
-                outPorts,
                 internalGridSize,
                 internalGridSpacing,
                 title)

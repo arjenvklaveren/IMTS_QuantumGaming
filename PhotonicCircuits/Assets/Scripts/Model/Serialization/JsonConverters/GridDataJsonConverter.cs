@@ -14,6 +14,8 @@ namespace Game
             public Vector2Int size;
 
             public OpticComponent[] placedComponents;
+
+            public bool isIntegrated;
         }
 
         #region Read
@@ -26,7 +28,7 @@ namespace Game
         {
             GridSerializationData data = serializer.Deserialize<GridSerializationData>(reader);
 
-            GridData grid = new(data.gridName, data.spacing, data.size);
+            GridData grid = new(data.gridName, data.spacing, data.size, data.isIntegrated);
 
             // Register grid components.
             foreach (OpticComponent component in data.placedComponents)
@@ -50,7 +52,8 @@ namespace Game
                 gridName = value.gridName,
                 spacing = value.spacing,
                 size = value.size,
-                placedComponents = value.placedComponents.ToArray()
+                placedComponents = value.placedComponents.ToArray(),
+                isIntegrated = value.isIntegrated,
             };
 
             serializer.Serialize(writer, data);

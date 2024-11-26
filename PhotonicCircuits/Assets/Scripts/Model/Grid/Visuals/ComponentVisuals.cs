@@ -28,6 +28,9 @@ namespace Game
         protected virtual void OnDestroy()
         {
             RemoveListeners();
+
+            if (isHovered && lastHoveredVisuals == this)
+                isHovered = false;
         }
 
         private void SetupListeners()

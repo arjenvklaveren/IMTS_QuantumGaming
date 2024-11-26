@@ -32,8 +32,6 @@ namespace Game
                 hostGrid,
                 tilesToOccupy,
                 orientation,
-                inPorts,
-                outPorts,
                 gridSize,
                 gridSpacing,
                 fileName);
@@ -45,8 +43,6 @@ namespace Game
                 hostGrid,
                 tilesToOccupy,
                 orientation,
-                inPorts,
-                outPorts,
                 gridSize,
                 gridSpacing,
                 fileName);

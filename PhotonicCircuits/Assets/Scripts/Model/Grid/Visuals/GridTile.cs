@@ -1,7 +1,6 @@
 using System;
 using UnityEngine;
 using UnityEngine.EventSystems;
-using Game.Data;
 
 namespace Game
 {
@@ -12,25 +11,31 @@ namespace Game
         public Vector2Int position;
 
         private static Vector2Int lastHoveredPosition;
-        private static bool isHovering;
+        private static bool isHovered;
 
         public void OnPointerEnter(PointerEventData eventData)
         {
             OnHover?.Invoke(position);
 
             lastHoveredPosition = position;
-            isHovering = true;
+            isHovered = true;
         }
 
         public void OnPointerExit(PointerEventData eventData)
         {
-            isHovering = false;
+            isHovered = false;
         }
 
         public static bool TryGetHoveredPosition(out Vector2Int position)
         {
             position = lastHoveredPosition;
-            return isHovering;
+            return isHovered;
+        }
+
+        private void OnDestroy()
+        {
+            if (isHovered && lastHoveredPosition == position)
+                isHovered = false;
         }
     }
 }

@@ -64,5 +64,12 @@ namespace Game
         #region Handle Rotation
         protected override void HandleRotationChanged(Orientation orientation) => RotateToLookAtOrientation(visualsHolder, orientation);
         #endregion
+
+        #region Handle Interaction
+        public void Interact()
+        {
+            GridManager.Instance.OpenGrid(sourceICComponent.internalGrid);
+        }
+        #endregion
     }
 }

@@ -12,11 +12,37 @@ namespace Game
 
         public bool HasSelection { get; private set; }
 
+        #region Awake / Destroy
         protected override void Awake()
         {
             SetInstance(this);
+            SetupListeners();
         }
 
+        private void OnDestroy()
+        {
+            RemoveListeners();
+        }
+
+        private void SetupListeners()
+        {
+            GridController.OnGridChanged += GridController_OnGridChanged;
+        }
+
+        private void RemoveListeners()
+        {
+            GridController.OnGridChanged -= GridController_OnGridChanged;
+        }
+        #endregion
+
+        #region Handle Events
+        private void GridController_OnGridChanged(Data.GridData obj)
+        {
+            Deselect();
+        }
+        #endregion
+
+        #region Manage Selection
         public void SelectComponent(ComponentVisuals selected)
         {
             SelectedVisuals = selected;
@@ -24,6 +50,9 @@ namespace Game
             HasSelection = true;
 
             OnSelectedComponent?.Invoke(SelectedVisuals);
+
+            if (selected.SourceComponent.Type == Data.OpticComponentType.IC1x1)
+                (selected as ICComponentVisuals).Interact();
         }
 
         public void Deselect()
@@ -32,5 +61,6 @@ namespace Game
 
             OnDeselect?.Invoke();
         }
+        #endregion
     }
 }

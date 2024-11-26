@@ -16,5 +16,8 @@ namespace Game.Data
         IC4x4 = 103,
         IC8x2 = 104,
         IC8x4 = 105,
+
+        ICIn = 200,
+        ICOut = 201,
     }
 }
