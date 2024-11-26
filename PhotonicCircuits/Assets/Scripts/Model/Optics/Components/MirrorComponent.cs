@@ -29,7 +29,7 @@ namespace Game
             yield return PhotonMovementManager.Instance.WaitForMoveHalfTile;
 
             int outportID = GetOutPort(port.portId);
-            photon.SetPropagation(outPorts[outportID].orientation);
+            photon.SetPropagation(OutPorts[outportID].orientation);
 
             photon.TriggerExitComponent(this);
             TriggerOnPhotonExit(photon);

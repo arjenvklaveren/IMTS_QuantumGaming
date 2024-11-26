@@ -46,7 +46,7 @@ namespace Game
         #region Create Photons
         private void CreatePhoton()
         {
-            ComponentPort spawnPort = outPorts[0];
+            ComponentPort spawnPort = OutPorts[0];
 
             Photon photon = new(
                 HostGrid,

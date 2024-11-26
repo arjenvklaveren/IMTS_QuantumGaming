@@ -1,4 +1,5 @@
 using Game.Data;
+using SadUtils;
 using System;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -19,6 +20,8 @@ namespace Game
         public virtual void SetSource(OpticComponent component)
         {
             SourceComponent = component;
+
+            HandleRotationChanged(SourceComponent.orientation);
             SetupListeners();
         }
 
@@ -50,6 +53,12 @@ namespace Game
 
         protected virtual void HandlePhoton(PhotonVisuals photon) { }
         protected virtual void HandleRotationChanged(Orientation orientation) { }
+
+        protected void RotateToLookAtOrientation(Transform visualsHolder, Orientation orientation)
+        {
+            Vector3 targetLookAt = visualsHolder.position + (Vector3)orientation.ToVector2();
+            visualsHolder.rotation = LookAt2D.GetLookAtRotation(visualsHolder, targetLookAt);
+        }
 
         #region Hover Logic
         public void OnPointerEnter(PointerEventData eventData)

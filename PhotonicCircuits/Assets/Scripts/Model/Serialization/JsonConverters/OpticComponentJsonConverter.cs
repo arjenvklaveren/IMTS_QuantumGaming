@@ -118,8 +118,8 @@ namespace Game
                 type = value.Type,
                 occupiedTiles = OccupiedTilesToArray(value.OccupiedTiles),
                 orientation = value.orientation,
-                inPorts = value.inPorts,
-                outPorts = value.outPorts,
+                inPorts = value.InPorts,
+                outPorts = value.OutPorts,
                 args = value.SerializeArgs()
             };
 

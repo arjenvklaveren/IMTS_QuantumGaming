@@ -19,8 +19,8 @@ namespace Game.Data
 
         public Orientation orientation;
 
-        public readonly ComponentPort[] inPorts;
-        public readonly ComponentPort[] outPorts;
+        public ComponentPort[] InPorts { get; protected set; }
+        public ComponentPort[] OutPorts { get; protected set; }
 
         #region Init
         public OpticComponent(
@@ -37,8 +37,8 @@ namespace Game.Data
 
             this.orientation = orientation;
 
-            this.inPorts = GetPortCopies(inPorts);
-            this.outPorts = GetPortCopies(outPorts);
+            this.InPorts = GetPortCopies(inPorts);
+            this.OutPorts = GetPortCopies(outPorts);
             InitPorts();
         }
 
@@ -59,8 +59,8 @@ namespace Game.Data
 
         private void InitPorts()
         {
-            InitPortValues(inPorts);
-            InitPortValues(outPorts);
+            InitPortValues(InPorts);
+            InitPortValues(OutPorts);
         }
 
         private void InitPortValues(ComponentPort[] ports)
@@ -136,10 +136,10 @@ namespace Game.Data
         #region Rotate Ports
         private void RotatePorts90Degrees()
         {
-            foreach (ComponentPort port in inPorts)
+            foreach (ComponentPort port in InPorts)
                 RotatePort90Degrees(port);
 
-            foreach (ComponentPort port in outPorts)
+            foreach (ComponentPort port in OutPorts)
                 RotatePort90Degrees(port);
         }
 

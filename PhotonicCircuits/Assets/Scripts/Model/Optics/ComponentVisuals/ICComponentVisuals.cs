@@ -3,18 +3,20 @@ using UnityEngine;
 
 namespace Game
 {
-    public class PhotonSourceComponentVisuals : ComponentVisuals
+    public class ICComponentVisuals : ComponentVisuals
     {
-        [Header("Photon Visuals Settings")]
-        [SerializeField] private PhotonVisuals photonPrefab;
-
-        [Header("Visuals Holder")]
         [SerializeField] private Transform visualsHolder;
 
-        #region Awake / Destroy
+        [Space]
+        [SerializeField] private PhotonVisuals photonPrefab;
+
+        private ICComponentBase sourceICComponent;
+
+        #region Create / Destroy
         public override void SetSource(OpticComponent component)
         {
             base.SetSource(component);
+            SetDefaultValues();
 
             SetupListeners();
         }
@@ -25,29 +27,37 @@ namespace Game
             RemoveListeners();
         }
 
+        private void SetDefaultValues()
+        {
+            sourceICComponent = SourceComponent as ICComponentBase;
+        }
+
         private void SetupListeners()
         {
-            PhotonSourceComponent source = SourceComponent as PhotonSourceComponent;
-            source.OnCreatePhoton += Source_OnCreatePhoton;
+            sourceICComponent.OnPhotonExitIC += ICComponentBase_OnPhotonExitIC;
         }
 
         private void RemoveListeners()
         {
-            PhotonSourceComponent source = SourceComponent as PhotonSourceComponent;
-            source.OnCreatePhoton -= Source_OnCreatePhoton;
+            sourceICComponent.OnPhotonExitIC -= ICComponentBase_OnPhotonExitIC;
         }
         #endregion
 
         #region Handle Events
-        private void Source_OnCreatePhoton(Photon photon) => HandlePhotonCreation(photon);
-
-        private void HandlePhotonCreation(Photon photon)
+        private void ICComponentBase_OnPhotonExitIC(Photon photon)
         {
             PhotonVisuals photonVisuals = Instantiate(photonPrefab);
 
             photonVisuals.SetSource(photon);
             photonVisuals.SyncVisuals();
             photonVisuals.StartMovement();
+        }
+        #endregion
+
+        #region Handle Photon
+        protected override void HandlePhoton(PhotonVisuals photon)
+        {
+            Destroy(photon.gameObject);
         }
         #endregion
 

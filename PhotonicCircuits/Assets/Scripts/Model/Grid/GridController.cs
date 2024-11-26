@@ -25,11 +25,23 @@ namespace Game
         {
             Vector2Int[] tilesToOccupy = placeData.GetTilesToOccupy(position);
 
+            if (!AreTilesInBounds(tilesToOccupy))
+                return false;
+
             if (!AreTilesEmpty(tilesToOccupy))
                 return false;
 
             OpticComponent componentToAdd = placeData.CreateOpticComponent(activeGrid, tilesToOccupy);
             AddComponent(componentToAdd);
+
+            return true;
+        }
+
+        private bool AreTilesInBounds(IEnumerable<Vector2Int> tilesToOccupy)
+        {
+            foreach (Vector2Int tile in tilesToOccupy)
+                if (GridUtils.IsPosOutOfBounds(tile, activeGrid))
+                    return false;
 
             return true;
         }

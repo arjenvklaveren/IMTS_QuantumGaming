@@ -26,6 +26,14 @@ namespace Game.Data
         #endregion
 
         #region Bounds Check
+        public static bool IsPosOutOfBounds(Vector2Int pos, GridData grid)
+        {
+            return pos.x < 0 ||
+                pos.y < 0 ||
+                pos.x >= grid.size.x ||
+                pos.y >= grid.size.y;
+        }
+
         public static bool IsChunkInBounds(Vector2Int chunkPos, GridData grid)
         {
             if (chunkPos.x < 0 || chunkPos.y < 0)

@@ -49,7 +49,7 @@ namespace Game
 
         private void CompilePortsOnComponent(OpticComponent component, GridData grid)
         {
-            foreach (ComponentPort port in component.inPorts)
+            foreach (ComponentPort port in component.InPorts)
                 RegisterPort(port, grid);
         }
 

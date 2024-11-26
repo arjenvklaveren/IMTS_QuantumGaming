@@ -85,7 +85,7 @@ namespace Game
 
             if (isMeasure)
             {
-                foreach(Photon sPhoton in GetPhotonSuperpositions(photon))
+                foreach (Photon sPhoton in GetPhotonSuperpositions(photon))
                 {
                     sPhoton.Destroy();
                 }
@@ -95,7 +95,7 @@ namespace Game
                 foreach (Photon ePhoton in GetPhotonEntanglements(photon))
                 {
                     //TODO photon entanglement logic
-    
+
                 }
             }
             else
@@ -220,7 +220,7 @@ namespace Game
         Color GetRelativePhotonColor(Photon photon)
         {
             int? index = FindPhotonListIndex(photon);
-            float opacity = 1.0f;
+            //float opacity = 1.0f;
             return Color.black;
         }
     }

@@ -38,8 +38,8 @@ namespace Game
         private void SplitPhoton(Photon photon, int inPortIndex)
         {
             int[] outPortIndexes = GetOutPorts(inPortIndex);
-            ComponentPort reflectOutPort = outPorts[outPortIndexes[0]];
-            ComponentPort passOutPort = outPorts[outPortIndexes[1]];
+            ComponentPort reflectOutPort = OutPorts[outPortIndexes[0]];
+            ComponentPort passOutPort = OutPorts[outPortIndexes[1]];
 
             Photon passPhoton = photon.Clone();
             Photon reflectPhoton = photon.Clone();
