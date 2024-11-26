@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8964025291593832305}
   - component: {fileID: 8674023782413764237}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: PhotonSourceComponent
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -135,7 +135,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8046272308596212314}
   - component: {fileID: 6016783777112801732}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Square
   m_TagString: Untagged
   m_Icon: {fileID: 0}
