@@ -13,6 +13,8 @@ namespace Game
         [Header("External Components")]
         [SerializeField] private SpriteRenderer sprite;
 
+        private float intensityOpacity;
+
         private Photon source;
         private GridData openGrid;
 
