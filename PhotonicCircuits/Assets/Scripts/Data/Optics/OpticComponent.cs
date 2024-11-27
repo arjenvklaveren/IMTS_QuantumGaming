@@ -158,7 +158,7 @@ namespace Game.Data
         #endregion
 
         #region Handle Photon
-        private void StartHandlePhotonRoutine(ComponentPort port, Photon photon)
+        protected void StartHandlePhotonRoutine(ComponentPort port, Photon photon)
         {
             OnStartProcessPhotonRoutine?.Invoke(HandlePhotonCo(port, photon));
         }

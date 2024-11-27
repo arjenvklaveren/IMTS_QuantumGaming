@@ -30,6 +30,9 @@ namespace Game
         {
             SetDefaultValues(photon);
             SetupListeners();
+
+            SyncVisuals();
+            StartMovement();
         }
 
         private void SetDefaultValues(Photon photon)

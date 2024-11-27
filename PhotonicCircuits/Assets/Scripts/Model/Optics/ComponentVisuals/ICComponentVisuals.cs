@@ -8,7 +8,13 @@ namespace Game
         [SerializeField] private Transform visualsHolder;
 
         [Space]
+        [SerializeField] private Transform inPortsHolder;
+        [SerializeField] private Transform outPortsHolder;
+
+        [Header("Prefab References")]
         [SerializeField] private PhotonVisuals photonPrefab;
+        [SerializeField] private GameObject inPortPrefab;
+        [SerializeField] private GameObject outPortPrefab;
 
         private ICComponentBase sourceICComponent;
 
@@ -17,6 +23,7 @@ namespace Game
         {
             base.SetSource(component);
             SetDefaultValues();
+            GeneratePortVisuals();
 
             SetupListeners();
         }
@@ -43,14 +50,44 @@ namespace Game
         }
         #endregion
 
+        #region Generate Visuals
+        private void GeneratePortVisuals()
+        {
+            GenerateInPorts();
+            GenerateOutPorts();
+        }
+
+        private void GenerateInPorts()
+        {
+            GeneratePorts(SourceComponent.InPorts, inPortsHolder, inPortPrefab);
+        }
+
+        private void GenerateOutPorts()
+        {
+            GeneratePorts(SourceComponent.OutPorts, outPortsHolder, outPortPrefab);
+        }
+
+        private void GeneratePorts(ComponentPort[] ports, Transform holder, GameObject portPrefab)
+        {
+            for (int i = 0; i < ports.Length; i++)
+                GeneratePortVisuals(ports[i], holder, portPrefab);
+        }
+
+        private void GeneratePortVisuals(ComponentPort port, Transform holder, GameObject portPrefab)
+        {
+            Transform portVisuals = Instantiate(portPrefab, holder).transform;
+
+            portVisuals.position = GridUtils.GridPos2WorldPos(port.position, SourceComponent.HostGrid);
+            RotateToLookAtOrientation(portVisuals, port.orientation);
+        }
+        #endregion
+
         #region Handle Events
-        private void ICComponentBase_OnPhotonExitIC(Photon photon)
+        private void ICComponentBase_OnPhotonExitIC(Photon photon, ComponentPort port)
         {
             PhotonVisuals photonVisuals = Instantiate(photonPrefab);
 
             photonVisuals.SetSource(photon);
-            photonVisuals.SyncVisuals();
-            photonVisuals.StartMovement();
         }
         #endregion
 
@@ -66,6 +103,7 @@ namespace Game
         #endregion
 
         #region Handle Interaction
+        // TEMP
         public void Interact()
         {
             GridManager.Instance.OpenGrid(sourceICComponent.internalGrid);

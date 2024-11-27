@@ -29,6 +29,18 @@ namespace Game.Data
             IsGhostPort = true;
         }
 
+        public ComponentPort(
+            OpticComponent owner,
+            Vector2Int position,
+            Orientation orientation,
+            int portId)
+        {
+            this.owner = owner;
+            this.position = position;
+            this.orientation = orientation;
+            this.portId = portId;
+        }
+
         public ComponentPort(ComponentPort copy)
         {
             owner = copy.owner;

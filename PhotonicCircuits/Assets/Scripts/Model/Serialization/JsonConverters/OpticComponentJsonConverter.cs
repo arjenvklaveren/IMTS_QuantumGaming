@@ -39,6 +39,15 @@ namespace Game
                 OpticComponentType.BeamSplitter => LoadBeamSplitterComponent(data),
                 OpticComponentType.PhaseShifter => LoadPhaseShifterComponent(data),
                 OpticComponentType.Detector => LoadDetectorComponent(data),
+
+                // IC Formats
+                OpticComponentType.IC1x1 => LoadIC1x1Component(data),
+                OpticComponentType.IC2x2 => LoadIC2x2Component(data),
+
+                // IC
+                OpticComponentType.ICIn => LoadICInComponent(data),
+                OpticComponentType.ICOut => LoadICOutComponent(data),
+
                 _ => throw new NotImplementedException($"Deserialization for component type {data.type} has not been implemented!"),
             };
         }
@@ -46,7 +55,7 @@ namespace Game
         #region Load Component Types
         private TestComponent LoadTestComponent(OpticComponentData data)
         {
-            return new TestComponent(
+            return new(
                 null,
                 data.occupiedTiles,
                 data.orientation,
@@ -56,7 +65,7 @@ namespace Game
 
         private PhotonSourceComponent LoadSourceComponent(OpticComponentData data)
         {
-            return new PhotonSourceComponent(
+            return new(
                 null,
                 data.occupiedTiles,
                 data.orientation,
@@ -66,7 +75,7 @@ namespace Game
 
         private MirrorComponent LoadMirrorComponent(OpticComponentData data)
         {
-            return new MirrorComponent(
+            return new(
                 null,
                 data.occupiedTiles,
                 data.orientation,
@@ -76,7 +85,7 @@ namespace Game
 
         private BeamSplitterComponent LoadBeamSplitterComponent(OpticComponentData data)
         {
-            return new BeamSplitterComponent(
+            return new(
                 null,
                 data.occupiedTiles,
                 data.orientation,
@@ -86,7 +95,7 @@ namespace Game
 
         private PhaseShifterComponent LoadPhaseShifterComponent(OpticComponentData data)
         {
-            return new PhaseShifterComponent(
+            return new(
                 null,
                 data.occupiedTiles,
                 data.orientation,
@@ -96,13 +105,62 @@ namespace Game
 
         private PhotonDetectorComponent LoadDetectorComponent(OpticComponentData data)
         {
-            return new PhotonDetectorComponent(
+            return new(
                 null,
                 data.occupiedTiles,
                 data.orientation,
                 data.inPorts,
                 data.outPorts);
         }
+
+        #region IC
+        #region IC Formats
+        private ICComponent1x1 LoadIC1x1Component(OpticComponentData data)
+        {
+            GridData internalGrid = JsonConvert.DeserializeObject<GridData>(data.args, SerializationManager.GetAllConverters());
+
+            return new(
+                null,
+                data.occupiedTiles,
+                data.orientation,
+                internalGrid);
+        }
+
+        private ICComponent2x2 LoadIC2x2Component(OpticComponentData data)
+        {
+            GridData internalGrid = JsonConvert.DeserializeObject<GridData>(data.args, SerializationManager.GetAllConverters());
+
+            return new(
+                null,
+                data.occupiedTiles,
+                data.orientation,
+                internalGrid);
+        }
+        #endregion
+
+        private ICInComponent LoadICInComponent(OpticComponentData data)
+        {
+            return new(
+                null,
+                data.occupiedTiles,
+                data.orientation,
+                data.inPorts,
+                data.outPorts);
+        }
+
+        private ICOutComponent LoadICOutComponent(OpticComponentData data)
+        {
+            int portId = JsonConvert.DeserializeObject<int>(data.args);
+
+            return new(
+                null,
+                data.occupiedTiles,
+                data.orientation,
+                data.inPorts,
+                data.outPorts,
+                portId);
+        }
+        #endregion
         #endregion
         #endregion
 

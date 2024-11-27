@@ -22,5 +22,17 @@ namespace Game
                 title)
         {
         }
+
+        public ICComponent1x1(
+            GridData hostGrid,
+            Vector2Int[] tilesToOccupy,
+            Orientation orientation,
+            GridData internalGrid) : base(
+                hostGrid,
+                tilesToOccupy,
+                orientation,
+                internalGrid)
+        {
+        }
     }
 }

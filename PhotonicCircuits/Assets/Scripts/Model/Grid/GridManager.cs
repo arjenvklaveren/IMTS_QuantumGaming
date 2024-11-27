@@ -33,6 +33,11 @@ namespace Game
             return grids.Peek();
         }
 
+        public IEnumerable<GridData> GetAllGrids()
+        {
+            return grids;
+        }
+
         public void OpenGrid(GridData grid)
         {
             grids.Push(grid);
@@ -52,7 +57,9 @@ namespace Game
             if (grids.Count <= 1)
                 return;
 
-            grids.Pop();
+            GridData closedGrid = grids.Pop();
+
+            ComponentPortsManager.Instance.CompileComponentPorts(closedGrid);
 
             GridController.SetActiveGrid(grids.Peek());
         }

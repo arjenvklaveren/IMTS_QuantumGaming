@@ -28,26 +28,24 @@ namespace Game
         private void SetupListeners()
         {
             PhotonSourceComponent source = SourceComponent as PhotonSourceComponent;
-            source.OnCreatePhoton += Source_OnCreatePhoton;
+            source.OnCreatePhoton += PhotonSourceComponent_OnCreatePhoton;
         }
 
         private void RemoveListeners()
         {
             PhotonSourceComponent source = SourceComponent as PhotonSourceComponent;
-            source.OnCreatePhoton -= Source_OnCreatePhoton;
+            source.OnCreatePhoton -= PhotonSourceComponent_OnCreatePhoton;
         }
         #endregion
 
         #region Handle Events
-        private void Source_OnCreatePhoton(Photon photon) => HandlePhotonCreation(photon);
+        private void PhotonSourceComponent_OnCreatePhoton(Photon photon) => HandlePhotonCreation(photon);
 
         private void HandlePhotonCreation(Photon photon)
         {
             PhotonVisuals photonVisuals = Instantiate(photonPrefab);
 
             photonVisuals.SetSource(photon);
-            photonVisuals.SyncVisuals();
-            photonVisuals.StartMovement();
         }
         #endregion
 

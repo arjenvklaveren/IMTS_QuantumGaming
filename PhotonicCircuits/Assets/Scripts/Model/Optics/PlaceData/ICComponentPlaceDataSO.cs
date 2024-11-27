@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Game
 {
-    [CreateAssetMenu(fileName = "ICPlaceData", menuName = "ScriptableObjects/Components/Place Data/Integrated Circuit")]
+    [CreateAssetMenu(fileName = "ICPlaceData", menuName = "ScriptableObjects/Components/Place Data/IC/Integrated Circuit")]
     public class ICComponentPlaceDataSO : ComponentPlaceDataSO
     {
         [Header("IC Settings")]

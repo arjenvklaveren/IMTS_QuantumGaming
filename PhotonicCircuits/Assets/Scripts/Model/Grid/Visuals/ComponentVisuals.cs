@@ -57,10 +57,10 @@ namespace Game
         protected virtual void HandlePhoton(PhotonVisuals photon) { }
         protected virtual void HandleRotationChanged(Orientation orientation) { }
 
-        protected void RotateToLookAtOrientation(Transform visualsHolder, Orientation orientation)
+        protected void RotateToLookAtOrientation(Transform visuals, Orientation orientation)
         {
-            Vector3 targetLookAt = visualsHolder.position + (Vector3)orientation.ToVector2();
-            visualsHolder.rotation = LookAt2D.GetLookAtRotation(visualsHolder, targetLookAt);
+            Vector3 targetLookAt = visuals.position + (Vector3)orientation.ToVector2();
+            visuals.rotation = LookAt2D.GetLookAtRotation(visuals, targetLookAt);
         }
 
         #region Hover Logic

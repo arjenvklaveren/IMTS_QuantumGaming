@@ -1,5 +1,36 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &776911608763009829
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7767606091864119070}
+  m_Layer: 7
+  m_Name: OutPorts
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &7767606091864119070
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 776911608763009829}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 6956475172887314949}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1730218158573097771
 GameObject:
   m_ObjectHideFlags: 0
@@ -79,6 +110,37 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
+--- !u!1 &3637303605127407713
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1130783168336541028}
+  m_Layer: 7
+  m_Name: InPorts
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1130783168336541028
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3637303605127407713}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 6956475172887314949}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &4756599487448831118
 GameObject:
   m_ObjectHideFlags: 0
@@ -241,7 +303,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   visualsHolder: {fileID: 1898408314435157100}
+  inPortsHolder: {fileID: 1130783168336541028}
+  outPortsHolder: {fileID: 7767606091864119070}
   photonPrefab: {fileID: 2330733071325848398, guid: bed9709cd1adb9a40801087d54f0b24e, type: 3}
+  inPortPrefab: {fileID: 7407642573016115116, guid: b9b3926124f8cd944ba424b95a82334e, type: 3}
+  outPortPrefab: {fileID: 2929217159962694918, guid: d6505491d54c7944f8d9fd1007081bac, type: 3}
 --- !u!1 &7187426821991134016
 GameObject:
   m_ObjectHideFlags: 0
@@ -270,6 +336,8 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 1130783168336541028}
+  - {fileID: 7767606091864119070}
   m_Father: {fileID: 1898408314435157100}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

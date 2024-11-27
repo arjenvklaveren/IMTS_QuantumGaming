@@ -1,5 +1,6 @@
 using Game.Data;
 using SadUtils;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace Game
@@ -32,11 +33,15 @@ namespace Game
         #region Handle Events
         private void SimulationManager_OnSimulationInitialize()
         {
-            GridData openGrid = GridManager.Instance.GetActiveGrid();
-            // Reset port data.
-            openGrid.inPortsData.Clear();
+            IEnumerable<GridData> grids = GridManager.Instance.GetAllGrids();
 
-            CompileComponentPorts(openGrid);
+            foreach (GridData grid in grids)
+            {
+                //Reset port data
+                grid.inPortsData.Clear();
+
+                CompileComponentPorts(grid);
+            }
         }
         #endregion
 

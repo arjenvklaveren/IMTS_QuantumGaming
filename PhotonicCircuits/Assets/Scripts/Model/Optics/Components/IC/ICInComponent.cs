@@ -1,10 +1,13 @@
 using Game.Data;
+using System;
 using UnityEngine;
 
 namespace Game
 {
     public class ICInComponent : OpticComponent
     {
+        public event Action<Photon> OnHandlePhoton;
+
         public override OpticComponentType Type => OpticComponentType.ICIn;
 
         public ICInComponent(
@@ -28,6 +31,8 @@ namespace Game
 
             photon.TriggerExitComponent(this);
             TriggerOnPhotonExit(photon);
+
+            OnHandlePhoton?.Invoke(photon);
         }
     }
 }

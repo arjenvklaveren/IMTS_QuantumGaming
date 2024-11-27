@@ -51,7 +51,8 @@ namespace Game
 
             OnSelectedComponent?.Invoke(SelectedVisuals);
 
-            if (selected.SourceComponent.Type == Data.OpticComponentType.IC1x1)
+            if (selected.SourceComponent.Type == Data.OpticComponentType.IC1x1 ||
+                selected.SourceComponent.Type == Data.OpticComponentType.IC2x2)
                 (selected as ICComponentVisuals).Interact();
         }
 
