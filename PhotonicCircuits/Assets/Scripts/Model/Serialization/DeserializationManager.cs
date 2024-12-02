@@ -72,6 +72,7 @@ namespace Game
         {
             if (Input.GetKeyDown(KeyCode.L))
                 LoadCircuit("testGrid.json");
+
         }
     }
 }

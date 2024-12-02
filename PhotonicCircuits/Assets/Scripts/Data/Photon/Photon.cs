@@ -29,8 +29,8 @@ namespace Game.Data
             GridData currentGrid,
             Vector2Int position,
             Orientation propagation,
-            float wavelength = 565f,
-            float amplitude = 0.5f,
+            float wavelength = 666f,
+            float amplitude = 1.0f,
             float phase = 0f,
             float polarization = 0f)
         {
@@ -64,6 +64,17 @@ namespace Game.Data
         public Orientation GetPropagation() => propagation;
         public Vector2 GetPropagationVector() => propagation.ToVector2();
         public Vector2Int GetPropagationIntVector() => propagation.ToVector2Int();
+
+        public bool IsIndistinguishable(Photon photon)
+        {
+            return(
+                position == photon.position &&
+                propagation == photon.propagation &&
+                wavelength == photon.wavelength &&
+                amplitude == photon.amplitude &&
+                phase == photon.phase &&
+                polarization == photon.polarization);
+        }
 
         public float GetWavelengthNormalized()
         {
@@ -120,7 +131,7 @@ namespace Game.Data
                 b = 0f;
             }
 
-            return new Color(r, g, b);
+            return new Color(r, g, b, GetAmplitude());
         }
 
         public void Move()

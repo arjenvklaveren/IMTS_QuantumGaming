@@ -107,6 +107,10 @@ namespace Game
                     photons.RemoveAt(photonIndex.Value.x);
                     ShiftEntanglementIndexes(photonIndex.Value.x);
                 }
+                else
+                {
+                    ReDistributeAmplitudeProbability(photon, photonIndex.Value.x);
+                }
             }
         }
 
@@ -214,6 +218,17 @@ namespace Game
                         entanglementIndexes[i][j]--;
                     }
                 }
+            }
+        }
+
+        void ReDistributeAmplitudeProbability(Photon photon, int index)
+        {
+            if (photon.GetAmplitude() == 0) return;
+            List<Photon> photonSuperpositions = GetPhotonsByIndex(index);
+            float amplitudueDistributeVal = photon.GetAmplitude() / photonSuperpositions.Count;
+            foreach(Photon pS in photonSuperpositions)
+            {
+                pS.SetAmplitude(pS.GetAmplitude() + amplitudueDistributeVal); 
             }
         }
 

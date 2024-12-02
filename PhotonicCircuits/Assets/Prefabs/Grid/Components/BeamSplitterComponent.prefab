@@ -176,7 +176,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1a7b6f2e8933d4e49bc7b84cd7c89d92, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  photonPrefab: {fileID: 2330733071325848398, guid: bed9709cd1adb9a40801087d54f0b24e, type: 3}
+  photonParticlePrefab: {fileID: 1252529590538980857, guid: bed9709cd1adb9a40801087d54f0b24e, type: 3}
+  photonBeamPrefab: {fileID: 718248258048210290, guid: e66e7735f1c0afd42aa88124221dae85, type: 3}
 --- !u!1 &6563280998401207422
 GameObject:
   m_ObjectHideFlags: 0

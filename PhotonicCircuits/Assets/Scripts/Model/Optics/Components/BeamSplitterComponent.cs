@@ -34,35 +34,71 @@ namespace Game
         protected override IEnumerator HandlePhotonCo(ComponentPort port, Photon photon)
         {
             currentPhotons.Add(photon, port);
-            if (firstEnter == null) HandleFirstPhoton(photon);
-
+            if (firstEnter == null)
+                ExternalCoroutineExecutionManager.Instance.StartExternalCoroutine(HandleFirstPhoton(photon));
             yield break;
         }
 
-        private void HandleFirstPhoton(Photon photon)
+        private IEnumerator HandleFirstPhoton(Photon photon)
         {
-            Debug.Log("FIRST PHOTON HAS ENTERED");
             firstEnter = photon;
-            firstEnter.OnExitComponent += HandleAllCurrentPhotonsCo;
+            yield return PhotonMovementManager.Instance.WaitForMoveHalfTile;
+            HandleAllCurrentPhotons();
         }
 
-        private void HandleAllCurrentPhotonsCo(OpticComponent component)
+        private void HandleAllCurrentPhotons()
         {
-            Debug.Log("FIRST PHOTON HAS LEFT");
-            firstEnter.OnExitComponent -= HandleAllCurrentPhotonsCo;
+            int photonCount = currentPhotons.Count;
+            if (photonCount == 1)
+            {
+                KeyValuePair<Photon, ComponentPort> singlePair = currentPhotons.ElementAt(0);
+                ResolveSplitPhoton(singlePair.Key, singlePair.Value);
+                photonCount = 0;
+            }
+            for(int i = 0; i < photonCount; i++)
+            {
+                bool isInterfering = false;
+                KeyValuePair<Photon, ComponentPort> outerPair = currentPhotons.ElementAt(i);
+                for (int j = 0; j < photonCount; j++)
+                {
+                    KeyValuePair<Photon, ComponentPort> innerPair = currentPhotons.ElementAt(j);
+                    if (i == j) continue;
+                    if(IsInterfering(outerPair, innerPair))
+                    {
+                        ResolveInterferePhotons(outerPair, innerPair);
+                        isInterfering = true;
+                        photonCount -= 2;
+                        i--;
+                        break;
+                    }
+                }
+                if (!isInterfering)
+                {
+                    ResolveSplitPhoton(outerPair.Key, outerPair.Value);
+                    photonCount -= 1;
+                    i--;
+                }
+            }
             firstEnter = null;
+            currentPhotons.Clear();
         }
 
         private void ResolveSplitPhoton(Photon photon, ComponentPort inPort)
         {
+            currentPhotons.Remove(photon);
+
             int[] outPortIndexes = GetOutPorts(inPort);
             ComponentPort reflectOutPort = outPorts[outPortIndexes[0]];
             ComponentPort passOutPort = outPorts[outPortIndexes[1]];
+
+            float photonProbabilty = photon.GetAmplitude() / 2;
 
             Photon passPhoton = photon.Clone();
             Photon reflectPhoton = photon.Clone();
             PhotonManager.Instance.ReplacePhoton(photon, passPhoton, reflectPhoton);
             reflectPhoton.SetPropagation(reflectOutPort.orientation);
+            passPhoton.SetAmplitude(photonProbabilty);
+            reflectPhoton.SetAmplitude(photonProbabilty);
             OnSplitPhoton?.Invoke(passPhoton, reflectPhoton);
 
             passPhoton.TriggerExitComponent(this);
@@ -71,18 +107,34 @@ namespace Game
             TriggerOnPhotonExit(reflectPhoton);
         }
 
-        private void ResolveInterferePhoton()
-        {
-            
+        private void ResolveInterferePhotons(KeyValuePair<Photon, ComponentPort> photonA, KeyValuePair<Photon, ComponentPort> photonB, bool isIndistingishableCase = false)
+        { 
+            currentPhotons.Remove(photonA.Key);
+            currentPhotons.Remove(photonB.Key);
+
+            PhotonInterferenceManager.Instance.HandleInterference(photonA.Key, photonB.Key, InterferenceType.Split);
+
+            ExitIfExist(photonA.Key);
+            ExitIfExist(photonB.Key);
         }
 
-        private bool IsInterference()
+        private bool IsInterfering(KeyValuePair<Photon, ComponentPort> photonA, KeyValuePair<Photon, ComponentPort> photonB)
         {
-            if (currentPhotons.Count > 1)
+            if (IsInterferePort(photonA.Value, photonB.Value))
             {
-
+                if (PhotonManager.Instance.GetPhotonSuperpositions(photonA.Key).Contains(photonB.Key))
+                {
+                    return true;
+                }
             }
             return false;
+        }
+
+        private void ExitIfExist(Photon photon)
+        {
+            if (PhotonManager.Instance.FindPhoton(photon) == null) return;
+            photon.TriggerExitComponent(this);
+            TriggerOnPhotonExit(photon);
         }
 
         private int[] GetOutPorts(ComponentPort inPort)

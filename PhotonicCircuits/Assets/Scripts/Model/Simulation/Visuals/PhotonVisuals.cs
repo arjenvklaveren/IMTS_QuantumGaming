@@ -8,24 +8,21 @@ namespace Game
 {
     public class PhotonVisuals : MonoBehaviour
     {
+        [SerializeField] protected SpriteRenderer sprite;
+
         public static event Action<PhotonVisuals, OpticComponent> OnEnterComponent;
 
-        [Header("External Components")]
-        [SerializeField] private SpriteRenderer sprite;
+        protected Photon source;
+        protected GridData openGrid;
 
-        private float intensityOpacity;
+        protected OpticComponent hostComponent;
+        protected bool isInComponent;
 
-        private Photon source;
-        private GridData openGrid;
+        protected Coroutine moveRoutine;
+        protected float timeToTravelTile;
+        protected WaitForEndOfFrame waitForEndOfFrame;
 
-        private Coroutine moveRoutine;
-
-        private OpticComponent hostComponent;
-        private bool isInComponent;
-
-        private float timeToTravelTile;
-
-        private WaitForEndOfFrame waitForEndOfFrame;
+        protected PhotonMovementManager PhotonMovementManager => PhotonMovementManager.Instance;
 
         #region Awake / Destroy
         public void SetSource(Photon photon)
@@ -37,17 +34,15 @@ namespace Game
             StartMovement();
         }
 
-        private void SetDefaultValues(Photon photon)
+        protected virtual void SetDefaultValues(Photon photon)
         {
             source = photon;
 
             // Cache opened grid for simulation
             openGrid = GridManager.Instance.GetActiveGrid();
 
-            // Set time to travel vars
             float tilesPerSecond = PhotonMovementManager.MoveSpeed;
             timeToTravelTile = 1f / tilesPerSecond;
-
             waitForEndOfFrame = new();
         }
 
@@ -56,7 +51,7 @@ namespace Game
             RemoveListeners();
         }
 
-        private void SetupListeners()
+        protected void SetupListeners()
         {
             source.OnEnterComponent += Photon_OnEnterComponent;
             source.OnExitComponent += Photon_OnExitComponent;
@@ -74,9 +69,9 @@ namespace Game
         #region Handle Events
         private void Photon_OnEnterComponent(OpticComponent component) => HandleEnterComponent(component);
         private void Photon_OnExitComponent(OpticComponent component) => HandleExitComponent(component);
-        private void Source_OnDestroy() => HandleDestroy();
+        private void Source_OnDestroy() => HandleDestroySource();
 
-        private void HandleEnterComponent(OpticComponent component)
+        protected virtual void HandleEnterComponent(OpticComponent component)
         {
             if (isInComponent)
                 return;
@@ -90,7 +85,7 @@ namespace Game
             OnEnterComponent?.Invoke(this, component);
         }
 
-        private void HandleExitComponent(OpticComponent component)
+        protected virtual void HandleExitComponent(OpticComponent component)
         {
             if (!isInComponent)
                 return;
@@ -100,110 +95,12 @@ namespace Game
 
             isInComponent = false;
             SyncVisuals();
-
             StartMovement();
         }
-
-        private void HandleDestroy()
-        {
-            if (moveRoutine != null)
-                StopCoroutine(moveRoutine);
-
-            Destroy(gameObject);
-        }
         #endregion
 
-        #region Handle Sprite Visuals
-        public void SyncVisuals()
-        {
-            SyncPosition();
-            SyncRotation();
-            SyncColor();
-        }
-
-        private void SyncPosition()
-        {
-            Vector2 newPosition = GridUtils.GridPos2WorldPos(source.GetPosition(), openGrid);
-            transform.position = newPosition;
-        }
-
-        private void SyncRotation()
-        {
-            Vector3 orientation = source.GetPropagationVector();
-            Vector3 lookAtTarget = transform.position + orientation;
-
-            sprite.transform.rotation = LookAt2D.GetLookAtRotation(transform, lookAtTarget);
-        }
-
-        private void SyncColor()
-        {
-            sprite.color = source.GetColor();
-        }
-
-        public void StartMovement()
-        {
-            if (moveRoutine != null)
-                StopCoroutine(moveRoutine);
-
-            moveRoutine = StartCoroutine(MoveCo());
-        }
-        #endregion
-
-        #region Overwrite Movement
-        public void ForceMoveTile(Vector2 startPos, Vector2 endPos) => ForceMove(startPos, endPos, timeToTravelTile);
-        public void ForceMoveHalfTile(Vector2 startPos, Vector2 endPos) => ForceMove(startPos, endPos, timeToTravelTile / 2f);
-
-        public void ForceMove(Vector2 startPos, Vector2 endPos, float duration)
-        {
-            if (moveRoutine != null)
-                StopCoroutine(moveRoutine);
-
-            moveRoutine = StartCoroutine(ForceMoveCo(startPos, endPos, duration));
-        }
-
-        private IEnumerator ForceMoveCo(Vector2 startPos, Vector2 endPos, float duration)
-        {
-            float timer = duration;
-            transform.position = startPos;
-
-            while (timer > 0f)
-            {
-                yield return waitForEndOfFrame;
-                timer -= Time.deltaTime;
-
-                transform.position = Vector2.Lerp(startPos, endPos, 1f - (timer / duration));
-            }
-
-            transform.position = endPos;
-        }
-        #endregion
-
-        #region Move Loops
-        private IEnumerator MoveCo()
-        {
-            float timer = timeToTravelTile;
-            Vector2 moveStep = source.GetPropagationIntVector() * openGrid.spacing;
-
-            while (true)
-            {
-                Vector2 startPos = transform.position;
-                Vector2 endPos = startPos + moveStep;
-                transform.position = Vector2.Lerp(startPos, endPos, 1f - (timer / timeToTravelTile));
-
-                while (timer >= 0f)
-                {
-                    yield return waitForEndOfFrame;
-                    timer -= Time.deltaTime;
-
-                    transform.position = Vector2.Lerp(startPos, endPos, 1f - (timer / timeToTravelTile));
-                }
-
-                // Reset for next tile, carry extra progress!
-                timer += timeToTravelTile;
-            }
-        }
-        #endregion
-
-        PhotonMovementManager PhotonMovementManager => PhotonMovementManager.Instance;
+        public virtual void SyncVisuals() { }
+        public virtual void StartMovement() { }
+        protected virtual void HandleDestroySource() { }
     }
 }

@@ -34,7 +34,8 @@ namespace Game
             return data.type switch
             {
                 OpticComponentType.Test => LoadTestComponent(data),
-                OpticComponentType.Source => LoadSourceComponent(data),
+                OpticComponentType.SourceSingle => LoadSingleSourceComponent(data),
+                OpticComponentType.SourceLaser => LoadSingleSourceComponent(data),
                 OpticComponentType.Mirror => LoadMirrorComponent(data),
                 OpticComponentType.BeamSplitter => LoadBeamSplitterComponent(data),
                 OpticComponentType.PhaseShifter => LoadPhaseShifterComponent(data),
@@ -63,7 +64,17 @@ namespace Game
                 data.outPorts);
         }
 
-        private PhotonSourceComponent LoadSourceComponent(OpticComponentData data)
+        private PhotonSingleSourceComponent LoadSingleSourceComponent(OpticComponentData data)
+        {
+            return new(
+                null,
+                data.occupiedTiles,
+                data.orientation,
+                data.inPorts,
+                data.outPorts);
+        }
+
+        private PhotonLaserSourceComponent LoadLaserSourceComponent(OpticComponentData data)
         {
             return new(
                 null,
@@ -95,12 +106,16 @@ namespace Game
 
         private PhaseShifterComponent LoadPhaseShifterComponent(OpticComponentData data)
         {
+            float shiftParse = 0;
+            float.TryParse(data.args, out shiftParse);
+
             return new(
                 null,
                 data.occupiedTiles,
                 data.orientation,
                 data.inPorts,
-                data.outPorts);
+                data.outPorts,
+                shiftParse);
         }
 
         private PhotonDetectorComponent LoadDetectorComponent(OpticComponentData data)

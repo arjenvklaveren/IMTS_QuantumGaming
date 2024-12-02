@@ -63,6 +63,7 @@ namespace Game
             PlayerInputManager.PopInputHandler();
         }
 
+        public bool IsSimulating() { return isSimulating; }
         private PlayerInputManager PlayerInputManager => PlayerInputManager.Instance;
     }
 }

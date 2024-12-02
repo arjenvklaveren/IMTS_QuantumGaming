@@ -6,8 +6,10 @@ namespace Game.Data
         BeamSplitter = 1,
         PhaseShifter = 2,
         Test = 3,
-        Source = 4,
+        SourceSingle = 4,
         Detector = 5,
+        SourceLaser = 6,
+        SourcePair = 7,
 
         // IC Components
         IC1x1 = 100,

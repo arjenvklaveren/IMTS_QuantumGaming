@@ -9,9 +9,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8964025291593832305}
-  - component: {fileID: 8674023782413764237}
+  - component: {fileID: 1874724645148247712}
   m_Layer: 7
-  m_Name: PhotonSourceComponent
+  m_Name: PhotonLaserSourceComponent
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -33,7 +33,7 @@ Transform:
   - {fileID: 3720716149337550600}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &8674023782413764237
+--- !u!114 &1874724645148247712
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -42,10 +42,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 888722497089132330}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9778add7d2cbeac48a075624de95cc7a, type: 3}
+  m_Script: {fileID: 11500000, guid: 039b1d1a4fc7fac4c9ba2b6426ff6d0f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  photonPrefab: {fileID: 2330733071325848398, guid: bed9709cd1adb9a40801087d54f0b24e, type: 3}
+  photonPrefab: {fileID: 718248258048210290, guid: e66e7735f1c0afd42aa88124221dae85, type: 3}
   visualsHolder: {fileID: 3720716149337550600}
 --- !u!1 &2040705677007875364
 GameObject:
@@ -197,8 +197,8 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 1
-  m_Sprite: {fileID: 21300000, guid: d11a40dc968d0364689bf8b1acb84530, type: 3}
+  m_SortingOrder: 0
+  m_Sprite: {fileID: 21300000, guid: 77f3026d05305bb4a88003374c6d0c60, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0

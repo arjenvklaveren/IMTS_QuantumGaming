@@ -44,6 +44,7 @@ namespace Game.Data
             InitPorts();
         }
 
+
         protected virtual Vector2Int GetOccupiedRootTile(Vector2Int[] tilesToOccupy)
         {
             return tilesToOccupy[0];
@@ -178,6 +179,7 @@ namespace Game.Data
         #endregion
 
         public virtual void Destroy() { }
+        public virtual void Reset() { }
 
         public virtual string SerializeArgs() { return ""; }
 

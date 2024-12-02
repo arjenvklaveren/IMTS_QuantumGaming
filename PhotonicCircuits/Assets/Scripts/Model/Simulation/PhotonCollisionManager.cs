@@ -265,10 +265,11 @@ namespace Game
 
         private void HandlePhotonCollision(Photon photonA, Photon photonB)
         {
-            // TODO
-            //Debug.Log("Found Photon Collision at " + photonA.GetPosition());
+            if(photonA.GetPropagation() == photonB.GetPropagation())
+            {
+                PhotonInterferenceManager.Instance.HandleInterference(photonA, photonB, InterferenceType.Combine);
+            }
         }
-
         #region Routines
         private IEnumerator ClearDisplacementsCo()
         {

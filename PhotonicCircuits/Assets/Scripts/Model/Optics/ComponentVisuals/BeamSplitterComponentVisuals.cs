@@ -5,10 +5,13 @@ namespace Game
 {
     public class BeamSplitterComponentVisuals : ComponentVisuals
     {
-        [Header("Photon Visuals Settings")]
-        [SerializeField] private PhotonVisuals photonPrefab;
+        [SerializeField] private PhotonParticleVisuals photonParticlePrefab;
+        [SerializeField] private PhotonBeamVisuals photonBeamPrefab;
 
+        private PhotonVisuals photonPrefab;
         private BeamSplitterComponent sourceSplitter;
+
+        private PhotonBeamVisuals tempBeamVisuals;
 
         #region Awake / Destroy
         public override void SetSource(OpticComponent component)
@@ -46,25 +49,48 @@ namespace Game
 
         private void HandlePhotonCreation(params Photon[] photons)
         {
-            foreach (Photon photon in photons)
-                CreatePhotonVisuals(photon);
+            for(int i = 0; i <  photons.Length; i++)
+            {
+                CreatePhotonVisuals(photons[i], i);
+            }                
         }
 
-        private void CreatePhotonVisuals(Photon photon)
+        private void CreatePhotonVisuals(Photon photon, int index)
         {
-            PhotonVisuals photonVisuals = Instantiate(photonPrefab);
+            PhotonVisuals photonVisuals;
 
+            if(index == 0 && photonPrefab is PhotonBeamVisuals)
+            {
+                tempBeamVisuals.ChangeSource(photon);
+                return;
+            }
+
+            photonVisuals = Instantiate(photonPrefab);
             photonVisuals.SetSource(photon);
+            photonVisuals.SyncVisuals();
+            photonVisuals.StartMovement();   
         }
         #endregion
 
         protected override void HandlePhoton(PhotonVisuals photon)
         {
-            // Force move photon visuals to center of component.
-            Vector2 photonStartPos = photon.transform.position;
-            Vector2 photonEndPos = GridUtils.GridPos2WorldPos(SourceComponent.occupiedRootTile, SourceComponent.HostGrid);
+            if(photon is PhotonParticleVisuals)
+            {
+                photonPrefab = photonParticlePrefab;
+                PhotonParticleVisuals photonParticle = photon as PhotonParticleVisuals;
 
-            photon.ForceMoveHalfTile(photonStartPos, photonEndPos);
+                // Force move photon visuals to center of component.
+                Vector2 photonStartPos = photon.transform.position;
+                Vector2 photonEndPos = GridUtils.GridPos2WorldPos(SourceComponent.occupiedRootTile, SourceComponent.HostGrid);
+
+                photonParticle.ForceMoveHalfTile(photonStartPos, photonEndPos);
+            }
+            else
+            {
+                photonPrefab = photonBeamPrefab;
+                PhotonBeamVisuals photonBeam = photon as PhotonBeamVisuals;
+                tempBeamVisuals = photonBeam;
+            }
         }
     }
 }

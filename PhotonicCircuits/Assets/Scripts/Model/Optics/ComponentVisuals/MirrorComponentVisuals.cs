@@ -9,10 +9,21 @@ namespace Game
 
         protected override void HandlePhoton(PhotonVisuals photon)
         {
-            Vector2 photonStartPos = photon.transform.position;
-            Vector2 photonEndPos = GridUtils.GridPos2WorldPos(SourceComponent.occupiedRootTile, SourceComponent.HostGrid);
+            if (photon is PhotonParticleVisuals)
+            {
+                PhotonParticleVisuals photonParticle = photon as PhotonParticleVisuals;
 
-            photon.ForceMoveHalfTile(photonStartPos, photonEndPos);
+                // Force move photon visuals to center of component.
+                Vector2 photonStartPos = photon.transform.position;
+                Vector2 photonEndPos = GridUtils.GridPos2WorldPos(SourceComponent.occupiedRootTile, SourceComponent.HostGrid);
+
+                photonParticle.ForceMoveHalfTile(photonStartPos, photonEndPos);
+            }
+            else
+            {
+                PhotonBeamVisuals photonBeam = photon as PhotonBeamVisuals;
+
+            }
         }
 
         protected override void HandleRotationChanged(Orientation orientation) => RotateToLookAtOrientation(visualsHolder, orientation);

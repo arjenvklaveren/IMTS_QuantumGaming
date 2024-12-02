@@ -73,5 +73,14 @@ namespace Game
             simulationRoutines.Remove(routineId);
         }
         #endregion
+
+        public void StartExternalCoroutine(IEnumerator coroutine)
+        {
+            StartCoroutine(coroutine);
+        }
+        public void StopExternalCoroutine(IEnumerator coroutine)
+        {
+            StopCoroutine(coroutine);
+        }
     }
 }

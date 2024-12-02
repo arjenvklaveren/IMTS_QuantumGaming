@@ -45,3 +45,4 @@ MonoBehaviour:
   - portId: 0
     position: {x: 0, y: 0}
     orientation: 3
+  shiftAmountRadians: 1.570796

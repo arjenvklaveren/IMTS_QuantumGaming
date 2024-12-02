@@ -3,12 +3,12 @@ using UnityEngine;
 
 namespace Game
 {
-    [CreateAssetMenu(fileName = "sourcePlaceData", menuName = "ScriptableObjects/Components/Place Data/source")]
-    public class PhotonSourcePlaceDataSO : ComponentPlaceDataSO
+    [CreateAssetMenu(fileName = "sourceLaserPlaceData", menuName = "ScriptableObjects/Components/Place Data/Laser source")]
+    public class PhotonLaserSourcePlaceDataSO : ComponentPlaceDataSO
     {
         public override OpticComponent CreateOpticComponent(GridData hostGrid, Vector2Int[] tilesToOccupy, Orientation placeOrientation)
         {
-            return new PhotonSourceComponent(
+            return new PhotonLaserSourceComponent(
                 hostGrid,
                 tilesToOccupy,
                 placeOrientation,
