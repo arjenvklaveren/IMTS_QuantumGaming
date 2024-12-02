@@ -25,7 +25,20 @@ namespace Game
 
         protected override IEnumerator HandlePhotonCo(ComponentPort port, Photon photon)
         {
-            PhotonManager.Instance.RemovePhoton(photon, true);
+            float photonDetectPercentage = photon.GetAmplitude() * 100;
+            float detectComparePercentage = Random.Range(0.0f, 100.0f);
+
+            Debug.Log("PHOTON DETECTED AT: " + occupiedRootTile);
+
+            if(detectComparePercentage <= photonDetectPercentage)
+            {
+                PhotonManager.Instance.RemovePhoton(photon, true);
+            }
+            else
+            {
+                PhotonManager.Instance.RemovePhoton(photon, false);
+            }
+
             yield break;
         }
     }

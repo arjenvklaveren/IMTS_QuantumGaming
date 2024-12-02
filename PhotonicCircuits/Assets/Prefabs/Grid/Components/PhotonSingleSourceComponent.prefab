@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 8964025291593832305}
   - component: {fileID: 8674023782413764237}
   m_Layer: 7
-  m_Name: PhotonSourceComponent
+  m_Name: PhotonSingleSourceComponent
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -45,7 +45,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9778add7d2cbeac48a075624de95cc7a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  photonPrefab: {fileID: 2330733071325848398, guid: bed9709cd1adb9a40801087d54f0b24e, type: 3}
+  photonPrefab: {fileID: 1252529590538980857, guid: bed9709cd1adb9a40801087d54f0b24e, type: 3}
   visualsHolder: {fileID: 3720716149337550600}
 --- !u!1 &2040705677007875364
 GameObject:

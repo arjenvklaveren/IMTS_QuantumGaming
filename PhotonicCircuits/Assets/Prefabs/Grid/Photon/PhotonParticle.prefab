@@ -178,9 +178,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1096348230679142079}
-  - component: {fileID: 2330733071325848398}
+  - component: {fileID: 1252529590538980857}
   m_Layer: 0
-  m_Name: Photon
+  m_Name: PhotonParticle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -202,7 +202,7 @@ Transform:
   - {fileID: 6734578607784211708}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &2330733071325848398
+--- !u!114 &1252529590538980857
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -211,7 +211,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 7732549023656682953}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 89e915cebf14b7643b769d616049c552, type: 3}
+  m_Script: {fileID: 11500000, guid: 200f2492fc67ebc4a9d49a4f7a5a2ef0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  visualsPrefab: {fileID: 1252529590538980857}
   sprite: {fileID: 5896962701377013790}

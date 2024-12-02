@@ -39,8 +39,10 @@ namespace Game.Data
 
             this.inPorts = GetPortCopies(inPorts);
             this.outPorts = GetPortCopies(outPorts);
+
             InitPorts();
         }
+
 
         protected virtual Vector2Int GetOccupiedRootTile(Vector2Int[] tilesToOccupy)
         {
@@ -172,6 +174,7 @@ namespace Game.Data
         #endregion
 
         public virtual void Destroy() { }
+        public virtual void Reset() { }
 
         public virtual string SerializeArgs() { return ""; }
     }

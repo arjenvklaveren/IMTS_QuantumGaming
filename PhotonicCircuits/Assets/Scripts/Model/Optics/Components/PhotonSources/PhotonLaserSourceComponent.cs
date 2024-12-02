@@ -4,13 +4,13 @@ using UnityEngine;
 
 namespace Game
 {
-    public class PhotonSourceComponent : OpticComponent
+    public class PhotonLaserSourceComponent : OpticComponent
     {
         public event Action<Photon> OnCreatePhoton;
 
-        public override OpticComponentType Type => OpticComponentType.Source;
+        public override OpticComponentType Type => OpticComponentType.SourceLaser;
 
-        public PhotonSourceComponent(
+        public PhotonLaserSourceComponent(
             GridData hostGrid,
             Vector2Int[] tilesToOccupy,
             Orientation orientation,

@@ -4,10 +4,10 @@ using UnityEngine;
 
 namespace Game
 {
-    public class PhotonSourceComponentVisuals : ComponentVisuals
+    public class PhotonLaserSourceComponentVisuals : ComponentVisuals
     {
         [Header("Photon Visuals Settings")]
-        [SerializeField] private PhotonVisuals photonPrefab;
+        [SerializeField] private PhotonBeamVisuals photonPrefab;
 
         [Header("Visuals Holder")]
         [SerializeField] private Transform visualsHolder;
@@ -29,13 +29,13 @@ namespace Game
 
         private void SetupListeners()
         {
-            PhotonSourceComponent source = SourceComponent as PhotonSourceComponent;
+            PhotonLaserSourceComponent source = SourceComponent as PhotonLaserSourceComponent;
             source.OnCreatePhoton += Source_OnCreatePhoton;
         }
 
         private void RemoveListeners()
         {
-            PhotonSourceComponent source = SourceComponent as PhotonSourceComponent;
+            PhotonLaserSourceComponent source = SourceComponent as PhotonLaserSourceComponent;
             source.OnCreatePhoton -= Source_OnCreatePhoton;
         }
         #endregion

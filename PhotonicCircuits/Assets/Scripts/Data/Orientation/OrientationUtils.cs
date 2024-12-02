@@ -60,5 +60,16 @@ namespace Game.Data
             };
         }
         #endregion
+
+        #region Direction check
+        public static bool IsVertical(this Orientation orientation)
+        {
+            return (orientation == Orientation.Left || orientation == Orientation.Right);
+        }
+        public static bool IsHorizontal(this Orientation orientation)
+        {
+            return (orientation == Orientation.Up || orientation == Orientation.Down);
+        }
+        #endregion
     }
 }
