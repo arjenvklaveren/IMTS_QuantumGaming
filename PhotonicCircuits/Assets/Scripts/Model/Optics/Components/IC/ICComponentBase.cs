@@ -18,7 +18,7 @@ namespace Game
 
         private Vector2Int localBounds;
 
-        protected bool isDirty;
+        public bool IsDirty { get; protected set; }
 
         #region Constructor
         protected ICComponentBase(
@@ -117,7 +117,7 @@ namespace Game
             else if (component.Type == OpticComponentType.ICOut)
                 AddOutComponent(component as ICOutComponent);
 
-            isDirty = true;
+            IsDirty = true;
         }
 
         private void AddInComponent(ICInComponent component)
@@ -155,7 +155,7 @@ namespace Game
             else if (component.Type == OpticComponentType.ICOut)
                 RemoveOutComponent(component as ICOutComponent);
 
-            isDirty = true;
+            IsDirty = true;
         }
 
         private void RemoveInComponent(ICInComponent component)
@@ -309,7 +309,7 @@ namespace Game
         #region Serialization
         public override string SerializeArgs()
         {
-            isDirty = false;
+            IsDirty = false;
 
             return JsonConvert.SerializeObject(internalGrid, SerializationManager.GetAllConverters());
         }

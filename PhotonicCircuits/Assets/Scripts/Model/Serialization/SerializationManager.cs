@@ -98,6 +98,42 @@ namespace Game
         }
         #endregion
 
+        #region Save Integrated Circuits
+        private bool DirtyICComponentExists(GridData grid)
+        {
+            foreach (OpticComponent opticComponent in grid.placedComponents)
+            {
+                if (!TryGetICComponent(opticComponent, out ICComponentBase icComponent))
+                    continue;
+
+                if (icComponent.IsDirty)
+                    return true;
+            }
+
+            return false;
+        }
+
+        private bool TryGetICComponent(OpticComponent component, out ICComponentBase icComponent)
+        {
+            icComponent = null;
+            bool isICComponent = IsICComponentType(component.Type);
+
+            if (isICComponent)
+                icComponent = component as ICComponentBase;
+
+            return isICComponent;
+        }
+
+        private bool IsICComponentType(OpticComponentType type)
+        {
+            return type switch
+            {
+                OpticComponentType.IC1x1 => true,
+                _ => false,
+            };
+        }
+        #endregion
+
         // TEST
         private void Update()
         {
