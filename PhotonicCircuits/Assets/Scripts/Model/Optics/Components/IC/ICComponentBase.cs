@@ -2,7 +2,6 @@ using Game.Data;
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using Unity.Plastic.Newtonsoft.Json;
 using UnityEngine;
 
 namespace Game
@@ -11,7 +10,7 @@ namespace Game
     {
         public event Action<Photon, ComponentPort> OnPhotonExitIC;
 
-        public readonly GridData internalGrid;
+        public GridData InternalGrid { get; protected set; }
 
         protected List<ICInComponent> inComponents;
         protected List<ICOutComponent> outComponents;
@@ -20,7 +19,7 @@ namespace Game
 
         public bool IsDirty { get; protected set; }
 
-        #region Constructor
+        #region Constructors
         protected ICComponentBase(
             GridData hostGrid,
             Vector2Int[] tilesToOccupy,
@@ -34,7 +33,7 @@ namespace Game
                 new ComponentPort[0],
                 new ComponentPort[0])
         {
-            internalGrid = new(title, internalGridSpacing, internalGridSize, true);
+            InternalGrid = new(title, internalGridSpacing, internalGridSize, true);
             SetDefaultValues();
             SetupListeners();
         }
@@ -50,7 +49,25 @@ namespace Game
                 new ComponentPort[0],
                 new ComponentPort[0])
         {
-            this.internalGrid = internalGrid;
+            InternalGrid = new(internalGrid);
+            SetDefaultValues();
+            FindIOComponents();
+
+            SetupListeners();
+        }
+
+        protected ICComponentBase(
+            GridData hostGrid,
+            Vector2Int[] tilesToOccupy,
+            Orientation orientation,
+            ICBlueprintData data) : base(
+                hostGrid,
+                tilesToOccupy,
+                orientation,
+                new ComponentPort[0],
+                new ComponentPort[0])
+        {
+            InternalGrid = new(data.internalGrid);
             SetDefaultValues();
             FindIOComponents();
 
@@ -67,7 +84,7 @@ namespace Game
 
         private void FindIOComponents()
         {
-            foreach (OpticComponent component in internalGrid.placedComponents)
+            foreach (OpticComponent component in InternalGrid.placedComponents)
             {
                 if (component.Type == OpticComponentType.ICIn)
                     inComponents.Add(component as ICInComponent);
@@ -101,15 +118,23 @@ namespace Game
 
         private void SetupListeners()
         {
-            internalGrid.OnComponentAdded += GridData_OnComponentAdded;
-            internalGrid.OnComponentRemoved += GridData_OnComponentRemoved;
+            SetupInternalGridListeners();
+            ICBlueprintManager.Instance.OnBlueprintUpdated += ICBlueprintManager_OnBlueprintUpdated;
+        }
+
+        private void SetupInternalGridListeners()
+        {
+            InternalGrid.OnComponentAdded += GridData_OnComponentAdded;
+            InternalGrid.OnComponentRemoved += GridData_OnComponentRemoved;
         }
         #endregion
 
         #region Handle Events
         private void GridData_OnComponentAdded(OpticComponent component) => TryAddPortHandlerComponent(component);
         private void GridData_OnComponentRemoved(OpticComponent component) => TryRemovePortHandlerComponent(component);
+        private void ICBlueprintManager_OnBlueprintUpdated(ICBlueprintData data) => SyncToBlueprint(data);
 
+        #region Handle Add Component
         private void TryAddPortHandlerComponent(OpticComponent component)
         {
             if (component.Type == OpticComponentType.ICIn)
@@ -147,7 +172,9 @@ namespace Game
             else
                 ExternalCoroutineExecutionManager.Instance.StartSimulationCoroutine(RemoveComponentCo(component));
         }
+        #endregion
 
+        #region Handle Remove Component
         private void TryRemovePortHandlerComponent(OpticComponent component)
         {
             if (component.Type == OpticComponentType.ICIn)
@@ -205,6 +232,33 @@ namespace Game
             yield return null;
             GridManager.Instance.GridController.TryRemoveComponent(component);
         }
+        #endregion
+
+        #region Handle Blueprint Changed
+        public void SyncToBlueprint(ICBlueprintData data)
+        {
+            RemoveOldListeners();
+
+            InternalGrid = data.internalGrid;
+
+            SetupInternalGridListeners();
+
+            ResetIOComponentData();
+            FindIOComponents();
+        }
+
+        private void RemoveOldListeners()
+        {
+            InternalGrid.OnComponentAdded -= GridData_OnComponentAdded;
+            InternalGrid.OnComponentRemoved -= GridData_OnComponentRemoved;
+        }
+
+        private void ResetIOComponentData()
+        {
+            inComponents.Clear();
+            outComponents.Clear();
+        }
+        #endregion
         #endregion
 
         #region Generate Ports
@@ -284,7 +338,7 @@ namespace Game
         #region Handle Photon
         protected override IEnumerator HandlePhotonCo(ComponentPort port, Photon photon)
         {
-            photon.currentGrid = internalGrid;
+            photon.currentGrid = InternalGrid;
             inComponents[port.portId].HandlePhoton(photon);
 
             yield break;
@@ -311,7 +365,9 @@ namespace Game
         {
             IsDirty = false;
 
-            return JsonConvert.SerializeObject(internalGrid, SerializationManager.GetAllConverters());
+            Debug.LogWarning("IC Component serialization not implemented!");
+            return "";
+            //return JsonConvert.SerializeObject(InternalGrid, SerializationManager.GetAllConverters());
         }
         #endregion
     }

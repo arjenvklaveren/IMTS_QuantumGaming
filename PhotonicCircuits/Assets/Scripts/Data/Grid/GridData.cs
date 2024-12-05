@@ -44,6 +44,23 @@ namespace Game.Data
             inPortsData = new();
         }
 
+        // Copy constructor
+        public GridData(GridData source)
+        {
+            gridName = source.gridName;
+
+            spacing = source.spacing;
+            size = source.size;
+            CacheChunksSize();
+
+            isIntegrated = true;
+
+            placedComponents = new(source.placedComponents);
+            occupiedTiles = new(source.occupiedTiles);
+
+            inPortsData = new(source.inPortsData);
+        }
+
         private void CacheChunksSize()
         {
             Vector2 floatSize = size;

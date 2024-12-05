@@ -106,7 +106,7 @@ namespace Game
         // TEMP
         public void Interact()
         {
-            GridManager.Instance.OpenGrid(sourceICComponent.internalGrid);
+            GridManager.Instance.OpenGrid(sourceICComponent.InternalGrid);
         }
         #endregion
     }
