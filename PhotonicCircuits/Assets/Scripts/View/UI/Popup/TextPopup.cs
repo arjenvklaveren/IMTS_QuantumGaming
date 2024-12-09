@@ -1,3 +1,4 @@
+using Game.Data;
 using SadUtils.UI;
 using System;
 using System.Collections;
@@ -10,6 +11,7 @@ namespace Game.UI
     {
         [Header("Prefabs")]
         [SerializeField] private TMP_Text textContentPrefab;
+        [SerializeField] private InputFieldHandler inputFieldContentPrefab;
         [SerializeField] private SadButton responseButtonPrefab;
 
         [Header("Holders")]
@@ -42,16 +44,33 @@ namespace Game.UI
 
         private void GenerateContent(PopupContentData data)
         {
-            if (data.Type != "text")
+            if (!Enum.TryParse(data.Type, out PopupContentType type))
                 return;
 
-            GenerateTextContent(data as PopupTextContentData);
+            switch (type)
+            {
+                case PopupContentType.Text:
+                    GenerateTextContent(data as PopupTextContentData);
+                    break;
+
+                case PopupContentType.TextForm:
+                    GenerateTextFormContent(data as PopupTextFormContentData);
+                    break;
+            }
         }
 
         private void GenerateTextContent(PopupTextContentData data)
         {
             TMP_Text textContent = Instantiate(textContentPrefab, contentHolder);
             textContent.text = data.text;
+        }
+
+        private void GenerateTextFormContent(PopupTextFormContentData data)
+        {
+            InputFieldHandler inputField = Instantiate(inputFieldContentPrefab, contentHolder);
+
+            inputField.placeholder.text = data.placeholder;
+            inputField.OnEndEdit += data.OnFormContentChanged;
         }
         #endregion
 

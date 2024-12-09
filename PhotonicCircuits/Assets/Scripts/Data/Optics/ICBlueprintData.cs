@@ -2,10 +2,15 @@ namespace Game.Data
 {
     public class ICBlueprintData
     {
-        public OpticComponentType type;
+        public string Name => internalGrid.gridName;
 
         public GridData internalGrid;
+        public OpticComponentType type;
 
-        public string Name => internalGrid.gridName;
+        public ICBlueprintData(GridData grid, OpticComponentType type)
+        {
+            internalGrid = grid;
+            this.type = type;
+        }
     }
 }

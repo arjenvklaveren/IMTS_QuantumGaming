@@ -73,14 +73,14 @@ namespace Game
         #endregion
 
         #region Save Blueprints
-        public void SaveBlueprint(ICBlueprintData data)
+        public async Task SaveBlueprint(ICBlueprintData data)
         {
             if (loadedBlueprints.ContainsKey(data.Name))
                 OverwriteBlueprintData(data);
             else
                 loadedBlueprints.Add(data.Name, data);
 
-            Task.Run(() => OverwriteSaveFile(data));
+            await Task.Run(() => OverwriteSaveFile(data));
         }
 
         private void OverwriteBlueprintData(ICBlueprintData data)

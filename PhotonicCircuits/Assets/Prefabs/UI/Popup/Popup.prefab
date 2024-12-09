@@ -51,6 +51,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   textContentPrefab: {fileID: 4095560783735713864, guid: 6f014da6fbef3a34bb1ccbfddfc83b2f, type: 3}
+  inputFieldContentPrefab: {fileID: 3962926226911093508, guid: a462ba5da0b95d84bb5b7d352c5057a6, type: 3}
   responseButtonPrefab: {fileID: 6962531707900180, guid: bdc594055928b864faf83f429da11846, type: 3}
   titleLabel: {fileID: 5077910480946995427}
   contentHolder: {fileID: 3984845482887036648}
