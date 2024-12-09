@@ -67,8 +67,6 @@ namespace Game
 
             photonVisuals = Instantiate(photonPrefab);
             photonVisuals.SetSource(photon);
-            photonVisuals.SyncVisuals();
-            photonVisuals.StartMovement();   
         }
         #endregion
 

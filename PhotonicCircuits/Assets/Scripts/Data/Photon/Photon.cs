@@ -139,15 +139,6 @@ namespace Game.Data
             this.position += propagation.ToVector2Int();
         }
 
-        //public void SetPropagationByAngle(float angleDeg)
-        //{
-        //    float angleRad = Mathf.Deg2Rad * angleDeg;
-        //    propagation = -Vector2.up * propagation.magnitude;
-        //    propagation = new Vector2(
-        //    propagation.x * Mathf.Cos(angleRad) - propagation.y * Mathf.Sin(angleRad),
-        //    propagation.x * Mathf.Sin(angleRad) + propagation.y * Mathf.Cos(angleRad));
-        //}
-
         public void RotateClockwise(int increments)
         {
             propagation = propagation.RotateClockwise(increments);

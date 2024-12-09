@@ -64,7 +64,7 @@ namespace Game
             data.photonA.SetAmplitude(photonProbabiltyA);
             data.photonB.SetAmplitude(photonProbabiltyB);
 
-            if(photonProbabiltyA == 0) PhotonManager.Instance.RemovePhoton(data.photonA, false);
+            if (photonProbabiltyA == 0) PhotonManager.Instance.RemovePhoton(data.photonA, false);
             if(photonProbabiltyB == 0) PhotonManager.Instance.RemovePhoton(data.photonB, false);
         }
 

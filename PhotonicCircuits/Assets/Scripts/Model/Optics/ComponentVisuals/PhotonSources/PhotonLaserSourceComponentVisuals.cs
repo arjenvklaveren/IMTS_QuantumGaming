@@ -45,11 +45,9 @@ namespace Game
 
         private void HandlePhotonCreation(Photon photon)
         {
-            PhotonVisuals photonVisuals = Instantiate(photonPrefab);
+            PhotonBeamVisuals photonVisuals = Instantiate(photonPrefab);
 
             photonVisuals.SetSource(photon);
-            photonVisuals.SyncVisuals();
-            photonVisuals.StartMovement();
         }
         #endregion
 

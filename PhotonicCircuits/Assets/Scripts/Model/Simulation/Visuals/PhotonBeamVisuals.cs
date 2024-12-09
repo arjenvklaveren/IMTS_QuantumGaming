@@ -97,18 +97,20 @@ namespace Game
         }
         private IEnumerator MoveCo()
         {
-            Vector2 moveStep = (source.GetPropagationIntVector() * openGrid.spacing) / 2;
-            Vector2 stretchScale = currentDrawSprite.transform.localScale;
-            Vector2 strechStep = moveStep * 2;
+            Vector2 moveStep = (source.GetPropagationIntVector() * openGrid.spacing);
+            Vector2 stretchScale = currentDrawSprite.transform.localScale -= sprite.transform.localScale;
+            if(moveStep.x != 0) stretchScale.y = sprite.transform.localScale.y;
+            if(moveStep.y != 0) stretchScale.x = sprite.transform.localScale.x;
 
             while (true)
             {
                 Vector2 startPos = currentDrawSprite.transform.position;
-                Vector2 endPos = startPos + moveStep;
-                stretchScale += strechStep;
+                Vector2 endPos = startPos + (moveStep / 2);
+                stretchScale += moveStep;
 
                 currentDrawSprite.transform.position = endPos;
                 currentDrawSprite.transform.localScale = stretchScale;
+                //yield break;
                 yield return new WaitForSeconds(timeToTravelTile);
             }
         }

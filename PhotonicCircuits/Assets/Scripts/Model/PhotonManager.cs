@@ -100,7 +100,7 @@ namespace Game
             }
             else
             {
-                photon.Destroy();
+                DestroyPhoton(photon);
                 photons[photonIndex.Value.x].RemoveAt(photonIndex.Value.y);
                 if (photons[photonIndex.Value.x].Count == 0)
                 {
@@ -121,6 +121,11 @@ namespace Game
             if (!photonIndex.HasValue) return;
             photons[photonIndex.Value.x].RemoveAt(photonIndex.Value.y);
             photons[photonIndex.Value.x].InsertRange(photonIndex.Value.y, replacements);
+            DestroyPhoton(photon);
+        }
+
+        void DestroyPhoton(Photon photon)
+        {
             photon.Destroy();
         }
 
@@ -230,13 +235,6 @@ namespace Game
             {
                 pS.SetAmplitude(pS.GetAmplitude() + amplitudueDistributeVal); 
             }
-        }
-
-        Color GetRelativePhotonColor(Photon photon)
-        {
-            int? index = FindPhotonListIndex(photon);
-            //float opacity = 1.0f;
-            return Color.black;
         }
     }
 }

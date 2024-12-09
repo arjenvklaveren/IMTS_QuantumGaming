@@ -88,8 +88,8 @@ namespace Game
             currentPhotons.Remove(photon);
 
             int[] outPortIndexes = GetOutPorts(inPort);
-            ComponentPort reflectOutPort = outPorts[outPortIndexes[0]];
-            ComponentPort passOutPort = outPorts[outPortIndexes[1]];
+            ComponentPort reflectOutPort = OutPorts[outPortIndexes[0]];
+            ComponentPort passOutPort = OutPorts[outPortIndexes[1]];
 
             float photonProbabilty = photon.GetAmplitude() / 2;
 
@@ -107,10 +107,15 @@ namespace Game
             TriggerOnPhotonExit(reflectPhoton);
         }
 
-        private void ResolveInterferePhotons(KeyValuePair<Photon, ComponentPort> photonA, KeyValuePair<Photon, ComponentPort> photonB, bool isIndistingishableCase = false)
+        private void ResolveInterferePhotons(KeyValuePair<Photon, ComponentPort> photonA, KeyValuePair<Photon, ComponentPort> photonB)
         { 
             currentPhotons.Remove(photonA.Key);
             currentPhotons.Remove(photonB.Key);
+
+            if (photonA.Key.GetPropagation().IsOnSameAxis(orientation))
+            {
+                (photonA, photonB) = (photonB, photonA);
+            }
 
             PhotonInterferenceManager.Instance.HandleInterference(photonA.Key, photonB.Key, InterferenceType.Split);
 

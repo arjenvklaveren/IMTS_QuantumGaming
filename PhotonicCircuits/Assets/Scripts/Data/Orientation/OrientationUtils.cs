@@ -64,6 +64,12 @@ namespace Game.Data
         {
             return (orientation == Orientation.Up || orientation == Orientation.Down);
         }
+        public static bool IsOnSameAxis(this Orientation orientation, Orientation other)
+        {
+            return 
+                (IsVertical(orientation) && IsVertical(other) ||
+                (IsHorizontal(orientation) && IsHorizontal(other))); 
+        }
         #endregion
         
         #region Arithmetic

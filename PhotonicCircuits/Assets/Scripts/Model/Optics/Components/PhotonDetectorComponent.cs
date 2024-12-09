@@ -28,7 +28,7 @@ namespace Game
             float photonDetectPercentage = photon.GetAmplitude() * 100;
             float detectComparePercentage = Random.Range(0.0f, 100.0f);
 
-            Debug.Log("PHOTON DETECTED AT: " + occupiedRootTile);
+            //Debug.Log("PHOTON DETECTED AT: " + occupiedRootTile);
 
             if(detectComparePercentage <= photonDetectPercentage)
             {

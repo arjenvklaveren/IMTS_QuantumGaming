@@ -17,8 +17,10 @@ namespace Game.Data
         public GridData HostGrid { get; private set; }
 
         public HashSet<Vector2Int> OccupiedTiles { get; protected set; }
-        public readonly Vector2Int occupiedRootTile;
 
+        [ComponentContext("Root position", "SetRootTile")] 
+        public readonly Vector2Int occupiedRootTile;
+        [ComponentContext("Orientation", "SetOrientation")] 
         public Orientation orientation;
 
         public ComponentPort[] InPorts { get; protected set; }
@@ -176,6 +178,20 @@ namespace Game.Data
         {
             OnPhotonExit?.Invoke(photon);
         }
+        #endregion
+
+        #region On change context properties
+
+        public void SetOrientation(Orientation orientation)
+        {
+            
+            Debug.Log("Orientation has been changed to: " + orientation);
+        }
+        public void SetRootTile(Vector2Int occupiedRootTile)
+        {
+            Debug.Log("Occupied root tile has been changed to: " + occupiedRootTile);
+        }
+
         #endregion
 
         public virtual void Destroy() { }
