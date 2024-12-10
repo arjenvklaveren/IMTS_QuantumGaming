@@ -16,7 +16,7 @@ namespace Game
         private enum NewFileResponse { Submit, Cancel }
         private enum NameExistsResponse { Overwrite, Cancel }
 
-        private SynchronizationContext mainThreadContext;
+        private readonly SynchronizationContext mainThreadContext;
         private bool isCanceled;
 
         public BlueprintSerializer()
@@ -86,7 +86,7 @@ namespace Game
                 NewFile,
                 Discard);
 
-            mainThreadContext.Post(_ => PopupManager.ShowPopup(popupData), null);
+            ExecuteOnMainThread(() => PopupManager.ShowPopup(popupData));
 
             while (popupResponse == UnsavedChangesResponse.None)
             {
@@ -104,7 +104,7 @@ namespace Game
             switch (response)
             {
                 case UnsavedChangesResponse.Discard:
-                    HandleDiscardChangesResponse(component);
+                    ExecuteOnMainThread(() => HandleDiscardChangesResponse(component));
                     break;
 
                 case UnsavedChangesResponse.Overwrite:
@@ -177,7 +177,7 @@ namespace Game
                 Submit,
                 Cancel);
 
-            PopupManager.ShowPopup(popupData);
+            ExecuteOnMainThread(() => PopupManager.ShowPopup(popupData));
 
             while (response == null)
             {
@@ -221,7 +221,7 @@ namespace Game
                 Overwrite,
                 Cancel);
 
-            PopupManager.ShowPopup(popupData);
+            ExecuteOnMainThread(() => PopupManager.ShowPopup(popupData));
 
             while (response == null)
             {
@@ -321,6 +321,11 @@ namespace Game
         public void Cancel()
         {
             isCanceled = true;
+        }
+
+        private void ExecuteOnMainThread(Action action)
+        {
+            mainThreadContext.Post(_ => action?.Invoke(), null);
         }
 
         private PopupManager PopupManager => PopupManager.Instance;
