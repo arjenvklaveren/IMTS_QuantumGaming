@@ -13,8 +13,9 @@ MonoBehaviour:
   m_Name: sourcePlaceData
   m_EditorClassIdentifier: 
   title: Simple Photon Source
-  previewSprite: {fileID: 0}
+  previewSprite: {fileID: 21300000, guid: d11a40dc968d0364689bf8b1acb84530, type: 3}
   previewScale: {x: 1, y: 1}
+  isIntegratedOnly: 0
   tileOffsetsToOccupy:
   - {x: 0, y: 0}
   orientation: 1

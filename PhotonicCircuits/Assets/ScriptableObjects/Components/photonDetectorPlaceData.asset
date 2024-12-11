@@ -13,10 +13,12 @@ MonoBehaviour:
   m_Name: photonDetectorPlaceData
   m_EditorClassIdentifier: 
   title: Photon Detector
-  previewSprite: {fileID: 0}
+  previewSprite: {fileID: 21300000, guid: 90eb6d28a1eac4442a1f540b3f1f5551, type: 3}
   previewScale: {x: 1, y: 1}
+  isIntegratedOnly: 0
   tileOffsetsToOccupy:
   - {x: 0, y: 0}
+  orientation: 0
   inPorts:
   - portId: 0
     position: {x: 0, y: 0}

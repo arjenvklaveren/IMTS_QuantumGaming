@@ -13,10 +13,12 @@ MonoBehaviour:
   m_Name: beamSplitterPlaceData
   m_EditorClassIdentifier: 
   title: Photon Beamsplitter
-  previewSprite: {fileID: 0}
+  previewSprite: {fileID: 21300000, guid: 70455d798165e3e46a4e93bd0632209d, type: 3}
   previewScale: {x: 1, y: 1}
+  isIntegratedOnly: 0
   tileOffsetsToOccupy:
   - {x: 0, y: 0}
+  orientation: 0
   inPorts:
   - portId: 0
     position: {x: 0, y: 0}

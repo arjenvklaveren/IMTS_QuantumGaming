@@ -1,5 +1,6 @@
 using Game.Data;
 using SadUtils;
+using System;
 using System.Collections;
 using UnityEngine;
 
@@ -7,6 +8,8 @@ namespace Game
 {
     public class ComponentPaintManager : Singleton<ComponentPaintManager>
     {
+        public event Action<ComponentPlaceDataSO> onPlaceDataChanged;
+
         private ComponentPlaceDataSO selectedComponent;
 
         private GridController gridController;
@@ -28,7 +31,7 @@ namespace Game
                 return;
 
             // Show error
-            Debug.Log("can't paint at " + position);
+            Debug.Log($"can't paint at {position}");
         }
 
         public void SelectComponent(ComponentPlaceDataSO placeData)
@@ -38,6 +41,7 @@ namespace Game
                 PlayerInputManager.AddInputHandler(new GridComponentPaintInputHandler());
 
             selectedComponent = placeData;
+            onPlaceDataChanged?.Invoke(placeData);
         }
 
         public void SelectBlueprint(string blueprintName)

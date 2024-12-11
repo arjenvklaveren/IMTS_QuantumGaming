@@ -13,10 +13,12 @@ MonoBehaviour:
   m_Name: mirrorPlaceData
   m_EditorClassIdentifier: 
   title: Mirror
-  previewSprite: {fileID: 0}
+  previewSprite: {fileID: 21300000, guid: 7191d208925597345a4de8ee364234ab, type: 3}
   previewScale: {x: 1, y: 1}
+  isIntegratedOnly: 0
   tileOffsetsToOccupy:
   - {x: 0, y: 0}
+  orientation: 0
   inPorts:
   - portId: 0
     position: {x: 0, y: 0}
