@@ -50,6 +50,7 @@ namespace Game
         public void Reset()
         {
             moveDir = Vector2.zero;
+            camController.SetMoveDir(moveDir);
         }
 
         public void Destroy() { }

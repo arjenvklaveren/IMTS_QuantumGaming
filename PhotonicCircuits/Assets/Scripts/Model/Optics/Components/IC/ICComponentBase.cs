@@ -20,6 +20,7 @@ namespace Game
         public bool IsDirty { get; protected set; }
 
         #region Constructors
+        // Used when creating a new Blueprint
         protected ICComponentBase(
             GridData hostGrid,
             Vector2Int[] tilesToOccupy,
@@ -38,24 +39,7 @@ namespace Game
             SetupListeners();
         }
 
-        protected ICComponentBase(
-            GridData hostGrid,
-            Vector2Int[] tilesToOccupy,
-            Orientation orientation,
-            GridData internalGrid) : base(
-                hostGrid,
-                tilesToOccupy,
-                orientation,
-                new ComponentPort[0],
-                new ComponentPort[0])
-        {
-            InternalGrid = new(internalGrid);
-            SetDefaultValues();
-            FindIOComponents();
-
-            SetupListeners();
-        }
-
+        // Used when placing existing blueprint
         protected ICComponentBase(
             GridData hostGrid,
             Vector2Int[] tilesToOccupy,
@@ -365,9 +349,7 @@ namespace Game
         {
             IsDirty = false;
 
-            Debug.LogWarning("IC Component serialization not implemented!");
-            return "";
-            //return JsonConvert.SerializeObject(InternalGrid, SerializationManager.GetAllConverters());
+            return InternalGrid.gridName;
         }
         #endregion
     }

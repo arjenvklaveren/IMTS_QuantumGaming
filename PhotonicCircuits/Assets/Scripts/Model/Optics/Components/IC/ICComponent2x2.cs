@@ -27,11 +27,11 @@ namespace Game
             GridData hostGrid,
             Vector2Int[] tilesToOccupy,
             Orientation orientation,
-            GridData internalGrid) : base(
+            ICBlueprintData blueprintData) : base(
                 hostGrid,
                 tilesToOccupy,
                 orientation,
-                internalGrid)
+                blueprintData)
         {
         }
     }

@@ -40,6 +40,14 @@ namespace Game
             selectedComponent = placeData;
         }
 
+        public void SelectBlueprint(string blueprintName)
+        {
+            ICBlueprintPlaceDataSO blueprintPlaceData = ScriptableObject.CreateInstance<ICBlueprintPlaceDataSO>();
+            blueprintPlaceData.SetBlueprintReference(blueprintName);
+
+            SelectComponent(blueprintPlaceData);
+        }
+
         private PlayerInputManager PlayerInputManager => PlayerInputManager.Instance;
     }
 }

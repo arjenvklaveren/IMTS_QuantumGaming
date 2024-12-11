@@ -1,4 +1,9 @@
 using Game.Data;
+using SadUtils.UI;
+using System;
+using System.Collections;
+using System.IO;
+using System.Threading.Tasks;
 using UnityEngine;
 
 namespace Game
@@ -26,6 +31,8 @@ namespace Game
             GeneratePortVisuals();
 
             SetupListeners();
+
+            TryHandleSetName();
         }
 
         protected override void OnDestroy()
@@ -89,6 +96,135 @@ namespace Game
 
             photonVisuals.SetSource(photon);
         }
+        #endregion
+
+        #region Handle Set Name
+        private enum SetNameResponse { Submit, Cancel }
+
+        private void TryHandleSetName()
+        {
+            if (!string.IsNullOrEmpty(sourceICComponent.InternalGrid.gridName))
+                return;
+
+            // IC Component is new blueprint, force user to set name
+            HandleSetName();
+        }
+
+        private void HandleSetName(string error = "")
+        {
+            StartCoroutine(ShowSetNamePopupCo(error));
+        }
+
+        private IEnumerator ShowSetNamePopupCo(string error = "")
+        {
+            WaitForSeconds waitTimeStep = new(0.1f);
+
+            SetNameResponse? response = null;
+            string inputFieldContent = "";
+
+            void OnEndEdit(string data) => inputFieldContent = data;
+            void Submit() => response = SetNameResponse.Submit;
+            void Cancel() => response = SetNameResponse.Cancel;
+
+            PopupData popupData = GetSetNamePopupData(
+                OnEndEdit,
+                Submit,
+                Cancel,
+                error);
+
+            PopupManager.Instance.ShowPopup(popupData);
+
+            while (response == null)
+                yield return waitTimeStep;
+
+            HandleSetNameResponse((SetNameResponse)response, inputFieldContent);
+        }
+
+        private void HandleSetNameResponse(SetNameResponse response, string data)
+        {
+            if (response == SetNameResponse.Cancel)
+                HandleCancelResponse();
+            else
+                HandleSubmitResponse(data);
+        }
+
+        private void HandleCancelResponse()
+        {
+            // Remove Component from grid
+            GridController gridController = GridManager.Instance.GridController;
+
+            gridController.TryRemoveComponent(SourceComponent);
+        }
+
+        private void HandleSubmitResponse(string name)
+        {
+            // Handle Invalid Name
+            if (IsInvalidName(name))
+            {
+                HandleSetName("Name cannot contain invalid characters or be empty!");
+                return;
+            }
+
+            // Name already exists check
+            if (ICBlueprintManager.Instance.DoesBlueprintExist(name))
+            {
+                HandleSetName($"A blueprint with name {name} already exists!");
+                return;
+            }
+
+            // Save as new blueprint
+            sourceICComponent.InternalGrid.gridName = name;
+            ICBlueprintData newBlueprint = new(sourceICComponent.InternalGrid, sourceICComponent.Type);
+
+            Task.Run(() => ICBlueprintManager.Instance.SaveBlueprint(newBlueprint));
+        }
+
+        private bool IsInvalidName(string name)
+        {
+            if (string.IsNullOrEmpty(name))
+                return true;
+
+            // Check for invalid names
+            char[] invalidChars = Path.GetInvalidFileNameChars();
+            foreach (char invalidChar in invalidChars)
+                if (name.Contains(invalidChar))
+                    return true;
+
+            return false;
+        }
+
+        #region Get Popup Data
+        private PopupData GetSetNamePopupData(
+            Action<string> endEditCallback,
+            Action SubmitCallback,
+            Action CancelCallback,
+            string error)
+        {
+            string title = "Set Blueprint Name";
+
+            PopupTextFormContentData content = new(endEditCallback, "Name");
+
+            PopupTextButtonData[] buttons = new PopupTextButtonData[2]
+            {
+                new(SubmitCallback, "Submit"),
+                new(CancelCallback, "Cancel")
+            };
+
+            PopupFactory factory = new();
+
+            // Handle error messages
+            if (!string.IsNullOrEmpty(error))
+            {
+                PopupTextContentData errorContent = new($"<color=\"red\"><b>{error}</b></color>");
+                factory.AddContents(errorContent);
+            }
+
+            return factory.AddTitle(title)
+                .AddContents(content)
+                .AddButtons(buttons)
+                .Build();
+        }
+        #endregion
         #endregion
 
         #region Handle Photon

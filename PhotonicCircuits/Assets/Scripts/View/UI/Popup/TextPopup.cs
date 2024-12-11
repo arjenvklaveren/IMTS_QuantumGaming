@@ -19,6 +19,17 @@ namespace Game.UI
         [SerializeField] private RectTransform contentHolder;
         [SerializeField] private RectTransform buttonHolder;
 
+        private void Awake()
+        {
+            PlayerInputManager.AddInputHandler(new EmptyInputHandler());
+        }
+
+        private void OnDestroy()
+        {
+            PlayerInputManager.PopInputHandler();
+        }
+
+        // Create popup Contents
         public override void Construct(PopupData data)
         {
             GenerateTitle(data);
@@ -71,6 +82,7 @@ namespace Game.UI
 
             inputField.placeholder.text = data.placeholder;
             inputField.OnEndEdit += data.OnFormContentChanged;
+            inputField.SetAsActiveField();
         }
         #endregion
 
@@ -129,5 +141,6 @@ namespace Game.UI
         #endregion
 
         PopupManager PopupManager => PopupManager.Instance;
+        PlayerInputManager PlayerInputManager => PlayerInputManager.Instance;
     }
 }

@@ -4,7 +4,6 @@ using UnityEngine;
 
 namespace Game.UI
 {
-    [RequireComponent(typeof(TMP_InputField))]
     public class InputFieldHandler : MonoBehaviour
     {
         public Action<string> OnEndEdit;
@@ -25,6 +24,11 @@ namespace Game.UI
         private void HandleEndEdit(string input)
         {
             OnEndEdit?.Invoke(input);
+        }
+
+        public void SetAsActiveField()
+        {
+            inputField.ActivateInputField();
         }
     }
 }

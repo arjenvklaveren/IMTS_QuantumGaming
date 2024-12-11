@@ -13,7 +13,6 @@ namespace Game
         [Header("Internal Grid Settings")]
         [SerializeField] private Vector2Int gridSize;
         [SerializeField] private Vector2 gridSpacing;
-        public string fileName;
 
         public override OpticComponent CreateOpticComponent(GridData hostGrid, Vector2Int[] tilesToOccupy)
         {
@@ -31,10 +30,10 @@ namespace Game
             return new(
                 hostGrid,
                 tilesToOccupy,
-                orientation,
+                Orientation.Up,
                 gridSize,
                 gridSpacing,
-                fileName);
+                "");
         }
 
         private ICComponent2x2 Create2x2(GridData hostGrid, Vector2Int[] tilesToOccupy)
@@ -42,10 +41,10 @@ namespace Game
             return new(
                 hostGrid,
                 tilesToOccupy,
-                orientation,
+                Orientation.Up,
                 gridSize,
                 gridSpacing,
-                fileName);
+                "");
         }
         #endregion
     }

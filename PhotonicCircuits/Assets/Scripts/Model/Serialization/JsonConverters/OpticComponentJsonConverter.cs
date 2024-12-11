@@ -117,24 +117,26 @@ namespace Game
         #region IC Formats
         private ICComponent1x1 LoadIC1x1Component(OpticComponentData data)
         {
-            GridData internalGrid = JsonConvert.DeserializeObject<GridData>(data.args, SerializationManager.GetAllConverters());
+            if (!ICBlueprintManager.TryGetBlueprintData(data.args, out ICBlueprintData blueprintData))
+                throw new Exception("Invalid Save data encountered!");
 
             return new(
                 null,
                 data.occupiedTiles,
                 data.orientation,
-                internalGrid);
+                blueprintData);
         }
 
         private ICComponent2x2 LoadIC2x2Component(OpticComponentData data)
         {
-            GridData internalGrid = JsonConvert.DeserializeObject<GridData>(data.args, SerializationManager.GetAllConverters());
+            if (!ICBlueprintManager.TryGetBlueprintData(data.args, out ICBlueprintData blueprintData))
+                throw new Exception("Invalid Save data encountered!");
 
             return new(
                 null,
                 data.occupiedTiles,
                 data.orientation,
-                internalGrid);
+                blueprintData);
         }
         #endregion
 
@@ -198,5 +200,7 @@ namespace Game
             return occupiedTiles;
         }
         #endregion
+
+        private ICBlueprintManager ICBlueprintManager => ICBlueprintManager.Instance;
     }
 }

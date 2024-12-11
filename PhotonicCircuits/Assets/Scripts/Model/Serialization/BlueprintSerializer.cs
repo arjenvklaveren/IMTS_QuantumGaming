@@ -1,5 +1,4 @@
 using Game.Data;
-using Game.UI;
 using SadUtils.UI;
 using System;
 using System.Collections.Generic;
@@ -12,7 +11,7 @@ namespace Game
     {
         private const int DELAY_TIME_STEP = 100;
 
-        private enum UnsavedChangesResponse { None, Discard, Overwrite, NewFile }
+        private enum UnsavedChangesResponse { Discard, Overwrite, NewFile }
         private enum NewFileResponse { Submit, Cancel }
         private enum NameExistsResponse { Overwrite, Cancel }
 
@@ -39,7 +38,8 @@ namespace Game
 
             foreach (OpticComponent component in grid.placedComponents)
                 if (TryGetICComponent(component, out ICComponentBase icComponent))
-                    dirtyComponents.Add(icComponent);
+                    if (icComponent.IsDirty)
+                        dirtyComponents.Add(icComponent);
 
             return dirtyComponents;
         }
@@ -74,7 +74,7 @@ namespace Game
         #region Unsaved Changes
         private async Task<UnsavedChangesResponse> HandleUnsavedChangesPopup(ICComponentBase component)
         {
-            UnsavedChangesResponse popupResponse = UnsavedChangesResponse.None;
+            UnsavedChangesResponse? popupResponse = null;
 
             void Overwrite() { popupResponse = UnsavedChangesResponse.Overwrite; }
             void NewFile() { popupResponse = UnsavedChangesResponse.NewFile; }
@@ -88,7 +88,7 @@ namespace Game
 
             ExecuteOnMainThread(() => PopupManager.ShowPopup(popupData));
 
-            while (popupResponse == UnsavedChangesResponse.None)
+            while (popupResponse == null)
             {
                 if (isCanceled)
                     break;
@@ -96,7 +96,7 @@ namespace Game
                 await Task.Delay(DELAY_TIME_STEP);
             }
 
-            return popupResponse;
+            return (UnsavedChangesResponse)popupResponse;
         }
 
         private async Task HandleUnsavedChangesResponse(ICComponentBase component, UnsavedChangesResponse response)

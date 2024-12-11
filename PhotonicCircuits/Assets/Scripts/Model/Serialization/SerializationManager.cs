@@ -113,12 +113,5 @@ namespace Game
             return filePath;
         }
         #endregion
-
-        // TEST
-        private void Update()
-        {
-            if (Input.GetKeyDown(KeyCode.H))
-                SerializeProject();
-        }
     }
 }

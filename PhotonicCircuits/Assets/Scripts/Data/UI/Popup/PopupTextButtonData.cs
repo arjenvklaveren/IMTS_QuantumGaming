@@ -1,7 +1,7 @@
 using SadUtils.UI;
 using System;
 
-namespace Game.UI
+namespace Game.Data
 {
     public class PopupTextButtonData : PopupButtonData
     {

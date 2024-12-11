@@ -21,6 +21,12 @@ namespace Game
         #region Awake
         protected override void Awake()
         {
+            if (!HasInstance)
+            {
+                transform.SetParent(null);
+                DontDestroyOnLoad(gameObject);
+            }
+
             SetInstance(this);
             SetDefaultValues();
         }
@@ -28,7 +34,7 @@ namespace Game
         private void SetDefaultValues()
         {
             loadedBlueprints = new();
-            blueprintDirectory = $"{Application.dataPath}{SerializationManager.blueprintDirectory}";
+            blueprintDirectory = $"{Application.dataPath}{SerializationManager.blueprintDirectory}/";
         }
 
         private IEnumerator Start()
