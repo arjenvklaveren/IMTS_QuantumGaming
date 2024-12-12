@@ -39,6 +39,8 @@ namespace Game
             PlayerInputHandler destroyedHandler = inputHandlers.Pop();
             destroyedHandler.OnDestroy();
         }
+
+        public PlayerInputHandler GetCurrentInputHandler() => inputHandlers.Peek();
         #endregion
 
         #region Handle Input

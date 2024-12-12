@@ -61,7 +61,17 @@ namespace Game
 
             ComponentPortsManager.Instance.CompileComponentPorts(closedGrid);
 
+            // save closed Grid
+            if (closedGrid.isIntegrated)
+                SaveIntegratedGrid();
+
             GridController.SetActiveGrid(grids.Peek());
+        }
+
+        private void SaveIntegratedGrid()
+        {
+            // To save integrated grid, find dirty IC component in parent grid.
+            SerializationManager.Instance.SerializeGrid(grids.Peek());
         }
     }
 }

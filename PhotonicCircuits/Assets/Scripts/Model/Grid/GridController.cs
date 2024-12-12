@@ -29,6 +29,11 @@ namespace Game
                 return false;
 
             OpticComponent componentToAdd = placeData.CreateOpticComponent(activeGrid, tilesToOccupy);
+
+            // Custom Condition Handling
+            if (!activeGrid.placementCondition(componentToAdd))
+                return false;
+
             AddComponent(componentToAdd);
 
             return true;

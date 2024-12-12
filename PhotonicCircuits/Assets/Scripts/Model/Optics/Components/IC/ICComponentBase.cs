@@ -10,6 +10,8 @@ namespace Game
     {
         public event Action<Photon, ComponentPort> OnPhotonExitIC;
 
+        public Dictionary<string, int> containedBlueprints;
+
         public GridData InternalGrid { get; protected set; }
 
         protected List<ICInComponent> inComponents;
@@ -51,8 +53,11 @@ namespace Game
                 new ComponentPort[0],
                 new ComponentPort[0])
         {
-            InternalGrid = new(data.internalGrid);
             SetDefaultValues();
+
+            InternalGrid = new(data.internalGrid);
+            containedBlueprints = new(data.containedBlueprints);
+
             FindIOComponents();
 
             SetupListeners();
@@ -60,6 +65,9 @@ namespace Game
 
         private void SetDefaultValues()
         {
+            InternalGrid.placementCondition = CanPlaceComponent;
+
+            containedBlueprints = new();
             inComponents = new();
             outComponents = new();
 
@@ -126,6 +134,9 @@ namespace Game
             else if (component.Type == OpticComponentType.ICOut)
                 AddOutComponent(component as ICOutComponent);
 
+            if (TryGetBlueprintComponent(component, out ICComponentBase blueprintComponent))
+                HandleAddBlueprintComponent(blueprintComponent);
+
             IsDirty = true;
         }
 
@@ -158,6 +169,59 @@ namespace Game
         }
         #endregion
 
+        #region Handle Add / Remove Blueprint Component
+        private bool TryGetBlueprintComponent(OpticComponent opticComponent, out ICComponentBase blueprintComponent)
+        {
+            blueprintComponent = null;
+
+            int typeId = (int)opticComponent.Type;
+            if (typeId < 100 || typeId >= 200)
+                return false;
+
+            blueprintComponent = opticComponent as ICComponentBase;
+            return !string.IsNullOrEmpty(blueprintComponent.InternalGrid.gridName);
+        }
+
+        #region Add Blueprint
+        private void HandleAddBlueprintComponent(ICComponentBase component)
+        {
+            string blueprintName = component.InternalGrid.gridName;
+
+            AddContainedBlueprintInstance(blueprintName);
+
+            foreach (string nestedBlueprint in component.containedBlueprints.Keys)
+                AddContainedBlueprintInstance(nestedBlueprint);
+        }
+
+        private void AddContainedBlueprintInstance(string blueprintName)
+        {
+            if (!containedBlueprints.ContainsKey(blueprintName))
+                containedBlueprints.Add(blueprintName, 0);
+
+            containedBlueprints[blueprintName]++;
+        }
+        #endregion
+
+        #region Remove Blueprint
+        private void HandleRemoveBlueprintComponent(ICComponentBase component)
+        {
+            string blueprintName = component.InternalGrid.gridName;
+            RemoveBlueprintInstance(blueprintName);
+
+            foreach (string blueprint in component.containedBlueprints.Keys)
+                RemoveBlueprintInstance(blueprint);
+        }
+
+        private void RemoveBlueprintInstance(string blueprint)
+        {
+            containedBlueprints[blueprint]--;
+
+            if (containedBlueprints[blueprint] <= 0)
+                containedBlueprints.Remove(blueprint);
+        }
+        #endregion
+        #endregion
+
         #region Handle Remove Component
         private void TryRemovePortHandlerComponent(OpticComponent component)
         {
@@ -165,6 +229,9 @@ namespace Game
                 RemoveInComponent(component as ICInComponent);
             else if (component.Type == OpticComponentType.ICOut)
                 RemoveOutComponent(component as ICOutComponent);
+
+            if (TryGetBlueprintComponent(component, out ICComponentBase blueprintComponent))
+                HandleRemoveBlueprintComponent(blueprintComponent);
 
             IsDirty = true;
         }
@@ -189,6 +256,62 @@ namespace Game
             GenerateOutPorts();
         }
 
+        private IEnumerator RemoveComponentCo(OpticComponent component)
+        {
+            yield return null;
+            GridManager.Instance.GridController.TryRemoveComponent(component);
+        }
+        #endregion
+
+        #region Handle Blueprint Changed
+        public void SyncToBlueprint(ICBlueprintData data)
+        {
+            RemoveOldListeners();
+
+            containedBlueprints = new(data.containedBlueprints);
+            InternalGrid = new(data.internalGrid)
+            {
+                placementCondition = CanPlaceComponent
+            };
+
+            SetupInternalGridListeners();
+
+            ResetIOComponentData();
+            FindIOComponents();
+
+            // Ensure that serialization system doesn't try to save synced blueprints
+            IsDirty = false;
+        }
+
+        private void RemoveOldListeners()
+        {
+            InternalGrid.OnComponentAdded -= GridData_OnComponentAdded;
+            InternalGrid.OnComponentRemoved -= GridData_OnComponentRemoved;
+        }
+
+        private void ResetIOComponentData()
+        {
+            inComponents.Clear();
+            outComponents.Clear();
+        }
+        #endregion
+        #endregion
+
+        #region Handle Place Condition
+        private bool CanPlaceComponent(OpticComponent component)
+        {
+            if (component.Type == OpticComponentType.ICIn)
+                return CanAddIOComponentInOrientation(component.orientation);
+
+            else if (component.Type == OpticComponentType.ICOut)
+                return CanAddIOComponentInOrientation(component.orientation);
+
+            else if (TryGetBlueprintComponent(component, out ICComponentBase blueprintComponent))
+                return CanPlaceBlueprintComponent(blueprintComponent);
+
+            return true;
+        }
+
         private bool CanAddIOComponentInOrientation(Orientation componentOrientation)
         {
             Orientation portOrientation = componentOrientation.RotateClockwise(2);
@@ -211,38 +334,16 @@ namespace Game
             };
         }
 
-        private IEnumerator RemoveComponentCo(OpticComponent component)
+        private bool CanPlaceBlueprintComponent(ICComponentBase blueprintComponent)
         {
-            yield return null;
-            GridManager.Instance.GridController.TryRemoveComponent(component);
+            string blueprintName = blueprintComponent.InternalGrid.gridName;
+
+            if (string.IsNullOrEmpty(blueprintName))
+                return true;
+
+            // TODO: figure out contained blueprints check
+            return true;
         }
-        #endregion
-
-        #region Handle Blueprint Changed
-        public void SyncToBlueprint(ICBlueprintData data)
-        {
-            RemoveOldListeners();
-
-            InternalGrid = data.internalGrid;
-
-            SetupInternalGridListeners();
-
-            ResetIOComponentData();
-            FindIOComponents();
-        }
-
-        private void RemoveOldListeners()
-        {
-            InternalGrid.OnComponentAdded -= GridData_OnComponentAdded;
-            InternalGrid.OnComponentRemoved -= GridData_OnComponentRemoved;
-        }
-
-        private void ResetIOComponentData()
-        {
-            inComponents.Clear();
-            outComponents.Clear();
-        }
-        #endregion
         #endregion
 
         #region Generate Ports

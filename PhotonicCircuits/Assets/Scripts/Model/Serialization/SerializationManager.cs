@@ -41,6 +41,11 @@ namespace Game
             Task.Run(() => SerializeProjectAsync(grids));
         }
 
+        public void SerializeGrid(GridData grid)
+        {
+            Task.Run(() => SerializeGridAsync(grid));
+        }
+
         private async void SerializeProjectAsync(IEnumerable<GridData> grids)
         {
             isSaving = true;

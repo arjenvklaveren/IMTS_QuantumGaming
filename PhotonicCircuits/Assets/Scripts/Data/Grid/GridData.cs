@@ -6,6 +6,8 @@ namespace Game.Data
 {
     public class GridData
     {
+        public Predicate<OpticComponent> placementCondition;
+
         public event Action<OpticComponent> OnComponentAdded;
         public event Action<OpticComponent> OnComponentRemoved;
 
@@ -30,6 +32,8 @@ namespace Game.Data
             Vector2Int size,
             bool isIntegrated = false)
         {
+            placementCondition = (OpticComponent component) => true;
+
             this.gridName = gridName;
 
             this.spacing = spacing;
@@ -47,6 +51,8 @@ namespace Game.Data
         // Copy constructor
         public GridData(GridData source)
         {
+            placementCondition = (OpticComponent component) => true;
+
             gridName = source.gridName;
 
             spacing = source.spacing;

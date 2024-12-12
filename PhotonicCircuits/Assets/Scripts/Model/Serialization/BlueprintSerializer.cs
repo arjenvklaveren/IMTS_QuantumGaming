@@ -139,7 +139,10 @@ namespace Game
         #region Overwrite Blueprint File
         private async Task HandleOverwriteResponse(ICComponentBase component)
         {
-            ICBlueprintData newData = new(component.InternalGrid, component.Type);
+            ICBlueprintData newData = new(
+                component.containedBlueprints,
+                component.InternalGrid,
+                component.Type);
 
             await ICBlueprintManager.SaveBlueprint(newData);
         }
@@ -237,7 +240,11 @@ namespace Game
 
         private async Task SaveBlueprint(ICComponentBase component)
         {
-            ICBlueprintData blueprintData = new(component.InternalGrid, component.Type);
+            ICBlueprintData blueprintData = new(
+                component.containedBlueprints,
+                component.InternalGrid,
+                component.Type);
+
             await ICBlueprintManager.SaveBlueprint(blueprintData);
         }
         #endregion

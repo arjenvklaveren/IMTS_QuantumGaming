@@ -32,7 +32,7 @@ namespace Game
 
             SetupListeners();
 
-            TryHandleSetName();
+            TryHandleNewBlueprint();
         }
 
         protected override void OnDestroy()
@@ -101,14 +101,22 @@ namespace Game
         #region Handle Set Name
         private enum SetNameResponse { Submit, Cancel }
 
-        private void TryHandleSetName()
+        private void TryHandleNewBlueprint()
         {
             if (!string.IsNullOrEmpty(sourceICComponent.InternalGrid.gridName))
                 return;
 
             // IC Component is new blueprint, force user to set name
+            UpdateInputHandler();
             HandleSetName();
         }
+
+        #region Update Input Handler
+        private void UpdateInputHandler()
+        {
+            PlayerInputManager.PopInputHandler();
+        }
+        #endregion
 
         private void HandleSetName(string error = "")
         {
@@ -174,7 +182,10 @@ namespace Game
 
             // Save as new blueprint
             sourceICComponent.InternalGrid.gridName = name;
-            ICBlueprintData newBlueprint = new(sourceICComponent.InternalGrid, sourceICComponent.Type);
+            ICBlueprintData newBlueprint = new(
+                sourceICComponent.containedBlueprints,
+                sourceICComponent.InternalGrid,
+                sourceICComponent.Type);
 
             Task.Run(() => ICBlueprintManager.Instance.SaveBlueprint(newBlueprint));
         }
@@ -245,5 +256,7 @@ namespace Game
             GridManager.Instance.OpenGrid(sourceICComponent.InternalGrid);
         }
         #endregion
+
+        private PlayerInputManager PlayerInputManager => PlayerInputManager.Instance;
     }
 }

@@ -25,6 +25,7 @@ namespace Game
             gridController = GridManager.Instance.GridController;
         }
 
+        #region Paint Component
         public void PaintComponent(Vector2Int position)
         {
             if (gridController.TryAddComponent(selectedComponent, position))
@@ -33,7 +34,9 @@ namespace Game
             // Show error
             Debug.Log($"can't paint at {position}");
         }
+        #endregion
 
+        #region Select Place Data
         public void SelectComponent(ComponentPlaceDataSO placeData)
         {
             // Set paint control scheme.
@@ -51,6 +54,7 @@ namespace Game
 
             SelectComponent(blueprintPlaceData);
         }
+        #endregion
 
         private PlayerInputManager PlayerInputManager => PlayerInputManager.Instance;
     }
