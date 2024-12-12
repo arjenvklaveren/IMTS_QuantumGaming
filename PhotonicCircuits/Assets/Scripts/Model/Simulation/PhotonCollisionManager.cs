@@ -265,7 +265,7 @@ namespace Game
 
         private void HandlePhotonCollision(Photon photonA, Photon photonB)
         {
-            if(photonA.GetPropagation() == photonB.GetPropagation())
+            if(PhotonInterferenceManager.Instance.IsInterfering(photonA, photonB))
             {
                 PhotonInterferenceManager.Instance.HandleInterference(photonA, photonB, InterferenceType.Combine);
             }

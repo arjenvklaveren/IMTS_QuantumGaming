@@ -25,7 +25,7 @@ namespace Game
         protected PhotonMovementManager PhotonMovementManager => PhotonMovementManager.Instance;
 
         #region Awake / Destroy
-        public void SetSource(Photon photon)
+        public virtual void SetSource(Photon photon)
         {
             SetDefaultValues(photon);
             SetupListeners();
@@ -58,7 +58,7 @@ namespace Game
             source.OnDestroy += Source_OnDestroy;
         }
 
-        private void RemoveListeners()
+        protected void RemoveListeners()
         {
             source.OnEnterComponent -= Photon_OnEnterComponent;
             source.OnExitComponent -= Photon_OnExitComponent;
@@ -69,7 +69,7 @@ namespace Game
         #region Handle Events
         private void Photon_OnEnterComponent(OpticComponent component) => HandleEnterComponent(component);
         private void Photon_OnExitComponent(OpticComponent component) => HandleExitComponent(component);
-        private void Source_OnDestroy() => HandleDestroySource();
+        private void Source_OnDestroy(bool destroyVisuals = true) => HandleDestroySource(destroyVisuals);
 
         protected virtual void HandleEnterComponent(OpticComponent component)
         {
@@ -101,6 +101,6 @@ namespace Game
 
         public virtual void SyncVisuals() { }
         public virtual void StartMovement() { }
-        protected virtual void HandleDestroySource() { }
+        protected virtual void HandleDestroySource(bool destroyVisuals = true) { }
     }
 }

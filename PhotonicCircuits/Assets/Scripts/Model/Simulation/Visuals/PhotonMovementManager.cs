@@ -15,12 +15,10 @@ namespace Game
         public event Action<Photon, bool> OnPhotonDisplace;
 
         // Expressed in tiles/second
-        [field: SerializeField] public float MoveSpeed { get; private set; }
+        [field: SerializeField, Range(1, 10)] public float MoveSpeed { get; private set; }
+        [field: SerializeField, Range(2,10)] public int ClassicSpeedMultiplier { get; private set; }
 
         private Dictionary<Photon, Coroutine> runningRoutines;
-
-        public WaitForSeconds WaitForMoveTile { get; private set; }
-        public WaitForSeconds WaitForMoveHalfTile { get; private set; }
 
         #region Awake / Destroy
         protected override void Awake()
@@ -39,9 +37,6 @@ namespace Game
         private void SetDefaultValues()
         {
             runningRoutines = new();
-
-            WaitForMoveTile = new(1f / MoveSpeed);
-            WaitForMoveHalfTile = new(1f / (MoveSpeed * 2f));
         }
 
         private void SetupListeners()
@@ -97,7 +92,7 @@ namespace Game
 
             while (photonPos != targetPos)
             {
-                yield return GetTimeToWait(photonPos, targetPos);
+                yield return GetTimeToWaitBeforeMove(photonPos, targetPos, photon.GetPhotonType());
 
                 photonPos += propagation;
                 photon.SetPosition(photonPos);
@@ -114,12 +109,30 @@ namespace Game
                 PhotonManager.RemovePhoton(photon, false);
         }
 
-        private WaitForSeconds GetTimeToWait(Vector2Int currentPos, Vector2Int targetPos)
+        private WaitForSeconds GetTimeToWaitBeforeMove(Vector2Int currentPos, Vector2Int targetPos, PhotonType type)
         {
-            if (Vector2Int.Distance(currentPos, targetPos) <= 1f)
-                return WaitForMoveHalfTile;
+            WaitForSeconds waitSeconds = GetWaitMoveTime(type);
 
-            return WaitForMoveTile;
+            if(type == PhotonType.Classical)
+                waitSeconds = new(1f / (MoveSpeed * ClassicSpeedMultiplier));
+
+            if (Vector2Int.Distance(currentPos, targetPos) <= 1f)
+            {
+                waitSeconds = GetWaitMoveTime(type, true); 
+                if (type == PhotonType.Classical)
+                    waitSeconds = new(1f / ((MoveSpeed * ClassicSpeedMultiplier) * 2f));
+            }
+            return waitSeconds;
+        }
+
+
+        public WaitForSeconds GetWaitMoveTime(PhotonType type, bool half = false)
+        {
+            float waitValue = 1f / MoveSpeed;
+            if(type == PhotonType.Classical) waitValue = 1f / (MoveSpeed * ClassicSpeedMultiplier);
+            if (half) waitValue /= 2;
+
+            return new WaitForSeconds(waitValue);
         }
 
         private IEnumerator MovePhotonToGridEdgeCo(Photon photon)
@@ -131,7 +144,7 @@ namespace Game
 
             while (IsPositionInGrid(photonPos, propagation, gridSize))
             {
-                yield return WaitForMoveTile;
+                yield return GetWaitMoveTime(photon.GetPhotonType());
 
                 photonPos += propagationVector;
                 photon.SetPosition(photonPos);

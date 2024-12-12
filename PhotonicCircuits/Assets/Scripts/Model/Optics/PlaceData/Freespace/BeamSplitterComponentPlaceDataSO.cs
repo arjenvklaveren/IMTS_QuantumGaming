@@ -4,7 +4,7 @@ using UnityEngine;
 namespace Game
 {
     [CreateAssetMenu(fileName = "beamSplitterPlaceData", menuName = "ScriptableObjects/Components/Place Data/beamSplitter")]
-    public class BeamSplitterPlaceDataSO : ComponentPlaceDataSO
+    public class BeamSplitterComponentPlaceDataSO : ComponentPlaceDataSO
     {
         public override OpticComponent CreateOpticComponent(GridData hostGrid, Vector2Int[] tilesToOccupy, Orientation placeOrientation)
         {

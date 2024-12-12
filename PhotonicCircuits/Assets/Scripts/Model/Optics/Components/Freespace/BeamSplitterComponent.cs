@@ -42,7 +42,7 @@ namespace Game
         private IEnumerator HandleFirstPhoton(Photon photon)
         {
             firstEnter = photon;
-            yield return PhotonMovementManager.Instance.WaitForMoveHalfTile;
+            yield return PhotonMovementManager.Instance.GetWaitMoveTime(photon.GetPhotonType(), true);
             HandleAllCurrentPhotons();
         }
 
@@ -63,7 +63,8 @@ namespace Game
                 {
                     KeyValuePair<Photon, ComponentPort> innerPair = currentPhotons.ElementAt(j);
                     if (i == j) continue;
-                    if(IsInterfering(outerPair, innerPair))
+                    if(PhotonInterferenceManager.Instance.IsInterfering(outerPair.Key, innerPair.Key, false) &&
+                        IsInterferePort(outerPair.Value, innerPair.Value))
                     {
                         ResolveInterferePhotons(outerPair, innerPair);
                         isInterfering = true;
@@ -96,6 +97,7 @@ namespace Game
             Photon passPhoton = photon.Clone();
             Photon reflectPhoton = photon.Clone();
             PhotonManager.Instance.ReplacePhoton(photon, passPhoton, reflectPhoton);
+
             reflectPhoton.SetPropagation(reflectOutPort.orientation);
             passPhoton.SetAmplitude(photonProbabilty);
             reflectPhoton.SetAmplitude(photonProbabilty);
@@ -108,31 +110,16 @@ namespace Game
         }
 
         private void ResolveInterferePhotons(KeyValuePair<Photon, ComponentPort> photonA, KeyValuePair<Photon, ComponentPort> photonB)
-        { 
+        {
             currentPhotons.Remove(photonA.Key);
             currentPhotons.Remove(photonB.Key);
 
-            if (photonA.Key.GetPropagation().IsOnSameAxis(orientation))
-            {
-                (photonA, photonB) = (photonB, photonA);
-            }
+            if (photonA.Key.GetPropagation().IsOnSameAxis(orientation)) (photonA, photonB) = (photonB, photonA);
 
             PhotonInterferenceManager.Instance.HandleInterference(photonA.Key, photonB.Key, InterferenceType.Split);
 
             ExitIfExist(photonA.Key);
             ExitIfExist(photonB.Key);
-        }
-
-        private bool IsInterfering(KeyValuePair<Photon, ComponentPort> photonA, KeyValuePair<Photon, ComponentPort> photonB)
-        {
-            if (IsInterferePort(photonA.Value, photonB.Value))
-            {
-                if (PhotonManager.Instance.GetPhotonSuperpositions(photonA.Key).Contains(photonB.Key))
-                {
-                    return true;
-                }
-            }
-            return false;
         }
 
         private void ExitIfExist(Photon photon)

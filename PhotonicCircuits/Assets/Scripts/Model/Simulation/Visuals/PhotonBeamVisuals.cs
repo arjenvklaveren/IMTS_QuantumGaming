@@ -16,18 +16,20 @@ namespace Game
         protected override void SetDefaultValues(Photon photon)
         {
             base.SetDefaultValues(photon);
-            transform.position = GridUtils.GridPos2WorldPos(source.GetPosition(), openGrid);
+
+            currentDrawSprite.transform.position = GridUtils.GridPos2WorldPos(source.GetPosition(), openGrid);
             currentOrientation = photon.GetPropagation();
             currentAmplitude = photon.GetAmplitude();
+
+            float tilesPerSecond = PhotonMovementManager.MoveSpeed * PhotonMovementManager.ClassicSpeedMultiplier;
+            timeToTravelTile = 1f / tilesPerSecond;
+            waitForEndOfFrame = new();
         }
 
-        public void ChangeSource(Photon photon)
+        public override void SetSource(Photon photon)
         {
-            source = photon;
-            SetupListeners();
-            CreateNewDrawSprite();
-            SyncPosition();
-            SyncVisuals();
+            CreateNewDrawSprite(photon);
+            base.SetSource(photon);
         }
 
         #region Visuals syncing
@@ -64,11 +66,12 @@ namespace Game
         }
         #endregion
 
-        private void CreateNewDrawSprite()
+        private void CreateNewDrawSprite(Photon externalSource = null)
         {
+            Photon photonSource = externalSource == null ? source : externalSource;
             currentDrawSprite = Instantiate(sprite, visualsHolder);
-            currentOrientation = source.GetPropagation();
-            currentAmplitude = source.GetAmplitude();
+            currentOrientation = photonSource.GetPropagation();
+            currentAmplitude = photonSource.GetAmplitude();
         }
 
         #region Handle enter, exit and destroy
@@ -81,12 +84,12 @@ namespace Game
             if(isInComponent) SyncVisuals();
             base.HandleExitComponent(component);
         }
-        protected override void HandleDestroySource()
+        protected override void HandleDestroySource(bool destroyVisuals)
         {
             if (moveRoutine != null)
                 StopCoroutine(moveRoutine);
 
-            //Destroy(gameObject);
+            if (destroyVisuals) Destroy(gameObject);
         }
         #endregion
 

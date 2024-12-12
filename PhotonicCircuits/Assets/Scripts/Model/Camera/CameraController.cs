@@ -69,7 +69,7 @@ namespace Game
         #region Movement
         private void Move()
         {
-            Vector2 toMove = lastInputDir * (Time.deltaTime * moveSpeed);
+            Vector2 toMove = lastInputDir * (Time.unscaledDeltaTime * moveSpeed);
 
             transform.Translate(toMove);
         }

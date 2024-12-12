@@ -57,22 +57,24 @@ namespace Game
 
         private void CreatePhotonVisuals(Photon photon, int index)
         {
-            PhotonVisuals photonVisuals;
+            PhotonVisuals photonVisuals = null;
 
             if(index == 0 && photonPrefab is PhotonBeamVisuals)
             {
-                tempBeamVisuals.ChangeSource(photon);
-                return;
+                PhotonBeamVisuals beamVisuals = Instantiate(tempBeamVisuals);
+                beamVisuals.SetSource(photon);
             }
-
-            photonVisuals = Instantiate(photonPrefab);
-            photonVisuals.SetSource(photon);
+            else
+            {
+                photonVisuals = Instantiate(photonPrefab);
+                photonVisuals.SetSource(photon);
+            }
         }
         #endregion
 
         protected override void HandlePhoton(PhotonVisuals photon)
         {
-            if(photon is PhotonParticleVisuals)
+            if (photon is PhotonParticleVisuals)
             {
                 photonPrefab = photonParticlePrefab;
                 PhotonParticleVisuals photonParticle = photon as PhotonParticleVisuals;

@@ -52,6 +52,7 @@ namespace Game
                 HostGrid,
                 spawnPort.position,
                 spawnPort.orientation);
+            photon.SetAsClassicalType();
 
             PhotonManager.Instance.AddPhoton(photon);
             OnCreatePhoton?.Invoke(photon);

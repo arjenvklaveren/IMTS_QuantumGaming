@@ -3,27 +3,34 @@ using UnityEngine;
 
 namespace Game.Data
 {
+    public enum PhotonType { Quantum, Classical }
+
     [System.Serializable]
     public class Photon
     {
+        //external events
         public event Action<OpticComponent> OnEnterComponent;
         public event Action<OpticComponent> OnExitComponent;
 
-        public event Action OnDestroy;
+        public event Action<bool> OnDestroy;
 
+        //external properties
         public GridData currentGrid;
 
+        //photon limit values
         const float MIN_PHOTON_WAVELENGTH = 380;
         const float MAX_PHOTON_WAVELENGTH = 750;
         const float MAX_PHOTON_PHASE = 2f * Mathf.PI;
         const float MAX_PHOTON_POLARISATION = 90;
 
+        //photon properties
         float wavelength;
         float amplitude;
         float phase;
         float polarization;
         Vector2Int position;
         Orientation propagation;
+        PhotonType type;
 
         public Photon(
             GridData currentGrid,
@@ -32,7 +39,8 @@ namespace Game.Data
             float wavelength = 666f,
             float amplitude = 1.0f,
             float phase = 0f,
-            float polarization = 0f)
+            float polarization = 0f,
+            PhotonType type = PhotonType.Quantum)
         {
             this.currentGrid = currentGrid;
             this.position = position;
@@ -41,11 +49,12 @@ namespace Game.Data
             this.amplitude = amplitude;
             this.phase = phase;
             this.polarization = polarization;
+            this.type = type;
         }
 
         public Photon Clone()
         {
-            return new Photon(currentGrid, this.position, this.propagation, this.wavelength, this.amplitude, this.phase, this.polarization);
+            return new Photon(currentGrid, this.position, this.propagation, this.wavelength, this.amplitude, this.phase, this.polarization, this.type);
         }
 
         public void SetWavelength(float waveLength) { this.wavelength = Mathf.Clamp(waveLength, MIN_PHOTON_WAVELENGTH, MAX_PHOTON_WAVELENGTH); }
@@ -54,6 +63,7 @@ namespace Game.Data
         public void SetPolarisation(float polarisation) { this.polarization = Mathf.Clamp(polarisation, 0, MAX_PHOTON_POLARISATION); }
         public void SetPosition(Vector2Int position) { this.position = position; }
         public void SetPropagation(Orientation propagation) { this.propagation = propagation; }
+        public void SetAsClassicalType() { this.type = PhotonType.Classical; }
 
         public float GetWaveLength() { return wavelength; }
         public float GetAmplitude() { return amplitude; }
@@ -65,6 +75,8 @@ namespace Game.Data
         public Vector2 GetPropagationVector() => propagation.ToVector2();
         public Vector2Int GetPropagationIntVector() => propagation.ToVector2Int();
 
+        public PhotonType GetPhotonType() { return type; }
+
         public bool IsIndistinguishable(Photon photon)
         {
             return(
@@ -74,6 +86,10 @@ namespace Game.Data
                 amplitude == photon.amplitude &&
                 phase == photon.phase &&
                 polarization == photon.polarization);
+        }
+        public bool IsOfSameType(Photon other)
+        {
+            return GetPhotonType() == other.GetPhotonType();
         }
 
         public float GetWavelengthNormalized()
@@ -134,11 +150,6 @@ namespace Game.Data
             return new Color(r, g, b, GetAmplitude());
         }
 
-        public void Move()
-        {
-            this.position += propagation.ToVector2Int();
-        }
-
         public void RotateClockwise(int increments)
         {
             propagation = propagation.RotateClockwise(increments);
@@ -178,9 +189,9 @@ namespace Game.Data
             OnExitComponent?.Invoke(component);
         }
 
-        public void Destroy()
+        public void Destroy(bool destroyVisuals = true)
         {
-            OnDestroy?.Invoke();
+            OnDestroy?.Invoke(destroyVisuals);
         }
     }
 }

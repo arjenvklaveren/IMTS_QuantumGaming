@@ -51,7 +51,6 @@ namespace Game
                     break;
             }
         }
-
         void HandleSplitInterference(InterferenceData data)
         {
             float combinedProbabilities = data.photonA.GetAmplitude() + data.photonB.GetAmplitude();
@@ -64,7 +63,7 @@ namespace Game
             data.photonA.SetAmplitude(photonProbabiltyA);
             data.photonB.SetAmplitude(photonProbabiltyB);
 
-            if (photonProbabiltyA == 0) PhotonManager.Instance.RemovePhoton(data.photonA, false);
+            if(photonProbabiltyA == 0) PhotonManager.Instance.RemovePhoton(data.photonA, false);
             if(photonProbabiltyB == 0) PhotonManager.Instance.RemovePhoton(data.photonB, false);
         }
 
@@ -81,6 +80,16 @@ namespace Game
         void HandleEntangledInterference(InterferenceData data)
         {
 
+        }
+
+        public bool IsInterfering(Photon photonA, Photon photonB, bool checkPropagation = true)
+        {
+            bool result = PhotonManager.Instance.GetPhotonSuperpositions(photonA).Contains(photonB) &&
+                photonA.IsOfSameType(photonB);
+
+            if (checkPropagation && result) result = photonA.GetPropagation() == photonB.GetPropagation();
+
+            return result;
         }
     }
 }

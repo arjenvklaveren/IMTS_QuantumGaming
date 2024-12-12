@@ -21,5 +21,8 @@ namespace Game.Data
 
         ICIn = 200,
         ICOut = 201,
+        ICPhaseShifter = 202,
+        ICBeamSplitter = 203,
+        Waveguide = 204,
     }
 }

@@ -34,7 +34,7 @@ namespace Game
 
         protected override IEnumerator HandlePhotonCo(ComponentPort port, Photon photon)
         {
-            yield return PhotonMovementManager.Instance.WaitForMoveHalfTile;
+            yield return PhotonMovementManager.Instance.GetWaitMoveTime(photon.GetPhotonType(), true);
 
             photon.RotatePhase(shiftValueRadians);
             photon.TriggerExitComponent(this);

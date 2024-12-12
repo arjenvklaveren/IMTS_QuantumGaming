@@ -58,7 +58,7 @@ namespace Game
             base.HandleExitComponent(component);
         }
 
-        protected override void HandleDestroySource()
+        protected override void HandleDestroySource(bool destroyVisuals = true)
         {
             if (moveRoutine != null)
                 StopCoroutine(moveRoutine);

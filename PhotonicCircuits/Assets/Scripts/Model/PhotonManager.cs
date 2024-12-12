@@ -1,6 +1,7 @@
 using Game.Data;
 using SadUtils;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 namespace Game
@@ -85,33 +86,21 @@ namespace Game
 
             if (isMeasure)
             {
-                foreach (Photon sPhoton in GetPhotonSuperpositions(photon))
+                List<Photon> superpositions = GetPhotonSuperpositions(photon);
+                List<Photon> entanglements = GetPhotonEntanglements(photon);
+
+                foreach (Photon sPhoton in superpositions.ToList())
                 {
-                    sPhoton.Destroy();
+                    DestroyPhoton(sPhoton, photonIndex.Value);
                 }
                 ShiftEntanglementIndexes(photonIndex.Value.x);
 
-                List<Photon> entangled = GetPhotonEntanglements(photon);
-                foreach (Photon ePhoton in GetPhotonEntanglements(photon))
+                foreach (Photon ePhoton in entanglements.ToList())
                 {
                     //TODO photon entanglement logic
-
                 }
             }
-            else
-            {
-                DestroyPhoton(photon);
-                photons[photonIndex.Value.x].RemoveAt(photonIndex.Value.y);
-                if (photons[photonIndex.Value.x].Count == 0)
-                {
-                    photons.RemoveAt(photonIndex.Value.x);
-                    ShiftEntanglementIndexes(photonIndex.Value.x);
-                }
-                else
-                {
-                    ReDistributeAmplitudeProbability(photon, photonIndex.Value.x);
-                }
-            }
+            else DestroyPhoton(photon, photonIndex.Value);
         }
 
         //Photon replacing
@@ -121,15 +110,24 @@ namespace Game
             if (!photonIndex.HasValue) return;
             photons[photonIndex.Value.x].RemoveAt(photonIndex.Value.y);
             photons[photonIndex.Value.x].InsertRange(photonIndex.Value.y, replacements);
-            DestroyPhoton(photon);
-        }
-
-        void DestroyPhoton(Photon photon)
-        {
             photon.Destroy();
         }
 
-        //Photon receiving
+        void DestroyPhoton(Photon photon, Vector2Int photonIndex)
+        {
+            bool destroyVisuals = photon.GetPhotonType() == PhotonType.Quantum || !SimulationManager.Instance.IsSimulating();
+            photon.Destroy(destroyVisuals);
+
+            photons[photonIndex.x].RemoveAt(photonIndex.y);
+            if (photons[photonIndex.x].Count == 0)
+            {
+                photons.RemoveAt(photonIndex.x);
+                ShiftEntanglementIndexes(photonIndex.x);
+            }
+            else ReDistributeAmplitudeProbability(photon, photonIndex.x);
+        }
+
+        #region photon getters/finders
         public List<Photon> GetAllPhotons()
         {
             List<Photon> fullArray = new List<Photon>();
@@ -212,6 +210,8 @@ namespace Game
             }
             return null;
         }
+        #endregion
+
         void ShiftEntanglementIndexes(int cutoffIndex)
         {
             for (int i = 0; i < entanglementIndexes.Count; i++)

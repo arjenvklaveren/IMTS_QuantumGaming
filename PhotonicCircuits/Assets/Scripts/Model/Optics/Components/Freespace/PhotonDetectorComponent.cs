@@ -21,23 +21,19 @@ namespace Game
                 inPorts,
                 outPorts)
         {
+
         }
 
         protected override IEnumerator HandlePhotonCo(ComponentPort port, Photon photon)
         {
+            yield return PhotonMovementManager.Instance.GetWaitMoveTime(photon.GetPhotonType(), true);
+
             float photonDetectPercentage = photon.GetAmplitude() * 100;
             float detectComparePercentage = Random.Range(0.0f, 100.0f);
 
-            //Debug.Log("PHOTON DETECTED AT: " + occupiedRootTile);
-
-            if(detectComparePercentage <= photonDetectPercentage)
-            {
-                PhotonManager.Instance.RemovePhoton(photon, true);
-            }
-            else
-            {
-                PhotonManager.Instance.RemovePhoton(photon, false);
-            }
+            bool detected = detectComparePercentage <= photonDetectPercentage;
+            PhotonManager.Instance.RemovePhoton(photon, detected);
+            if (detected) MeasuringManager.Instance.MeasurePhoton(this, photon);
 
             yield break;
         }
