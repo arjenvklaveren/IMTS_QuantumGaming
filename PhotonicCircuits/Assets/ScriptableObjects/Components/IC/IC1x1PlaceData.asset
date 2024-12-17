@@ -15,6 +15,7 @@ MonoBehaviour:
   title: 1x1 Integrated Circuit
   previewSprite: {fileID: 0}
   previewScale: {x: 1, y: 1}
+  restrictionType: 2
   tileOffsetsToOccupy:
   - {x: 0, y: 0}
   orientation: 0
@@ -23,4 +24,3 @@ MonoBehaviour:
   ICType: 100
   gridSize: {x: 20, y: 10}
   gridSpacing: {x: 1, y: 1}
-  fileName: 1x1Test

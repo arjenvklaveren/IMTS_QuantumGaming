@@ -15,7 +15,7 @@ MonoBehaviour:
   title: Photon Phase Shifter
   previewSprite: {fileID: 21300000, guid: 70622077e07e0f444b3592703f84dbbb, type: 3}
   previewScale: {x: 1, y: 1}
-  isIntegratedOnly: 0
+  restrictionType: 1
   tileOffsetsToOccupy:
   - {x: 0, y: 0}
   orientation: 0

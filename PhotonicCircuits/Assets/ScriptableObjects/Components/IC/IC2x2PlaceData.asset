@@ -15,6 +15,7 @@ MonoBehaviour:
   title: 
   previewSprite: {fileID: 0}
   previewScale: {x: 2, y: 2}
+  restrictionType: 2
   tileOffsetsToOccupy:
   - {x: 0, y: 0}
   - {x: 1, y: 0}
@@ -26,4 +27,3 @@ MonoBehaviour:
   ICType: 101
   gridSize: {x: 40, y: 20}
   gridSpacing: {x: 1, y: 1}
-  fileName: 2x2 Test

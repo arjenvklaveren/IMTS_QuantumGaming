@@ -41,7 +41,7 @@ namespace Game
 
         private bool CanPlaceTile(ComponentPlaceDataSO placeData, IEnumerable<Vector2Int> tilesToOccupy)
         {
-            if (placeData.isIntegratedOnly && !activeGrid.isIntegrated)
+            if (IsPlacementRestricted(placeData.restrictionType))
                 return false;
 
             if (!AreTilesInBounds(tilesToOccupy))
@@ -51,6 +51,17 @@ namespace Game
                 return false;
 
             return true;
+        }
+
+        private bool IsPlacementRestricted(PlaceRestrictionType restrictionType)
+        {
+            return restrictionType switch
+            {
+                PlaceRestrictionType.ICOnly => !activeGrid.isIntegrated,
+                PlaceRestrictionType.FreeSpaceOnly => activeGrid.isIntegrated,
+                PlaceRestrictionType.Both => false,
+                _ => false,
+            };
         }
 
         private bool AreTilesInBounds(IEnumerable<Vector2Int> tilesToOccupy)

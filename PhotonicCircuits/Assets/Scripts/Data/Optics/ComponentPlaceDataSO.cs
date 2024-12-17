@@ -11,7 +11,7 @@ namespace Game.Data
         public Vector2 previewScale;
 
         [Header("Grid Settings")]
-        public bool isIntegratedOnly;
+        public PlaceRestrictionType restrictionType = PlaceRestrictionType.Both;
         public Vector2Int[] tileOffsetsToOccupy;
 
         [Header("Orientation")]

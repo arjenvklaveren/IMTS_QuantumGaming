@@ -15,7 +15,7 @@ MonoBehaviour:
   title: Test Component
   previewSprite: {fileID: 0}
   previewScale: {x: 1, y: 1}
-  isIntegratedOnly: 0
+  restrictionType: 2
   tileOffsetsToOccupy:
   - {x: 0, y: 0}
   orientation: 1
