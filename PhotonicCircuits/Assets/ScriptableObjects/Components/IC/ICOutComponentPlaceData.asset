@@ -15,10 +15,10 @@ MonoBehaviour:
   title: ICOutComponent
   previewSprite: {fileID: 0}
   previewScale: {x: 1, y: 1}
-  isIntegratedOnly: 1
+  restrictionType: 2
   tileOffsetsToOccupy:
   - {x: 0, y: 0}
-  orientation: 3
+  defaultOrientation: 3
   inPorts:
   - portId: 0
     position: {x: 0, y: 0}

@@ -15,10 +15,10 @@ MonoBehaviour:
   title: IC In Component
   previewSprite: {fileID: 0}
   previewScale: {x: 1, y: 1}
-  isIntegratedOnly: 1
+  restrictionType: 2
   tileOffsetsToOccupy:
   - {x: 0, y: 0}
-  orientation: 1
+  defaultOrientation: 1
   inPorts: []
   outPorts:
   - portId: 0

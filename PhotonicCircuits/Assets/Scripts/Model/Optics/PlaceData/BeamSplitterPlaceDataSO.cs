@@ -6,12 +6,12 @@ namespace Game
     [CreateAssetMenu(fileName = "beamSplitterPlaceData", menuName = "ScriptableObjects/Components/Place Data/beamSplitter")]
     public class BeamSplitterPlaceDataSO : ComponentPlaceDataSO
     {
-        public override OpticComponent CreateOpticComponent(GridData hostGrid, Vector2Int[] tilesToOccupy)
+        public override OpticComponent CreateOpticComponent(GridData hostGrid, Vector2Int[] tilesToOccupy, Orientation placeOrientation)
         {
             return new BeamSplitterComponent(
                 hostGrid,
                 tilesToOccupy,
-                orientation,
+                placeOrientation,
                 inPorts,
                 outPorts);
         }

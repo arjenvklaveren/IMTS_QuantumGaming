@@ -14,7 +14,7 @@ namespace Game
         [SerializeField] private Vector2Int gridSize;
         [SerializeField] private Vector2 gridSpacing;
 
-        public override OpticComponent CreateOpticComponent(GridData hostGrid, Vector2Int[] tilesToOccupy)
+        public override OpticComponent CreateOpticComponent(GridData hostGrid, Vector2Int[] tilesToOccupy, Orientation placeOrientation)
         {
             return ICType switch
             {

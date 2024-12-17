@@ -21,14 +21,15 @@ namespace Game
         }
 
         #region Add Component
-        public bool TryAddComponent(ComponentPlaceDataSO placeData, Vector2Int position)
+        public bool TryAddComponent(ComponentPlaceDataSO placeData, Vector2Int position, Orientation orientationOffset)
         {
-            Vector2Int[] tilesToOccupy = placeData.GetTilesToOccupy(position);
+            Orientation placeOrientation = placeData.GetPlaceOrientation(orientationOffset);
+            Vector2Int[] tilesToOccupy = placeData.GetTilesToOccupy(position, placeOrientation);
 
-            if (!CanPlaceTile(placeData, tilesToOccupy))
+            if (!CanPlaceComponent(placeData, tilesToOccupy))
                 return false;
 
-            OpticComponent componentToAdd = placeData.CreateOpticComponent(activeGrid, tilesToOccupy);
+            OpticComponent componentToAdd = placeData.CreateOpticComponent(activeGrid, tilesToOccupy, placeOrientation);
 
             // Custom Condition Handling
             if (!activeGrid.placementCondition(componentToAdd))
@@ -39,7 +40,7 @@ namespace Game
             return true;
         }
 
-        private bool CanPlaceTile(ComponentPlaceDataSO placeData, IEnumerable<Vector2Int> tilesToOccupy)
+        private bool CanPlaceComponent(ComponentPlaceDataSO placeData, IEnumerable<Vector2Int> tilesToOccupy)
         {
             if (IsPlacementRestricted(placeData.restrictionType))
                 return false;

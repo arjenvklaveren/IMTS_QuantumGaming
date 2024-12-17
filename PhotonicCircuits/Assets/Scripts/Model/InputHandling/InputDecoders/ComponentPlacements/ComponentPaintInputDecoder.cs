@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace Game
 {
-    public class ComponentPaintInputDecoder : IMouseButtonInputDecoder
+    public class ComponentPaintInputDecoder : IMouseButtonInputDecoder, IButtonInputDecoder
     {
         private bool isPainting;
 
@@ -27,21 +27,34 @@ namespace Game
         #region Handle Input
         public void DecodeInput(MouseInputCode code, ButtonInputType inputType)
         {
-            if (code != MouseInputCode.LeftMouseButton)
+            if (inputType == ButtonInputType.Hold)
                 return;
 
-            switch (inputType)
-            {
-                case ButtonInputType.Up:
-                    isPainting = false;
-                    break;
+            if (code == MouseInputCode.LeftMouseButton)
+                HandlePaintInput(inputType);
+        }
 
-                case ButtonInputType.Down:
-                    isPainting = true;
-                    if (GridTile.TryGetHoveredPosition(out Vector2Int position))
-                        SendPaintInput(position);
-                    break;
-            }
+        private void HandlePaintInput(ButtonInputType inputType)
+        {
+            isPainting = inputType == ButtonInputType.Down;
+
+            if (isPainting)
+                if (GridTile.TryGetHoveredPosition(out Vector2Int position))
+                    SendPaintInput(position);
+        }
+
+        public void DecodeInput(InputCode code, ButtonInputType inputType)
+        {
+            if (inputType != ButtonInputType.Down)
+                return;
+
+            if (code == InputCode.R)
+                HandleRotateInput();
+        }
+
+        private void HandleRotateInput()
+        {
+            ComponentPaintManager.RotatePreview();
         }
         #endregion
 

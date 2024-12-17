@@ -9,10 +9,12 @@ namespace Game
     public class ComponentPaintManager : Singleton<ComponentPaintManager>
     {
         public event Action<ComponentPlaceDataSO> OnPlaceDataChanged;
+        public event Action<Orientation> OnOrientationOffsetChanged;
 
         public UnityDictionary<OpticComponentType, ComponentPlaceDataSO> placeDatas;
 
         private ComponentPlaceDataSO selectedComponent;
+        private Orientation orientationOffset;
 
         private GridController gridController;
 
@@ -27,10 +29,19 @@ namespace Game
             gridController = GridManager.Instance.GridController;
         }
 
+        #region Rotate Preview
+        public void RotatePreview()
+        {
+            orientationOffset = orientationOffset.RotateClockwise();
+
+            OnOrientationOffsetChanged?.Invoke(orientationOffset);
+        }
+        #endregion
+
         #region Paint Component
         public void PaintComponent(Vector2Int position)
         {
-            if (gridController.TryAddComponent(selectedComponent, position))
+            if (gridController.TryAddComponent(selectedComponent, position, orientationOffset))
                 return;
 
             // Show error
@@ -68,6 +79,7 @@ namespace Game
 
             selectedComponent = placeData;
             OnPlaceDataChanged?.Invoke(placeData);
+            OnOrientationOffsetChanged?.Invoke(orientationOffset);
         }
 
         private void TrySetPaintMode()

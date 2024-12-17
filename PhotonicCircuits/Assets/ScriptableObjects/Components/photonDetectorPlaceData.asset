@@ -18,7 +18,7 @@ MonoBehaviour:
   restrictionType: 1
   tileOffsetsToOccupy:
   - {x: 0, y: 0}
-  orientation: 0
+  defaultOrientation: 3
   inPorts:
   - portId: 0
     position: {x: 0, y: 0}

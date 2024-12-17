@@ -6,12 +6,12 @@ namespace Game
     [CreateAssetMenu(fileName = "mirrorPlaceData", menuName = "ScriptableObjects/Components/Place Data/mirror")]
     public class MirrorComponentPlaceDataSO : ComponentPlaceDataSO
     {
-        public override OpticComponent CreateOpticComponent(GridData hostGrid, Vector2Int[] tilesToOccupy)
+        public override OpticComponent CreateOpticComponent(GridData hostGrid, Vector2Int[] tilesToOccupy, Orientation placeOrientation)
         {
             return new MirrorComponent(
                 hostGrid,
                 tilesToOccupy,
-                orientation,
+                placeOrientation,
                 inPorts,
                 outPorts);
         }

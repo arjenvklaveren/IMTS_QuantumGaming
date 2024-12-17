@@ -15,7 +15,6 @@ namespace Game.Data
             return orientation.RotateClockwise(-increments);
         }
 
-        // Consider refactor, cuz this is very silly lol
         public static int GetRotationDifferenceInClockwiseIncrements(Orientation currentOrientation, Orientation targetOrientation)
         {
             int dir = (int)currentOrientation;

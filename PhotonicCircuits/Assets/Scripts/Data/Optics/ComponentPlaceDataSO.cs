@@ -15,16 +15,23 @@ namespace Game.Data
         public Vector2Int[] tileOffsetsToOccupy;
 
         [Header("Orientation")]
-        public Orientation orientation;
+        public Orientation defaultOrientation;
 
         // Port positions are relative!
         [Header("Port Settings")]
         public ComponentPort[] inPorts;
         public ComponentPort[] outPorts;
 
-        public abstract OpticComponent CreateOpticComponent(GridData hostGrid, Vector2Int[] tilesToOccupy);
+        public abstract OpticComponent CreateOpticComponent(GridData hostGrid, Vector2Int[] tilesToOccupy, Orientation placeOrientation);
 
-        public Vector2Int[] GetTilesToOccupy(Vector2Int position)
+        public Orientation GetPlaceOrientation(Orientation orientationOffset)
+        {
+            int offsetIncrements = (int)orientationOffset;
+            return defaultOrientation.RotateClockwise(offsetIncrements);
+        }
+
+        #region Get Tiles To Occupy
+        public Vector2Int[] GetTilesToOccupy(Vector2Int position, Orientation placeOrientation)
         {
             if (tileOffsetsToOccupy == null || tileOffsetsToOccupy.Length == 0)
                 return new Vector2Int[] { position };
@@ -32,10 +39,29 @@ namespace Game.Data
             // Return position with offsets.
             Vector2Int[] tilesToOccupy = new Vector2Int[tileOffsetsToOccupy.Length];
 
+            int rotateIncrements = OrientationUtils.GetRotationDifferenceInClockwiseIncrements(defaultOrientation, placeOrientation);
+
             for (int i = 0; i < tileOffsetsToOccupy.Length; i++)
-                tilesToOccupy[i] = position + tileOffsetsToOccupy[i];
+            {
+                Vector2Int rotatedTileOffset = GetRotatedTileOffsetToOccupy(tileOffsetsToOccupy[i], rotateIncrements);
+                tilesToOccupy[i] = position + rotatedTileOffset;
+            }
 
             return tilesToOccupy;
         }
+
+        private Vector2Int GetRotatedTileOffsetToOccupy(Vector2Int tile, int rotateIncrements)
+        {
+            for (int i = 0; i < rotateIncrements; i++)
+                RotateTileOffsetClockwise(ref tile);
+
+            return tile;
+        }
+
+        private void RotateTileOffsetClockwise(ref Vector2Int tile)
+        {
+            tile = new(tile.y, -tile.x);
+        }
+        #endregion
     }
 }

@@ -18,7 +18,7 @@ namespace Game
             tileOffsetsToOccupy = templatePlaceData.tileOffsetsToOccupy;
         }
 
-        public override OpticComponent CreateOpticComponent(GridData hostGrid, Vector2Int[] tilesToOccupy)
+        public override OpticComponent CreateOpticComponent(GridData hostGrid, Vector2Int[] tilesToOccupy, Orientation placeOrientation)
         {
             return blueprintData.type switch
             {

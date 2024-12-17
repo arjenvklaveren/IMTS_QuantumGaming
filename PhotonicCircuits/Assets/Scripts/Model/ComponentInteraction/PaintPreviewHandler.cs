@@ -1,4 +1,5 @@
 using Game.Data;
+using SadUtils;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -11,9 +12,12 @@ namespace Game
 
         [Header("Refs")]
         [SerializeField] private RectTransform previewHolder;
+        [SerializeField] private RectTransform imageHolder;
         [SerializeField] private Image previewImage;
 
         private Vector2 defaultImageSizeDelta;
+
+        private Orientation currentDefaultOrientation;
 
         #region Start / Destroy
         private void Start()
@@ -27,7 +31,7 @@ namespace Game
             enabled = false;
             previewHolder.gameObject.SetActive(false);
 
-            defaultImageSizeDelta = previewImage.rectTransform.sizeDelta;
+            defaultImageSizeDelta = imageHolder.sizeDelta;
             previewImage.color = previewColor;
         }
 
@@ -38,17 +42,20 @@ namespace Game
 
         private void SetupListeners()
         {
-            ComponentPaintManager.OnPlaceDataChanged += ComponentPaintManager_onPlaceDataChanged;
+            ComponentPaintManager.OnPlaceDataChanged += ComponentPaintManager_OnPlaceDataChanged;
+            ComponentPaintManager.OnOrientationOffsetChanged += ComponentPaintManager_OnOrientationOffsetChanged;
         }
 
         private void RemoveListeners()
         {
-            ComponentPaintManager.OnPlaceDataChanged -= ComponentPaintManager_onPlaceDataChanged;
+            ComponentPaintManager.OnPlaceDataChanged -= ComponentPaintManager_OnPlaceDataChanged;
+            ComponentPaintManager.OnOrientationOffsetChanged -= ComponentPaintManager_OnOrientationOffsetChanged;
         }
         #endregion
 
         #region Handle Events
-        private void ComponentPaintManager_onPlaceDataChanged(ComponentPlaceDataSO placeData) => HandlePlaceDataPreview(placeData);
+        private void ComponentPaintManager_OnPlaceDataChanged(ComponentPlaceDataSO placeData) => HandlePlaceDataPreview(placeData);
+        private void ComponentPaintManager_OnOrientationOffsetChanged(Orientation orientation) => HandleOrientationChanged(orientation);
 
         private void HandlePlaceDataPreview(ComponentPlaceDataSO placeData)
         {
@@ -66,14 +73,25 @@ namespace Game
 
         private void UpdatePreview(ComponentPlaceDataSO placeData)
         {
+            currentDefaultOrientation = placeData.defaultOrientation;
+
             previewImage.sprite = placeData.previewSprite;
-            previewImage.rectTransform.sizeDelta = defaultImageSizeDelta * placeData.previewScale;
+            imageHolder.sizeDelta = defaultImageSizeDelta * placeData.previewScale;
 
             if (!previewHolder.gameObject.activeSelf)
             {
                 previewHolder.gameObject.SetActive(true);
                 enabled = true;
             }
+        }
+
+        private void HandleOrientationChanged(Orientation offsetOrientation)
+        {
+            int offsetIncrements = (int)offsetOrientation;
+            Orientation placeOrientation = currentDefaultOrientation.RotateClockwise(offsetIncrements);
+
+            Vector3 targetLookAt = (Vector3)placeOrientation.ToVector2();
+            previewImage.rectTransform.rotation = LookAt2D.GetLookAtRotation(Vector3.zero, targetLookAt);
         }
         #endregion
 
