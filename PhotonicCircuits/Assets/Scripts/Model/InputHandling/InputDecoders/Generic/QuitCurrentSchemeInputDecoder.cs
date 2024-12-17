@@ -15,7 +15,7 @@ namespace Game
             PlayerInputManager.PopInputHandler();
         }
 
-        public void Reset() { }
+        public void OnDisable() { }
         public void Destroy() { }
 
         private PlayerInputManager PlayerInputManager => PlayerInputManager.Instance;

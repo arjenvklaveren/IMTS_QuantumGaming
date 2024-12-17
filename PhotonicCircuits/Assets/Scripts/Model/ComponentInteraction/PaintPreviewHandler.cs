@@ -38,12 +38,12 @@ namespace Game
 
         private void SetupListeners()
         {
-            ComponentPaintManager.onPlaceDataChanged += ComponentPaintManager_onPlaceDataChanged;
+            ComponentPaintManager.OnPlaceDataChanged += ComponentPaintManager_onPlaceDataChanged;
         }
 
         private void RemoveListeners()
         {
-            ComponentPaintManager.onPlaceDataChanged -= ComponentPaintManager_onPlaceDataChanged;
+            ComponentPaintManager.OnPlaceDataChanged -= ComponentPaintManager_onPlaceDataChanged;
         }
         #endregion
 

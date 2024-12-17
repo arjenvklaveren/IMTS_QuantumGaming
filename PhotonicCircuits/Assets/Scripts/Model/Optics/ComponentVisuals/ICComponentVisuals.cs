@@ -188,6 +188,8 @@ namespace Game
                 sourceICComponent.Type);
 
             Task.Run(() => ICBlueprintManager.Instance.SaveBlueprint(newBlueprint));
+
+            sourceICComponent.InternalGrid.TriggerNameBlueprint(name);
         }
 
         private bool IsInvalidName(string name)

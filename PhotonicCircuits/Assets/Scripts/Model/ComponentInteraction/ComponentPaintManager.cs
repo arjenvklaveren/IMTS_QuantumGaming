@@ -8,7 +8,9 @@ namespace Game
 {
     public class ComponentPaintManager : Singleton<ComponentPaintManager>
     {
-        public event Action<ComponentPlaceDataSO> onPlaceDataChanged;
+        public event Action<ComponentPlaceDataSO> OnPlaceDataChanged;
+
+        public UnityDictionary<OpticComponentType, ComponentPlaceDataSO> placeDatas;
 
         private ComponentPlaceDataSO selectedComponent;
 
@@ -37,22 +39,41 @@ namespace Game
         #endregion
 
         #region Select Place Data
-        public void SelectComponent(ComponentPlaceDataSO placeData)
+        public void SelectComponent(OpticComponentType type)
         {
-            // Set paint control scheme.
-            if (selectedComponent == null)
-                PlayerInputManager.AddInputHandler(new GridComponentPaintInputHandler());
+            if (!placeDatas.ContainsKey(type))
+                return;
 
-            selectedComponent = placeData;
-            onPlaceDataChanged?.Invoke(placeData);
+            SelectComponent(placeDatas[type]);
         }
 
         public void SelectBlueprint(string blueprintName)
         {
+            if (!ICBlueprintManager.Instance.TryGetBlueprintData(blueprintName, out ICBlueprintData blueprintData))
+                return;
+
+            if (!placeDatas.ContainsKey(blueprintData.type))
+                return;
+
             ICBlueprintPlaceDataSO blueprintPlaceData = ScriptableObject.CreateInstance<ICBlueprintPlaceDataSO>();
-            blueprintPlaceData.SetBlueprintReference(blueprintName);
+            blueprintPlaceData.SetBlueprintReference(placeDatas[blueprintData.type], blueprintData);
 
             SelectComponent(blueprintPlaceData);
+        }
+
+        public void SelectComponent(ComponentPlaceDataSO placeData)
+        {
+            // Set paint control scheme.
+            TrySetPaintMode();
+
+            selectedComponent = placeData;
+            OnPlaceDataChanged?.Invoke(placeData);
+        }
+
+        private void TrySetPaintMode()
+        {
+            if (selectedComponent == null)
+                PlayerInputManager.AddInputHandler(new GridComponentPaintInputHandler());
         }
         #endregion
 

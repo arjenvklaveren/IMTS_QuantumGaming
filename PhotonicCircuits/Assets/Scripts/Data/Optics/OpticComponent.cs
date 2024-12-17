@@ -37,8 +37,8 @@ namespace Game.Data
 
             this.orientation = orientation;
 
-            this.InPorts = GetPortCopies(inPorts);
-            this.OutPorts = GetPortCopies(outPorts);
+            InPorts = GetPortCopies(inPorts);
+            OutPorts = GetPortCopies(outPorts);
             InitPorts();
         }
 
@@ -174,5 +174,28 @@ namespace Game.Data
         public virtual void Destroy() { }
 
         public virtual string SerializeArgs() { return ""; }
+
+        #region Generate Local Offset Ports
+        public ComponentPort[] GenerateLocalOffsetInPorts() => GenerateLocalOffsetPorts(InPorts);
+        public ComponentPort[] GenerateLocalOffsetOutPorts() => GenerateLocalOffsetPorts(OutPorts);
+
+        private ComponentPort[] GenerateLocalOffsetPorts(ComponentPort[] ports)
+        {
+            ComponentPort[] localOffsetPorts = new ComponentPort[ports.Length];
+
+            for (int i = 0; i < ports.Length; i++)
+            {
+                ComponentPort port = ports[i];
+
+                localOffsetPorts[i] = new(
+                    port.owner,
+                    port.position - occupiedRootTile,
+                    port.orientation,
+                    port.portId);
+            }
+
+            return localOffsetPorts;
+        }
+        #endregion
     }
 }

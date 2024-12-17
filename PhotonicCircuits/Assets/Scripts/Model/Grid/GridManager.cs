@@ -1,5 +1,6 @@
 using Game.Data;
 using SadUtils;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -42,7 +43,11 @@ namespace Game
         {
             grids.Push(grid);
 
-            GridController.SetActiveGrid(grid);
+            if (grid.isIntegrated)
+                SaveProject(OpenCurrentGrid);
+
+            else
+                GridController.SetActiveGrid(grid);
         }
 
         public void LoadRootGrid(GridData grid)
@@ -62,16 +67,18 @@ namespace Game
             ComponentPortsManager.Instance.CompileComponentPorts(closedGrid);
 
             // save closed Grid
-            if (closedGrid.isIntegrated)
-                SaveIntegratedGrid();
-
-            GridController.SetActiveGrid(grids.Peek());
+            SaveProject(OpenCurrentGrid);
         }
 
-        private void SaveIntegratedGrid()
+        private void SaveProject(Action completeCallback)
         {
             // To save integrated grid, find dirty IC component in parent grid.
-            SerializationManager.Instance.SerializeGrid(grids.Peek());
+            SerializationManager.Instance.SerializeProject(completeCallback);
+        }
+
+        private void OpenCurrentGrid()
+        {
+            GridController.SetActiveGrid(grids.Peek());
         }
     }
 }

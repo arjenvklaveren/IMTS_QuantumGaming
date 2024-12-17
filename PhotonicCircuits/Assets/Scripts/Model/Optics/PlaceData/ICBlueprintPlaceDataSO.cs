@@ -8,9 +8,14 @@ namespace Game
     {
         private ICBlueprintData blueprintData;
 
-        public void SetBlueprintReference(string blueprintName)
+        public void SetBlueprintReference(ComponentPlaceDataSO templatePlaceData, ICBlueprintData blueprintData)
         {
-            ICBlueprintManager.Instance.TryGetBlueprintData(blueprintName, out blueprintData);
+            // Load blueprint Data
+            //ICBlueprintManager.Instance.TryGetBlueprintData(blueprintName, out blueprintData);
+            this.blueprintData = blueprintData;
+
+            // Set place data from template
+            tileOffsetsToOccupy = templatePlaceData.tileOffsetsToOccupy;
         }
 
         public override OpticComponent CreateOpticComponent(GridData hostGrid, Vector2Int[] tilesToOccupy)

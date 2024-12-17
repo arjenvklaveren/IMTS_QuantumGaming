@@ -36,7 +36,7 @@ namespace Game
         }
         #endregion
 
-        public void Reset()
+        public void OnDisable()
         {
             ctrlModifierActive = false;
         }

@@ -2,7 +2,7 @@ namespace Game
 {
     public interface IInputDecoder
     {
-        public void Reset();
+        public void OnDisable();
         public void Destroy();
     }
 }

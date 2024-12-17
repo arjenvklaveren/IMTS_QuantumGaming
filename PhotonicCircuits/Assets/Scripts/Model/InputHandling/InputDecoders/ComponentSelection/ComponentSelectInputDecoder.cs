@@ -23,7 +23,7 @@ namespace Game
                 ComponentSelectionManager.Deselect();
         }
 
-        public void Reset() { }
+        public void OnDisable() { }
         public void Destroy() { }
 
         private ComponentSelectionManager ComponentSelectionManager => ComponentSelectionManager.Instance;

@@ -60,7 +60,7 @@ namespace Game
             ComponentPaintManager.PaintComponent(position);
         }
 
-        public void Reset()
+        public void OnDisable()
         {
             isPainting = false;
         }

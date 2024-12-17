@@ -9,10 +9,20 @@ namespace Game
     {
         private Stack<PlayerInputHandler> inputHandlers;
 
+        private List<InputCode> heldButtons;
+        private List<MouseInputCode> heldMouseButtons;
+
         protected override void Awake()
         {
-            inputHandlers = new();
+            SetDefaultValues();
             SetInstance(this);
+        }
+
+        private void SetDefaultValues()
+        {
+            inputHandlers = new();
+            heldButtons = new();
+            heldMouseButtons = new();
         }
 
         private void Start()
@@ -29,9 +39,10 @@ namespace Game
         public void AddInputHandler(PlayerInputHandler inputHandler)
         {
             if (inputHandlers.Count > 0)
-                inputHandlers.Peek().Reset();
+                inputHandlers.Peek().OnDisable();
 
             inputHandlers.Push(inputHandler);
+            inputHandler.OnEnable(heldButtons, heldMouseButtons);
         }
 
         public void PopInputHandler()
@@ -49,6 +60,8 @@ namespace Game
             if (inputHandlers.Count == 0)
                 return;
 
+            UpdateHeldMouseButton(mouseInputCode, inputType);
+
             inputHandlers.Peek().HandleMouseButtonInput(mouseInputCode, inputType);
         }
 
@@ -56,6 +69,8 @@ namespace Game
         {
             if (inputHandlers.Count == 0)
                 return;
+
+            UpdateHeldButton(code, inputType);
 
             inputHandlers.Peek().HandleButtonInput(code, inputType);
         }
@@ -74,6 +89,26 @@ namespace Game
                 return;
 
             inputHandlers.Peek().HandleMousePositionDelta(mousePositionDelta);
+        }
+        #endregion
+
+        #region Track Held Inputs
+        private void UpdateHeldMouseButton(MouseInputCode mouseInputCode, ButtonInputType inputType)
+        {
+            if (inputType == ButtonInputType.Down)
+                heldMouseButtons.Add(mouseInputCode);
+
+            else if (inputType == ButtonInputType.Up && heldMouseButtons.Contains(mouseInputCode))
+                heldMouseButtons.Remove(mouseInputCode);
+        }
+
+        private void UpdateHeldButton(InputCode code, ButtonInputType inputType)
+        {
+            if (inputType == ButtonInputType.Down)
+                heldButtons.Add(code);
+
+            else if (inputType == ButtonInputType.Up && heldButtons.Contains(code))
+                heldButtons.Remove(code);
         }
         #endregion
     }

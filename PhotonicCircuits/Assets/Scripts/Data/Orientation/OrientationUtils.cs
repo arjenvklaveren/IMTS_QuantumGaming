@@ -7,13 +7,7 @@ namespace Game.Data
         #region Rotation
         public static Orientation RotateClockwise(this Orientation orientation, int increments = 1)
         {
-            int dir = (int)orientation;
-
-            // Rotate in increments of 90 degrees.
-            // Keep result in 0 - 3 range and handle negative values.
-            dir = (dir + (increments % 4) + 4) % 4;
-
-            return (Orientation)dir;
+            return orientation.Add(increments);
         }
 
         public static Orientation RotateCounterClockwise(this Orientation orientation, int increments = 1)
@@ -21,6 +15,7 @@ namespace Game.Data
             return orientation.RotateClockwise(-increments);
         }
 
+        // Consider refactor, cuz this is very silly lol
         public static int GetRotationDifferenceInClockwiseIncrements(Orientation currentOrientation, Orientation targetOrientation)
         {
             int dir = (int)currentOrientation;
@@ -58,6 +53,24 @@ namespace Game.Data
                 Orientation.Left => Vector2Int.left,
                 _ => Vector2Int.zero
             };
+        }
+        #endregion
+
+        #region Arithmetic
+        public static Orientation Add(this Orientation orientation, int toAdd)
+        {
+            int dir = (int)orientation;
+
+            // Rotate in increments of 90 degrees.
+            // Keep result in 0 - 3 range and handle negative values.
+            dir = (dir + (toAdd % 4) + 4) % 4;
+
+            return (Orientation)dir;
+        }
+
+        public static Orientation Subtract(this Orientation orientation, int toSubtract)
+        {
+            return orientation.Add(-toSubtract);
         }
         #endregion
     }

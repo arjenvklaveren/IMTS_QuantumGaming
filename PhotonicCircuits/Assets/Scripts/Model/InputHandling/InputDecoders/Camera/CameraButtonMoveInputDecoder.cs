@@ -47,12 +47,14 @@ namespace Game
         }
         #endregion
 
-        public void Reset()
+        #region Disable / Destroy
+        public void OnDisable()
         {
             moveDir = Vector2.zero;
             camController.SetMoveDir(moveDir);
         }
 
         public void Destroy() { }
+        #endregion
     }
 }

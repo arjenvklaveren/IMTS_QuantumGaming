@@ -76,23 +76,27 @@ namespace Game
         }
         #endregion
 
-        public virtual void Reset()
+        public virtual void OnEnable(List<InputCode> heldButtons, List<MouseInputCode> heldMouseButtons)
+        {
+            foreach (IButtonInputDecoder buttonDecoder in buttonDecoders)
+                foreach (InputCode code in heldButtons)
+                    buttonDecoder.DecodeInput(code, ButtonInputType.Down);
+
+            foreach (IMouseButtonInputDecoder mouseButtonDecoder in mouseButtonDecoders)
+                foreach (MouseInputCode code in heldMouseButtons)
+                    mouseButtonDecoder.DecodeInput(code, ButtonInputType.Down);
+        }
+
+        public virtual void OnDisable()
         {
             foreach (IInputDecoder decoder in decoders)
-                decoder.Reset();
+                decoder.OnDisable();
         }
 
         public virtual void OnDestroy()
         {
-            // Destroy all input decoders
-            foreach (IInputDecoder buttonDecoder in buttonDecoders)
-                buttonDecoder.Destroy();
-            foreach (IInputDecoder mouseButtonDecoder in mouseButtonDecoders)
-                mouseButtonDecoder.Destroy();
-            foreach (IMousePositionDeltaInputDecoder mousePositionDecoder in mousePositionDecoders)
-                mousePositionDecoder.Destroy();
-            foreach (IScrollInputDecoder scrollDecoder in scrollDecoders)
-                scrollDecoder.Destroy();
+            foreach (IInputDecoder decoder in decoders)
+                decoder.Destroy();
         }
     }
 }

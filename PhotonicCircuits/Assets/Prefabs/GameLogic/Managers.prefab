@@ -137,6 +137,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d1b625c48f754624f976d1397aeacba7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  placeDatas:
+    dictionary:
+    - key: 100
+      value: {fileID: 11400000, guid: c844e4e0a332a144288cd89303c88da3, type: 2}
+    - key: 101
+      value: {fileID: 11400000, guid: 2f1b666d55ad2b84095d1d07502c8ea4, type: 2}
 --- !u!114 &4680900377058943215
 MonoBehaviour:
   m_ObjectHideFlags: 0

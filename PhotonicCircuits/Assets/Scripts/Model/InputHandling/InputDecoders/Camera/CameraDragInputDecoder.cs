@@ -15,7 +15,7 @@ namespace Game
 
         }
 
-        public void Reset() { }
+        public void OnDisable() { }
         public void Destroy() { }
     }
 }

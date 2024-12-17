@@ -53,9 +53,9 @@ namespace Game
                 new ComponentPort[0],
                 new ComponentPort[0])
         {
-            SetDefaultValues();
-
             InternalGrid = new(data.internalGrid);
+
+            SetDefaultValues();
             containedBlueprints = new(data.containedBlueprints);
 
             FindIOComponents();
@@ -118,12 +118,14 @@ namespace Game
         {
             InternalGrid.OnComponentAdded += GridData_OnComponentAdded;
             InternalGrid.OnComponentRemoved += GridData_OnComponentRemoved;
+            InternalGrid.OnBlueprintNamed += GridData_OnBlueprintNamed;
         }
         #endregion
 
         #region Handle Events
         private void GridData_OnComponentAdded(OpticComponent component) => TryAddPortHandlerComponent(component);
         private void GridData_OnComponentRemoved(OpticComponent component) => TryRemovePortHandlerComponent(component);
+        private void GridData_OnBlueprintNamed(string name) => RegisterNamedBlueprint(name);
         private void ICBlueprintManager_OnBlueprintUpdated(ICBlueprintData data) => SyncToBlueprint(data);
 
         #region Handle Add Component
@@ -142,30 +144,59 @@ namespace Game
 
         private void AddInComponent(ICInComponent component)
         {
+            inComponents.Add(component);
 
-            if (CanAddIOComponentInOrientation(component.orientation))
-            {
-                inComponents.Add(component);
-
-                GenerateInPorts();
-            }
-            else
-                ExternalCoroutineExecutionManager.Instance.StartSimulationCoroutine(RemoveComponentCo(component));
+            GenerateInPorts();
         }
 
         private void AddOutComponent(ICOutComponent component)
         {
-            if (CanAddIOComponentInOrientation(component.orientation))
-            {
-                component.portId = outComponents.Count;
-                outComponents.Add(component);
+            component.portId = outComponents.Count;
+            outComponents.Add(component);
 
-                component.OnDetectPhoton += ICOutComponent_OnDetectPhoton;
+            component.OnDetectPhoton += ICOutComponent_OnDetectPhoton;
 
-                GenerateOutPorts();
-            }
-            else
-                ExternalCoroutineExecutionManager.Instance.StartSimulationCoroutine(RemoveComponentCo(component));
+            GenerateOutPorts();
+        }
+
+        private void RegisterNamedBlueprint(string name)
+        {
+            containedBlueprints.Add(name, 1);
+        }
+        #endregion
+
+        #region Handle Remove Component
+        private void TryRemovePortHandlerComponent(OpticComponent component)
+        {
+            if (component.Type == OpticComponentType.ICIn)
+                RemoveInComponent(component as ICInComponent);
+            else if (component.Type == OpticComponentType.ICOut)
+                RemoveOutComponent(component as ICOutComponent);
+
+            if (TryGetBlueprintComponent(component, out ICComponentBase blueprintComponent))
+                HandleRemoveBlueprintComponent(blueprintComponent);
+
+            IsDirty = true;
+        }
+
+        private void RemoveInComponent(ICInComponent component)
+        {
+            inComponents.Remove(component);
+
+            GenerateInPorts();
+        }
+
+        private void RemoveOutComponent(ICOutComponent component)
+        {
+            outComponents.Remove(component);
+
+            component.OnDetectPhoton -= ICOutComponent_OnDetectPhoton;
+
+            // Recalculate out component port Ids
+            for (int i = 0; i < outComponents.Count; i++)
+                outComponents[i].portId = i;
+
+            GenerateOutPorts();
         }
         #endregion
 
@@ -222,47 +253,6 @@ namespace Game
         #endregion
         #endregion
 
-        #region Handle Remove Component
-        private void TryRemovePortHandlerComponent(OpticComponent component)
-        {
-            if (component.Type == OpticComponentType.ICIn)
-                RemoveInComponent(component as ICInComponent);
-            else if (component.Type == OpticComponentType.ICOut)
-                RemoveOutComponent(component as ICOutComponent);
-
-            if (TryGetBlueprintComponent(component, out ICComponentBase blueprintComponent))
-                HandleRemoveBlueprintComponent(blueprintComponent);
-
-            IsDirty = true;
-        }
-
-        private void RemoveInComponent(ICInComponent component)
-        {
-            inComponents.Remove(component);
-
-            GenerateInPorts();
-        }
-
-        private void RemoveOutComponent(ICOutComponent component)
-        {
-            outComponents.Remove(component);
-
-            component.OnDetectPhoton -= ICOutComponent_OnDetectPhoton;
-
-            // Recalculate out component port Ids
-            for (int i = 0; i < outComponents.Count; i++)
-                outComponents[i].portId = i;
-
-            GenerateOutPorts();
-        }
-
-        private IEnumerator RemoveComponentCo(OpticComponent component)
-        {
-            yield return null;
-            GridManager.Instance.GridController.TryRemoveComponent(component);
-        }
-        #endregion
-
         #region Handle Blueprint Changed
         public void SyncToBlueprint(ICBlueprintData data)
         {
@@ -287,6 +277,7 @@ namespace Game
         {
             InternalGrid.OnComponentAdded -= GridData_OnComponentAdded;
             InternalGrid.OnComponentRemoved -= GridData_OnComponentRemoved;
+            InternalGrid.OnBlueprintNamed -= GridData_OnBlueprintNamed;
         }
 
         private void ResetIOComponentData()
@@ -341,8 +332,14 @@ namespace Game
             if (string.IsNullOrEmpty(blueprintName))
                 return true;
 
-            // TODO: figure out contained blueprints check
-            return true;
+            if (blueprintName == InternalGrid.gridName)
+                return false;
+
+            if (!ICBlueprintManager.Instance.TryGetBlueprintData(blueprintName, out ICBlueprintData blueprintData))
+                return true;
+
+            bool blueprintContainsSelf = blueprintData.containedBlueprints.ContainsKey(InternalGrid.gridName);
+            return !blueprintContainsSelf;
         }
         #endregion
 

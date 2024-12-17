@@ -10,6 +10,7 @@ namespace Game.Data
 
         public event Action<OpticComponent> OnComponentAdded;
         public event Action<OpticComponent> OnComponentRemoved;
+        public event Action<string> OnBlueprintNamed;
 
         public const int CHUNK_SIZE = 5;
 
@@ -95,5 +96,7 @@ namespace Game.Data
 
             OnComponentRemoved?.Invoke(component);
         }
+
+        public void TriggerNameBlueprint(string name) => OnBlueprintNamed?.Invoke(name);
     }
 }

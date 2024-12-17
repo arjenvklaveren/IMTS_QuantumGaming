@@ -1,7 +1,9 @@
 using Game.Data;
 using SadUtils;
+using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Threading;
 using System.Threading.Tasks;
 using Unity.Plastic.Newtonsoft.Json;
 using UnityEngine;
@@ -14,6 +16,7 @@ namespace Game
         public const string blueprintDirectory = "/SaveData/Blueprints";
 
         private BlueprintSerializer blueprintSerializer;
+        private SynchronizationContext mainThreadContext;
 
         private bool isSaving;
 
@@ -23,6 +26,7 @@ namespace Game
             SetInstance(this);
 
             blueprintSerializer = new();
+            mainThreadContext = SynchronizationContext.Current;
         }
 
         private void OnDestroy()
@@ -31,22 +35,30 @@ namespace Game
         }
         #endregion
 
-        public void SerializeProject()
+        public void SerializeProject(Action completeCallback = null)
         {
             if (isSaving)
                 return;
 
             IEnumerable<GridData> grids = new List<GridData>(GridManager.Instance.GetAllGrids());
 
-            Task.Run(() => SerializeProjectAsync(grids));
+            Task.Run(async () =>
+            {
+                await SerializeProjectAsync(grids);
+                ExecuteOnMainThread(() => completeCallback?.Invoke());
+            });
         }
 
-        public void SerializeGrid(GridData grid)
+        public void SerializeGrid(GridData grid, Action completeCallback)
         {
-            Task.Run(() => SerializeGridAsync(grid));
+            Task.Run(async () =>
+            {
+                await SerializeGridAsync(grid);
+                ExecuteOnMainThread(() => completeCallback?.Invoke());
+            });
         }
 
-        private async void SerializeProjectAsync(IEnumerable<GridData> grids)
+        private async Task SerializeProjectAsync(IEnumerable<GridData> grids)
         {
             isSaving = true;
 
@@ -105,6 +117,9 @@ namespace Game
                 new GridDataJsonConverter(),
                 new OpticComponentJsonConverter(),
                 new ComponentPortJsonConverter(),
+
+                // blueprints
+                new ICBlueprintDataJsonConverter(),
             };
         }
 
@@ -116,6 +131,13 @@ namespace Game
                 filePath += ".json";
 
             return filePath;
+        }
+        #endregion
+
+        #region Execute On Main Thread
+        private void ExecuteOnMainThread(Action action)
+        {
+            mainThreadContext.Post(_ => action?.Invoke(), null);
         }
         #endregion
     }

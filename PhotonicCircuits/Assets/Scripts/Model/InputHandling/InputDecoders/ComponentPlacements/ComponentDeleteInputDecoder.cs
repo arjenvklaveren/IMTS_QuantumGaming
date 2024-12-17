@@ -63,7 +63,7 @@ namespace Game
             gridController.TryRemoveComponent(componentVisuals.SourceComponent);
         }
 
-        public void Reset()
+        public void OnDisable()
         {
             isDeleting = false;
         }
