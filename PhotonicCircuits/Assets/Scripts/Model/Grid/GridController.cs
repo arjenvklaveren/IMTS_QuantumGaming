@@ -100,7 +100,6 @@ namespace Game
 
             // Remove Component
             activeGrid.RemoveComponent(component);
-            OnComponentRemoved?.Invoke(component);
 
             // Rotate Component
             component.RotateClockwise(increments);
@@ -110,7 +109,7 @@ namespace Game
                 component.RotateClockwise();
 
             // Add Component
-            AddComponent(component);
+            activeGrid.AddComponent(component);
 
             return true;
         }

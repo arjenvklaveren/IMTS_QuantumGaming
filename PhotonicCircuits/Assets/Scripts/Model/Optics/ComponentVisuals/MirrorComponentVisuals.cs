@@ -5,6 +5,8 @@ namespace Game
 {
     public class MirrorComponentVisuals : ComponentVisuals
     {
+        [SerializeField] private Transform visualsHolder;
+
         protected override void HandlePhoton(PhotonVisuals photon)
         {
             Vector2 photonStartPos = photon.transform.position;
@@ -12,5 +14,7 @@ namespace Game
 
             photon.ForceMoveHalfTile(photonStartPos, photonEndPos);
         }
+
+        protected override void HandleRotationChanged(Orientation orientation) => RotateToLookAtOrientation(visualsHolder, orientation);
     }
 }

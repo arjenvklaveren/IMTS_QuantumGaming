@@ -10,6 +10,8 @@ namespace Game.Data
         public static event Action<IEnumerator> OnStartProcessPhotonRoutine;
         public static event Action<Photon> OnPhotonExit;
 
+        public event Action<Orientation> OnOrientationChanged;
+
         public abstract OpticComponentType Type { get; }
 
         public GridData HostGrid { get; private set; }
@@ -99,6 +101,7 @@ namespace Game.Data
                 RotateComponent90Degrees();
 
             orientation = targetOrientation;
+            OnOrientationChanged?.Invoke(orientation);
         }
 
         private void RotateComponent90Degrees()
@@ -153,6 +156,9 @@ namespace Game.Data
 
             // Bring port back to component.
             port.position += occupiedRootTile;
+
+            // Rotate port orientation.
+            port.orientation = port.orientation.RotateClockwise();
         }
         #endregion
         #endregion

@@ -27,6 +27,9 @@ namespace Game
 
         protected virtual void OnDestroy()
         {
+            if (SourceComponent == null)
+                return;
+
             RemoveListeners();
 
             if (isHovered && lastHoveredVisuals == this)
@@ -36,11 +39,13 @@ namespace Game
         private void SetupListeners()
         {
             PhotonVisuals.OnEnterComponent += PhotonVisuals_OnEnterComponent;
+            SourceComponent.OnOrientationChanged += HandleRotationChanged;
         }
 
         private void RemoveListeners()
         {
             PhotonVisuals.OnEnterComponent -= PhotonVisuals_OnEnterComponent;
+            SourceComponent.OnOrientationChanged -= HandleRotationChanged;
         }
         #endregion
 
