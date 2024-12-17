@@ -14,6 +14,8 @@ namespace Game
 
         private Stack<GridData> grids;
 
+        private bool isSaving;
+
         protected override void Awake()
         {
             SetDefaultValues();
@@ -59,6 +61,9 @@ namespace Game
 
         public void CloseActiveGrid()
         {
+            if (isSaving)
+                return;
+
             if (grids.Count <= 1)
                 return;
 
@@ -72,6 +77,7 @@ namespace Game
 
         private void SaveProject(Action completeCallback)
         {
+            isSaving = true;
             // To save integrated grid, find dirty IC component in parent grid.
             SerializationManager.Instance.SerializeProject(completeCallback);
         }
@@ -79,6 +85,8 @@ namespace Game
         private void OpenCurrentGrid()
         {
             GridController.SetActiveGrid(grids.Peek());
+
+            isSaving = false;
         }
     }
 }
