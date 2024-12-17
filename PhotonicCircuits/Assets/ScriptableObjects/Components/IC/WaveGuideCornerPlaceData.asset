@@ -9,21 +9,30 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9f719f82d225f2e40a46bc0ff9ed24eb, type: 3}
-  m_Name: WaveGuidePlaceData
+  m_Script: {fileID: 11500000, guid: 8e5fa05278250ff4c84d36e22d3fae9f, type: 3}
+  m_Name: WaveGuideCornerPlaceData
   m_EditorClassIdentifier: 
-  title: Wave guide
+  title: Wave guide corner
   previewSprite: {fileID: 0}
-  previewScale: {x: 1, y: 1}
+  previewScale: {x: 2, y: 2}
   isIntegratedOnly: 0
   tileOffsetsToOccupy:
   - {x: 0, y: 0}
+  - {x: 0, y: 1}
+  - {x: 1, y: 0}
+  - {x: 1, y: 1}
   orientation: 1
   inPorts:
   - portId: 0
     position: {x: 0, y: 0}
     orientation: 3
+  - portId: 0
+    position: {x: 1, y: 1}
+    orientation: 1
   outPorts:
   - portId: 0
     position: {x: 0, y: 0}
     orientation: 1
+  - portId: 0
+    position: {x: 1, y: 1}
+    orientation: 3

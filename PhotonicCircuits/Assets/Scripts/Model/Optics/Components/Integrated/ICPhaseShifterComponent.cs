@@ -24,5 +24,14 @@ namespace Game
         {
 
         }
+
+        protected override IEnumerator HandlePhotonCo(ComponentPort port, Photon photon)
+        {
+            yield return PhotonMovementManager.Instance.GetWaitMoveTime(photon.GetPhotonType(), true);
+
+            photon.RotatePhase(Mathf.PI / 2);
+            photon.TriggerExitComponent(this);
+            TriggerOnPhotonExit(photon);
+        }
     }
 }

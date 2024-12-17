@@ -16,7 +16,7 @@ namespace Game
 
         // Expressed in tiles/second
         [field: SerializeField, Range(1, 10)] public float MoveSpeed { get; private set; }
-        [field: SerializeField, Range(2,10)] public int ClassicSpeedMultiplier { get; private set; }
+        [field: SerializeField, Range(1,10)] public int ClassicSpeedMultiplier { get; private set; }
 
         private Dictionary<Photon, Coroutine> runningRoutines;
 

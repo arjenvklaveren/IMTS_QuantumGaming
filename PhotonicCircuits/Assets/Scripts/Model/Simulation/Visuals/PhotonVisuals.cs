@@ -95,6 +95,7 @@ namespace Game
 
             isInComponent = false;
             SyncVisuals();
+
             StartMovement();
         }
         #endregion
@@ -102,5 +103,6 @@ namespace Game
         public virtual void SyncVisuals() { }
         public virtual void StartMovement() { }
         protected virtual void HandleDestroySource(bool destroyVisuals = true) { }
+        public void SetAsInComponent(OpticComponent component) { hostComponent = component; isInComponent = true; }
     }
 }

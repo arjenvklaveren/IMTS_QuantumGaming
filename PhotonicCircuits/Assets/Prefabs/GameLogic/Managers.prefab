@@ -180,6 +180,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   <MoveSpeed>k__BackingField: 5
+  <ClassicSpeedMultiplier>k__BackingField: 2
 --- !u!114 &2533449734872756498
 MonoBehaviour:
   m_ObjectHideFlags: 0

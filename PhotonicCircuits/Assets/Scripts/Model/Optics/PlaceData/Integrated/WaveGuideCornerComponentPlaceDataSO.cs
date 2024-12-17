@@ -5,12 +5,12 @@ using UnityEngine;
 
 namespace Game
 {
-    [CreateAssetMenu(fileName = "waveGuideStraightPlaceData", menuName = "ScriptableObjects/Components/Place Data/waveguide straight")]
-    public class WaveGuideComponentPlaceDataSO : ComponentPlaceDataSO
+    [CreateAssetMenu(fileName = "waveGuideCornerPlaceData", menuName = "ScriptableObjects/Components/Place Data/waveguide corner")]
+    public class WaveGuideCornerComponentPlaceDataSO : ComponentPlaceDataSO
     {
         public override OpticComponent CreateOpticComponent(GridData hostGrid, Vector2Int[] tilesToOccupy)
         {
-            return new WaveGuideComponent(
+            return new WaveGuideCornerComponent(
                 hostGrid,
                 tilesToOccupy,
                 orientation,

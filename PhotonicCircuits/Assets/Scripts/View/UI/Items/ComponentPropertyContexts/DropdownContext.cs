@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using System;
+using UnityEditor;
 
 namespace Game.UI
 {
@@ -37,10 +38,13 @@ namespace Game.UI
             for (int i = 0; i < enumNames.Length; i++)
             {
                 Button enumItem = Instantiate(dropdownItemRef, dropdownContainer.transform);
-                enumItem.GetComponentInChildren<TextMeshProUGUI>().text = enumNames[i];
+                TextMeshProUGUI itemTMPro = enumItem.GetComponentInChildren<TextMeshProUGUI>();
+                itemTMPro.text = enumNames[i];
                 var capturedEnumValue = enumValues.GetValue(i);
-                enumItem.onClick.AddListener(() => OnClickDropdownItem(capturedEnumValue));
+                enumItem.onClick.AddListener(() => OnClickDropdownItem(enumItem, capturedEnumValue));
             }
+
+            selectedItemText.text = contextInfo.field.GetValue(contextInfo.component).ToString();
             dropdownItemRef.gameObject.SetActive(false);
         }
 
@@ -58,8 +62,9 @@ namespace Game.UI
             ToggleDropDown();
         }
 
-        void OnClickDropdownItem(object enumValue)
+        void OnClickDropdownItem(Button item, object enumValue)
         {
+            selectedItemText.text = enumValue.ToString();
             ChangeEnumValue(enumValue);
             CloseDropDown();
         }

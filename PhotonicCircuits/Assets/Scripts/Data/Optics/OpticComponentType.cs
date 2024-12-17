@@ -23,6 +23,7 @@ namespace Game.Data
         ICOut = 201,
         ICPhaseShifter = 202,
         ICBeamSplitter = 203,
-        Waveguide = 204,
+        WaveGuideStraight = 204,
+        WaveGuideCorner = 205,
     }
 }

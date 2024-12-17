@@ -1,6 +1,7 @@
 using Game.Data;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 namespace Game
@@ -66,12 +67,17 @@ namespace Game
         }
         #endregion
 
-        private void CreateNewDrawSprite(Photon externalSource = null)
+        private void CreateNewDrawSprite(Photon externalSource = null, float? customAngle = null)
         {
             Photon photonSource = externalSource == null ? source : externalSource;
             currentDrawSprite = Instantiate(sprite, visualsHolder);
             currentOrientation = photonSource.GetPropagation();
             currentAmplitude = photonSource.GetAmplitude();
+
+            Vector2 lookDir = currentOrientation.ToVector2();
+            float angle = Mathf.Atan2(lookDir.y, lookDir.x) * Mathf.Rad2Deg;
+            if(customAngle.HasValue) angle = customAngle.Value;
+            currentDrawSprite.transform.eulerAngles = new Vector3(0, 0, angle);
         }
 
         #region Handle enter, exit and destroy
@@ -98,25 +104,45 @@ namespace Game
         {
             moveRoutine = StartCoroutine(MoveCo());
         }
+
+        public void ForceMoveAlongNodes(Vector2[] nodes, ComponentPort outPort = null)
+        {
+            if (moveRoutine != null)
+                StopCoroutine(moveRoutine);
+
+            moveRoutine = StartCoroutine(ForceMoveAlongNodesCo(nodes, outPort));
+        }
+
+        private IEnumerator ForceMoveAlongNodesCo(Vector2[] nodes, ComponentPort outPort = null)
+        {
+            List<Vector2> nodeList = nodes.ToList();
+            if (outPort != null) nodeList.Add(outPort.position);
+
+            for (int i = 0; i < nodeList.Count; i++)
+            {
+            }
+            yield break;
+        }
+
         private IEnumerator MoveCo()
         {
             Vector2 moveStep = (source.GetPropagationIntVector() * openGrid.spacing);
-            Vector2 stretchScale = currentDrawSprite.transform.localScale -= sprite.transform.localScale;
-            if(moveStep.x != 0) stretchScale.y = sprite.transform.localScale.y;
-            if(moveStep.y != 0) stretchScale.x = sprite.transform.localScale.x;
+            float stretchScale = currentDrawSprite.transform.localScale.x - sprite.transform.localScale.x;
 
             while (true)
             {
                 Vector2 startPos = currentDrawSprite.transform.position;
                 Vector2 endPos = startPos + (moveStep / 2);
-                stretchScale += moveStep;
-
+                stretchScale += moveStep.magnitude;
+                
                 currentDrawSprite.transform.position = endPos;
-                currentDrawSprite.transform.localScale = stretchScale;
-                //yield break;
+                Vector3 scale = currentDrawSprite.transform.localScale;
+                currentDrawSprite.transform.localScale = new Vector3(stretchScale, scale.y, scale.z);
+
                 yield return new WaitForSeconds(timeToTravelTile);
             }
         }
+
         #endregion
     }
 }
