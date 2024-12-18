@@ -73,14 +73,21 @@ namespace Game
             await blueprintSerializer.SerializeBlueprints(grid);
 
             if (!grid.isIntegrated)
-                SerializeGridContents(grid);
+                SerializeProjectData(grid);
         }
 
         #region Serialize Grid Contents
-        private void SerializeGridContents(GridData grid)
+        private void SerializeProjectData(GridData grid)
         {
+            ProjectData projectData = new()
+            {
+                name = grid.gridName,
+                gridData = grid,
+                timeStamp = DateTime.Now
+            };
+
             string jsonString = JsonConvert.SerializeObject(
-                grid,
+                projectData,
                 GetAllConverters());
 
             SaveFile(jsonString, grid.gridName);

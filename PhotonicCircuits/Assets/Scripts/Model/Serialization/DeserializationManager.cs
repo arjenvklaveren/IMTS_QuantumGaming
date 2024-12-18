@@ -34,9 +34,9 @@ namespace Game
 
             isLoading = true;
 
-            GridData grid = await DeserializeAsync(fileName);
+            ProjectData projectData = await DeserializeAsync(fileName);
 
-            GridManager.Instance.LoadRootGrid(grid);
+            GridManager.Instance.LoadRootGrid(projectData.gridData);
 
             isLoading = false;
 
@@ -44,13 +44,13 @@ namespace Game
             timer.Stop();
         }
 
-        private Task<GridData> DeserializeAsync(string fileName)
+        private Task<ProjectData> DeserializeAsync(string fileName)
         {
             return Task.Run(() =>
             {
                 string json = LoadFileContents(fileName);
 
-                return JsonConvert.DeserializeObject<GridData>(
+                return JsonConvert.DeserializeObject<ProjectData>(
                     json,
                     SerializationManager.GetAllConverters());
             });
