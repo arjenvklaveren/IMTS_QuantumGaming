@@ -11,6 +11,7 @@ namespace Game
         public event Action<ComponentPlaceDataSO> OnPlaceDataChanged;
         public event Action<Orientation> OnOrientationOffsetChanged;
 
+        [Header("Blueprint Settings")]
         public UnityDictionary<OpticComponentType, ComponentPlaceDataSO> placeDatas;
 
         private ComponentPlaceDataSO selectedComponent;
@@ -67,7 +68,12 @@ namespace Game
                 return;
 
             ICBlueprintPlaceDataSO blueprintPlaceData = ScriptableObject.CreateInstance<ICBlueprintPlaceDataSO>();
-            blueprintPlaceData.SetBlueprintReference(placeDatas[blueprintData.type], blueprintData);
+
+            ComponentPlaceDataSO templatePlaceData = placeDatas[blueprintData.type];
+
+            blueprintPlaceData.previewScale = templatePlaceData.previewScale;
+            blueprintPlaceData.previewSprite = templatePlaceData.previewSprite;
+            blueprintPlaceData.SetBlueprintReference(templatePlaceData, blueprintData);
 
             SelectComponent(blueprintPlaceData);
         }
