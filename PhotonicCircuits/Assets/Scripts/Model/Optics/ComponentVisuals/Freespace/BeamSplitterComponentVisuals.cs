@@ -11,8 +11,6 @@ namespace Game
         private PhotonVisuals photonPrefab;
         private BeamSplitterComponent sourceSplitter;
 
-        private PhotonBeamVisuals tempBeamVisuals;
-
         [Header("Visuals Holder")]
         [SerializeField] private Transform visualsHolder;
 
@@ -61,17 +59,8 @@ namespace Game
         private void CreatePhotonVisuals(Photon photon, int index)
         {
             PhotonVisuals photonVisuals = null;
-
-            if (index == 0 && photonPrefab is PhotonBeamVisuals)
-            {
-                PhotonBeamVisuals beamVisuals = Instantiate(tempBeamVisuals);
-                beamVisuals.SetSource(photon);
-            }
-            else
-            {
-                photonVisuals = Instantiate(photonPrefab);
-                photonVisuals.SetSource(photon);
-            }
+            photonVisuals = Instantiate(photonPrefab);
+            photonVisuals.SetSource(photon);
         }
         #endregion
 
@@ -87,12 +76,7 @@ namespace Game
                 Vector2 photonEndPos = GridUtils.GridPos2WorldPos(SourceComponent.occupiedRootTile, SourceComponent.HostGrid);
                 photonParticle.ForceMoveHalfTile(photonStartPos, photonEndPos);
             }
-            else
-            {
-                photonPrefab = photonBeamPrefab;
-                PhotonBeamVisuals photonBeam = photon as PhotonBeamVisuals;
-                tempBeamVisuals = photonBeam;
-            }
+            else photonPrefab = photonBeamPrefab;
         }
 
         #region Handle Rotation

@@ -11,6 +11,10 @@ namespace Game
     {
         public override OpticComponentType Type => OpticComponentType.WaveGuideCorner;
 
+        public event Action<bool> OnChangeAltType;
+
+        [ComponentContext("Alt corner", "OnChangeCornerType")] public bool isAltCorner = false;
+
         public WaveGuideCornerComponent(
             GridData hostGrid,
             Vector2Int[] tilesToOccupy,
@@ -24,12 +28,33 @@ namespace Game
                 inPorts,
                 outPorts)
         {
-
+            if(isAltCorner) OnChangeCornerType(isAltCorner);
         }
 
         public override void SetOrientation(Orientation orientation)
         {
             GridManager.Instance.GridController.TryRotateComponentClockwise(this, this.orientation.GetIncrementsDiff(orientation));
+        }
+
+        public void OnChangeCornerType(bool isAlt)
+        {
+            if (isAltCorner == isAlt) return;
+
+            isAltCorner = isAlt;
+            OnChangeAltType?.Invoke(isAltCorner);
+
+            if (isAlt)
+            {
+                OutPorts[1].orientation = OutPorts[1].orientation.Subtract(1);
+                InPorts[1].orientation = OutPorts[1].orientation.Subtract(1);
+                Debug.Log(OutPorts[1].orientation);
+            }
+            else
+            {
+                OutPorts[1].orientation = OutPorts[1].orientation.Add(1);
+                InPorts[1].orientation = OutPorts[1].orientation.Add(1);
+                Debug.Log(OutPorts[1].orientation);
+            }
         }
 
         public override ComponentPort GetOutPort(int inPortIndex)

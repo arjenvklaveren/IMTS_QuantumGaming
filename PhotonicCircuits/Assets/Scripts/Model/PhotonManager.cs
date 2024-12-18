@@ -8,8 +8,9 @@ namespace Game
 {
     public class PhotonManager : Singleton<PhotonManager>
     {
-        [SerializeField] List<List<Photon>> photons;
-        List<List<int>> entanglementIndexes;
+        [SerializeField] List<List<Photon>> photons = new List<List<Photon>>();
+        List<List<int>> entanglementIndexes = new List<List<int>>();
+        List<PhotonBeamVisuals> storedBeamVisuals = new List<PhotonBeamVisuals>();
 
         #region Awake / Destroy
         protected override void Awake()
@@ -46,13 +47,16 @@ namespace Game
         private void SimulationManager_OnSimulationStop()
         {
             // Call Destroy Events.
-            foreach (List<Photon> photonCollection in photons)
-                foreach (Photon photon in photonCollection)
+            foreach (Photon photon in GetAllPhotons())
                     photon.Destroy();
+
+            foreach (PhotonBeamVisuals beamVisual in storedBeamVisuals)
+                Destroy(beamVisual.gameObject);
 
             // Clear Lists
             photons.Clear();
             entanglementIndexes.Clear();
+            storedBeamVisuals.Clear();
         }
         #endregion
 
@@ -110,13 +114,12 @@ namespace Game
             if (!photonIndex.HasValue) return;
             photons[photonIndex.Value.x].RemoveAt(photonIndex.Value.y);
             photons[photonIndex.Value.x].InsertRange(photonIndex.Value.y, replacements);
-            photon.Destroy();
+            photon.Destroy(photon.GetPhotonType() == PhotonType.Classical);
         }
 
         void DestroyPhoton(Photon photon, Vector2Int photonIndex)
         {
-            bool destroyVisuals = photon.GetPhotonType() == PhotonType.Quantum || !SimulationManager.Instance.IsSimulating();
-            photon.Destroy(destroyVisuals);
+            photon.Destroy(photon.GetPhotonType() == PhotonType.Classical);
 
             photons[photonIndex.x].RemoveAt(photonIndex.y);
             if (photons[photonIndex.x].Count == 0)
@@ -235,6 +238,11 @@ namespace Game
             {
                 pS.SetAmplitude(pS.GetAmplitude() + amplitudueDistributeVal); 
             }
+        }
+
+        public void StoreBeamVisual(PhotonBeamVisuals visual)
+        {
+            storedBeamVisuals.Add(visual);
         }
     }
 }

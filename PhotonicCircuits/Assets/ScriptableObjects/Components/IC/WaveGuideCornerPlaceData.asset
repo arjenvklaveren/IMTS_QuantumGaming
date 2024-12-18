@@ -32,7 +32,7 @@ MonoBehaviour:
   outPorts:
   - portId: 0
     position: {x: 0, y: 0}
-    orientation: 1
+    orientation: 3
   - portId: 0
     position: {x: 1, y: 1}
-    orientation: 3
+    orientation: 1

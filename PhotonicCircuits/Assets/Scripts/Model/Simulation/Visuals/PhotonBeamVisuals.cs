@@ -18,7 +18,7 @@ namespace Game
         {
             base.SetDefaultValues(photon);
 
-            currentDrawSprite.transform.position = GridUtils.GridPos2WorldPos(source.GetPosition(), openGrid);
+            transform.position = GridUtils.GridPos2WorldPos(source.GetPosition(), openGrid);
 
             currentOrientation = photon.GetPropagation();
             currentAmplitude = photon.GetAmplitude();
@@ -38,7 +38,6 @@ namespace Game
         public override void SyncVisuals()
         {
             SyncDrawSprite();
-            SyncColor();
             SyncShader(source);
         }
         private void SyncDrawSprite()
@@ -46,19 +45,19 @@ namespace Game
             if (currentDrawSprite == null ||
                 currentOrientation != source.GetPropagation() ||
                 currentAmplitude != source.GetAmplitude() ||
-                currentDrawSprite.transform.eulerAngles.z != 0)
+                DrawSpriteIsStillInNodes()
+                )
             {
                 CreateNewDrawSprite();
                 SyncPosition();
             }
         }
-        private void SyncColor()
-        {
-            currentDrawSprite.color = source.GetColor();
-        }
         private void SyncShader(Photon sourceP)
         {
             Vector2Int sourceDirection = sourceP.GetPropagationIntVector();
+            float moveSpeed = PhotonMovementManager.MoveSpeed * PhotonMovementManager.ClassicSpeedMultiplier;
+
+            currentDrawSprite.material.SetFloat("_LineMoveSpeed", moveSpeed);
             currentDrawSprite.material.SetFloat("_DirectionX", sourceDirection.x);
             currentDrawSprite.material.SetFloat("_DirectionY", sourceDirection.y);
         }
@@ -92,12 +91,13 @@ namespace Game
             if(isInComponent) SyncVisuals();
             base.HandleExitComponent(component);
         }
-        protected override void HandleDestroySource(bool destroyVisuals)
+        protected override void HandleDestroySource(bool storeVisuals)
         {
             if (moveRoutine != null)
-                StopCoroutine(moveRoutine);
+                StopCoroutine(moveRoutine);            
 
-            if (destroyVisuals) Destroy(gameObject);
+            if(storeVisuals) PhotonManager.Instance.StoreBeamVisual(this);
+            else Destroy(gameObject);
         }
         #endregion
 
@@ -172,10 +172,10 @@ namespace Game
             float angle = GetAngleByVec2(lookDir);
             currentDrawSprite.transform.eulerAngles = new Vector3(0, 0, angle);
         }
-        private bool DrawSpriteAngleIsSourceAngle()
+        private bool DrawSpriteIsStillInNodes()
         {
-            float angle = GetAngleByVec2(source.GetPropagationIntVector());
-            return (angle == currentDrawSprite.transform.eulerAngles.z);
+            float drawSpriteAngle = GetAngleByVec2(currentDrawSprite.transform.right);
+            return !(Mathf.Abs(drawSpriteAngle) == 0 || (Mathf.Abs(drawSpriteAngle) == 90));
         }
         private float GetAngleByVec2(Vector2 vec) { return Mathf.Atan2(vec.y, vec.x) * Mathf.Rad2Deg; }
 

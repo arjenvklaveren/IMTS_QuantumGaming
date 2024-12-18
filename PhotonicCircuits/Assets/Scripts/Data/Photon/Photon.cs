@@ -189,9 +189,9 @@ namespace Game.Data
             OnExitComponent?.Invoke(component);
         }
 
-        public void Destroy(bool destroyVisuals = true)
+        public void Destroy(bool storeVisuals = false)
         {
-            OnDestroy?.Invoke(destroyVisuals);
+            OnDestroy?.Invoke(storeVisuals);
         }
     }
 }

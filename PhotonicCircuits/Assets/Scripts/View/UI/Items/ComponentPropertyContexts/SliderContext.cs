@@ -12,6 +12,9 @@ namespace Game.UI
         [SerializeField] Slider slider;
         [SerializeField] TextMeshProUGUI valueText;
 
+        int stepAmount = 8;
+        float stepVal;
+
         private void Start()
         {
             slider.onValueChanged.AddListener(OnChangeSliderValue);
@@ -30,11 +33,16 @@ namespace Game.UI
             slider.maxValue = rangeAttribute.max;
             slider.value = (float)contextInfo.field.GetValue(contextInfo.component);
             valueText.text = slider.value.ToString();
+            stepVal = (slider.maxValue - slider.minValue) / stepAmount;
         }
 
-        void OnChangeSliderValue(float value)
+        public void OnChangeSliderValue(float value)
         {
+            int stepMult = Mathf.RoundToInt(slider.value / stepVal);
+            value = stepVal * stepMult;
+            slider.value = value;
             valueText.text = slider.value.ToString();
+
             var convertedValue = PropertyContextUtils.ConvertToCorrectType(value, contextInfo.field.FieldType);
             OnEditValue(GetInvokeParams(contextInfo.onValueChange, convertedValue));
         }

@@ -10,10 +10,8 @@ namespace Game
 
         [ComponentContext("Phase shift", "SetShiftValue"), Range(0.0f,Mathf.PI * 2)]
         private float shiftValueRadians;
-        [ComponentContext("Offset", "SetImperfectOffsetValue")] 
-        private float imperfectOffsetValue = 50;
-        [ComponentContext("Toggle test", "SetTogglePhaseShift")] 
-        private bool toggleTest;
+        [ComponentContext("Phase offset", "SetOffsetValue"), Range(-Mathf.PI / 2, Mathf.PI / 2)] 
+        private float offsetValue = 0;
 
         public PhaseShifterComponent(
             GridData hostGrid,
@@ -41,23 +39,22 @@ namespace Game
         {
             yield return PhotonMovementManager.Instance.GetWaitMoveTime(photon.GetPhotonType(), true);
 
-            photon.RotatePhase(shiftValueRadians);
+            Debug.Log(shiftValueRadians);
+            Debug.Log(offsetValue);
+
+            photon.RotatePhase(shiftValueRadians + offsetValue);
             photon.TriggerExitComponent(this);
             TriggerOnPhotonExit(photon);
         }
 
         #region Value changes
-        public void SetTogglePhaseShift(bool toggle)
-        {
-            toggleTest = toggle;
-        }
         public void SetShiftValue(float value)
         {
             shiftValueRadians = value;
         }
-        public void SetImperfectOffsetValue(float value)
+        public void SetOffsetValue(float value)
         {
-            imperfectOffsetValue = value;
+            offsetValue = value;
         }
         #endregion
 

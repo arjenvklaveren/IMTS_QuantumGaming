@@ -14,8 +14,6 @@ namespace Game
         private PhotonVisuals photonPrefab;
         private ICBeamSplitterComponent sourceSplitter;
 
-        private PhotonBeamVisuals tempBeamVisuals;
-
         #region Awake / Destroy
         public override void SetSource(OpticComponent component)
         {
@@ -76,19 +74,9 @@ namespace Game
 
         protected override void HandlePhotonAlt(PhotonVisuals photon, int inPortId)
         {
-            if (photon is PhotonParticleVisuals)
-            {
-                photonPrefab = photonParticlePrefab;
-                PhotonParticleVisuals photonParticle = photon as PhotonParticleVisuals;
-                photonParticle.ForceMoveAlongNodes(sourceWaveguide.GetNodesByInPortIndex(inPortId), sourceWaveguide.GetOutPort(inPortId));
-            }
-            else
-            {
-                photonPrefab = photonBeamPrefab;
-                PhotonBeamVisuals photonBeam = photon as PhotonBeamVisuals;
-                photonBeam.ForceMoveAlongNodes(sourceWaveguide.GetNodesByInPortIndex(inPortId), sourceWaveguide.GetOutPort(inPortId));
-                tempBeamVisuals = photonBeam;
-            }
+            if (photon is PhotonParticleVisuals) photonPrefab = photonParticlePrefab; 
+            else photonPrefab = photonBeamPrefab; 
+            photon.ForceMoveAlongNodes(sourceWaveguide.GetNodesByInPortIndex(inPortId), sourceWaveguide.GetOutPort(inPortId));
         }
 
         #region Handle Rotation
