@@ -9,7 +9,7 @@ namespace Game
     {
         private struct BlueprintData
         {
-            public Dictionary<string, int> containedBlueprints;
+            public List<KeyValuePair<string, int>> containedBlueprintsList;
 
             public GridData internalGrid;
             public OpticComponentType type;
@@ -26,9 +26,19 @@ namespace Game
             BlueprintData blueprintData = serializer.Deserialize<BlueprintData>(reader);
 
             return new(
-                blueprintData.containedBlueprints,
+                ListToDictionary(blueprintData.containedBlueprintsList),
                 blueprintData.internalGrid,
                 blueprintData.type);
+        }
+
+        private Dictionary<string, int> ListToDictionary(List<KeyValuePair<string, int>> list)
+        {
+            Dictionary<string, int> dict = new();
+
+            foreach (KeyValuePair<string, int> pair in list)
+                dict.Add(pair.Key, pair.Value);
+
+            return dict;
         }
         #endregion
 
@@ -40,13 +50,23 @@ namespace Game
         {
             BlueprintData blueprintData = new()
             {
-                containedBlueprints = value.containedBlueprints,
+                containedBlueprintsList = DictionaryToList(value.containedBlueprints),
 
                 internalGrid = value.internalGrid,
                 type = value.type
             };
 
             serializer.Serialize(writer, blueprintData);
+        }
+
+        private List<KeyValuePair<string, int>> DictionaryToList(Dictionary<string, int> dict)
+        {
+            List<KeyValuePair<string, int>> list = new();
+
+            foreach (KeyValuePair<string, int> pair in dict)
+                list.Add(pair);
+
+            return list;
         }
         #endregion
     }

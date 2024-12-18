@@ -75,7 +75,7 @@ namespace Game.UI
             int startIndex = pathHolder.childCount - (2 * currentStep) - 1;
 
             // Remove button and divider
-            for (int i = startIndex; i >= Mathf.Max(0, startIndex - 2); i--)
+            for (int i = startIndex; i >= Mathf.Max(0, startIndex - 1); i--)
             {
                 Destroy(pathHolder.GetChild(i).gameObject);
             }
@@ -128,8 +128,16 @@ namespace Game.UI
             if (GridManager.GetActiveGrid().gridName == gridName)
                 return;
 
+            StartCoroutine(HandleButtonClickCo(gridName));
+        }
+
+        private IEnumerator HandleButtonClickCo(string gridName)
+        {
             while (GridManager.GetActiveGrid().gridName != gridName)
+            {
                 GridManager.CloseActiveGrid();
+                yield return null;
+            }
         }
         #endregion
 

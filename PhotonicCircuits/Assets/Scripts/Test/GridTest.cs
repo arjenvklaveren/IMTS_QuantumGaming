@@ -12,6 +12,7 @@ namespace Game.Test
         private IEnumerator Start()
         {
             yield return GridManager.WaitForInstance;
+            yield return null;
 
             GridData data = new(
                 "testGrid",
