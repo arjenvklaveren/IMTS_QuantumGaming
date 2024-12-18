@@ -18,7 +18,7 @@ namespace Game
             base.SetSource(component);
 
             SetupListeners();
-            RotateVisualsToOrientation(component.orientation);
+            HandleRotationChanged(component.orientation);
         }
 
         protected override void OnDestroy()
@@ -54,11 +54,10 @@ namespace Game
         #endregion
 
         #region Handle Rotation
-        private void RotateVisualsToOrientation(Orientation orientation)
+        protected override void HandleRotationChanged(Orientation orientation)
         {
-            Vector3 targetLookAt = visualsHolder.position + (Vector3)orientation.ToVector2();
-            visualsHolder.rotation = LookAt2D.GetLookAtRotation(visualsHolder, targetLookAt);
+            RotateToLookAtOrientation(visualsHolder, orientation);
         }
-        #endregion
+        #endregion 
     }
 }

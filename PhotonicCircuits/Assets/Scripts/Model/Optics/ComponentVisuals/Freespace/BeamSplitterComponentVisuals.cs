@@ -13,6 +13,9 @@ namespace Game
 
         private PhotonBeamVisuals tempBeamVisuals;
 
+        [Header("Visuals Holder")]
+        [SerializeField] private Transform visualsHolder;
+
         #region Awake / Destroy
         public override void SetSource(OpticComponent component)
         {
@@ -59,7 +62,7 @@ namespace Game
         {
             PhotonVisuals photonVisuals = null;
 
-            if(index == 0 && photonPrefab is PhotonBeamVisuals)
+            if (index == 0 && photonPrefab is PhotonBeamVisuals)
             {
                 PhotonBeamVisuals beamVisuals = Instantiate(tempBeamVisuals);
                 beamVisuals.SetSource(photon);
@@ -82,7 +85,6 @@ namespace Game
                 // Force move photon visuals to center of component.
                 Vector2 photonStartPos = photon.transform.position;
                 Vector2 photonEndPos = GridUtils.GridPos2WorldPos(SourceComponent.occupiedRootTile, SourceComponent.HostGrid);
-
                 photonParticle.ForceMoveHalfTile(photonStartPos, photonEndPos);
             }
             else
@@ -92,5 +94,12 @@ namespace Game
                 tempBeamVisuals = photonBeam;
             }
         }
+
+        #region Handle Rotation
+        protected override void HandleRotationChanged(Orientation orientation)
+        {
+            RotateToLookAtOrientation(visualsHolder, orientation);
+        }
+        #endregion 
     }
 }

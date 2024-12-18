@@ -2,7 +2,6 @@ using Game.Data;
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 
 namespace Game
@@ -13,6 +12,9 @@ namespace Game
 
         protected WaveGuideComponent sourceWaveguide;
         protected PhotonVisuals visuals;
+
+        [Header("Visuals Holder")]
+        [SerializeField] protected Transform visualsHolder;
 
         #region Awake/Destroy
         public override void SetSource(OpticComponent component)
@@ -59,5 +61,12 @@ namespace Game
 
             }
         }
+
+        #region Handle Rotation
+        protected override void HandleRotationChanged(Orientation orientation)
+        {
+            RotateToLookAtOrientation(visualsHolder, orientation);
+        }
+        #endregion 
     }
 }

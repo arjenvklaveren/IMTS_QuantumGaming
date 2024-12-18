@@ -89,5 +89,18 @@ namespace Game.Data
             return orientation.Add(-toSubtract);
         }
         #endregion
+
+        #region Misc
+        public static int GetIncrementsDiff(this Orientation orientation, Orientation other)
+        {
+            int curOrientationInt = (int)orientation;
+            int newOrientationInt = (int)other;
+            int increments = 0;
+
+            if (newOrientationInt > curOrientationInt) increments = newOrientationInt - curOrientationInt;
+            else increments = (3 - curOrientationInt) + (1 + newOrientationInt);
+            return increments;
+        }
+        #endregion
     }
 }

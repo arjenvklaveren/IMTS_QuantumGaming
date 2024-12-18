@@ -7,7 +7,7 @@ using UnityEngine;
 namespace Game
 {
     public class WaveGuideCornerComponentVisuals : WaveGuideComponentVisuals
-    {
+    { 
         protected override void HandlePhotonAlt(PhotonVisuals photon, int inPortId)
         {
             if (photon is PhotonParticleVisuals)
@@ -18,8 +18,15 @@ namespace Game
             else
             {
                 PhotonBeamVisuals photonBeam = photon as PhotonBeamVisuals;
-
+                photonBeam.ForceMoveAlongNodes(sourceWaveguide.GetNodesByInPortIndex(inPortId));
             }
         }
+
+        #region Handle Rotation
+        protected override void HandleRotationChanged(Orientation orientation)
+        {
+            RotateToLookAtOrientation(visualsHolder, orientation);
+        }
+        #endregion 
     }
 }

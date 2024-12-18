@@ -34,6 +34,7 @@ Material:
     - _LineGapSize: 0.1
     - _LineLength: 0.6
     - _LineMoveSpeed: 2
+    - _Rotation: 0
     - _VerticalToggle: 0
     m_Colors: []
   m_BuildTextureStacks: []

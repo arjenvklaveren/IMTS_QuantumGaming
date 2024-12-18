@@ -110,8 +110,6 @@ namespace Game
             if (!activeGrid.placedComponents.Contains(component))
                 return false;
 
-            Debug.Log("ROTATING");
-
             // Remove Component
             activeGrid.RemoveComponent(component);
 

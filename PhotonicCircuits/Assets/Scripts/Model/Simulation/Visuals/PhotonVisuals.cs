@@ -102,6 +102,8 @@ namespace Game
 
         public virtual void SyncVisuals() { }
         public virtual void StartMovement() { }
+        public virtual void ForceMoveAlongNodes(Vector2[] nodes, ComponentPort outPort = null) {  }
+
         protected virtual void HandleDestroySource(bool destroyVisuals = true) { }
         public void SetAsInComponent(OpticComponent component) { hostComponent = component; isInComponent = true; }
     }

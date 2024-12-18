@@ -180,22 +180,11 @@ namespace Game.Data
         }
         #endregion
 
-        #region On change context properties
-
-        public void SetOrientation(Orientation orientation)
-        {
-            
-            Debug.Log("Orientation has been changed to: " + orientation);
-        }
-        public void SetRootTile(Vector2Int occupiedRootTile)
-        {
-            Debug.Log("Occupied root tile has been changed to: " + occupiedRootTile);
-        }
-
-        #endregion
-
         public virtual void Destroy() { }
         public virtual void Reset() { }
+
+        public virtual void SetOrientation(Orientation orientation) { }
+        public void SetRootTile(Vector2Int occupiedRootTile) { }
 
         public virtual string SerializeArgs() { return ""; }
 

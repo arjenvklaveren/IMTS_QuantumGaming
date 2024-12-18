@@ -80,6 +80,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   pathNodes:
   - {fileID: 64958900623924745}
+  visualsHolder: {fileID: 1114261678858985212}
 --- !u!61 &770546391189370329
 BoxCollider2D:
   m_ObjectHideFlags: 0

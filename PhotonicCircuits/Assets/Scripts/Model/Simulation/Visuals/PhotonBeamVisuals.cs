@@ -19,6 +19,7 @@ namespace Game
             base.SetDefaultValues(photon);
 
             currentDrawSprite.transform.position = GridUtils.GridPos2WorldPos(source.GetPosition(), openGrid);
+
             currentOrientation = photon.GetPropagation();
             currentAmplitude = photon.GetAmplitude();
 
@@ -38,13 +39,14 @@ namespace Game
         {
             SyncDrawSprite();
             SyncColor();
-            SyncShader();
+            SyncShader(source);
         }
         private void SyncDrawSprite()
         {
             if (currentDrawSprite == null ||
                 currentOrientation != source.GetPropagation() ||
-                currentAmplitude != source.GetAmplitude())
+                currentAmplitude != source.GetAmplitude() ||
+                currentDrawSprite.transform.eulerAngles.z != 0)
             {
                 CreateNewDrawSprite();
                 SyncPosition();
@@ -54,9 +56,9 @@ namespace Game
         {
             currentDrawSprite.color = source.GetColor();
         }
-        private void SyncShader()
+        private void SyncShader(Photon sourceP)
         {
-            Vector2Int sourceDirection = source.GetPropagationIntVector();
+            Vector2Int sourceDirection = sourceP.GetPropagationIntVector();
             currentDrawSprite.material.SetFloat("_DirectionX", sourceDirection.x);
             currentDrawSprite.material.SetFloat("_DirectionY", sourceDirection.y);
         }
@@ -67,17 +69,17 @@ namespace Game
         }
         #endregion
 
-        private void CreateNewDrawSprite(Photon externalSource = null, float? customAngle = null)
+        private void CreateNewDrawSprite(Photon externalSource = null)
         {
             Photon photonSource = externalSource == null ? source : externalSource;
             currentDrawSprite = Instantiate(sprite, visualsHolder);
+            currentDrawSprite.color = photonSource.GetColor();
             currentOrientation = photonSource.GetPropagation();
             currentAmplitude = photonSource.GetAmplitude();
+            SyncShader(photonSource);
 
             Vector2 lookDir = currentOrientation.ToVector2();
-            float angle = Mathf.Atan2(lookDir.y, lookDir.x) * Mathf.Rad2Deg;
-            if(customAngle.HasValue) angle = customAngle.Value;
-            currentDrawSprite.transform.eulerAngles = new Vector3(0, 0, angle);
+            SetCurrentDrawSpriteAngleByLookDir(lookDir);
         }
 
         #region Handle enter, exit and destroy
@@ -105,7 +107,7 @@ namespace Game
             moveRoutine = StartCoroutine(MoveCo());
         }
 
-        public void ForceMoveAlongNodes(Vector2[] nodes, ComponentPort outPort = null)
+        public override void ForceMoveAlongNodes(Vector2[] nodes, ComponentPort outPort = null)
         {
             if (moveRoutine != null)
                 StopCoroutine(moveRoutine);
@@ -120,29 +122,67 @@ namespace Game
 
             for (int i = 0; i < nodeList.Count; i++)
             {
+                Vector2 currentTipPos = GetCurrentDrawSpriteTipPos();
+                float dist = Vector2.Distance(currentTipPos, nodeList[i]);
+                float duration = timeToTravelTile * dist;
+
+                if (dist == 0) continue;
+
+                if(currentDrawSprite.transform.localScale.x != 0) CreateNewDrawSprite();
+                currentDrawSprite.transform.position = currentTipPos;
+                SetCurrentDrawSpriteAngleByLookDir(nodeList[i] - currentTipPos);
+
+                yield return StartCoroutine(MoveCurrentDrawSpriteCo(currentTipPos, nodeList[i], duration));
             }
-            yield break;
         }
 
         private IEnumerator MoveCo()
         {
             Vector2 moveStep = (source.GetPropagationIntVector() * openGrid.spacing);
-            float stretchScale = currentDrawSprite.transform.localScale.x - sprite.transform.localScale.x;
 
             while (true)
             {
                 Vector2 startPos = currentDrawSprite.transform.position;
-                Vector2 endPos = startPos + (moveStep / 2);
-                stretchScale += moveStep.magnitude;
-                
-                currentDrawSprite.transform.position = endPos;
-                Vector3 scale = currentDrawSprite.transform.localScale;
-                currentDrawSprite.transform.localScale = new Vector3(stretchScale, scale.y, scale.z);
-
-                yield return new WaitForSeconds(timeToTravelTile);
+                yield return StartCoroutine(MoveCurrentDrawSpriteCo(startPos, startPos + moveStep, timeToTravelTile));
             }
         }
 
+        private IEnumerator MoveCurrentDrawSpriteCo(Vector2 startPos, Vector2 endPos, float duration)
+        {
+            float startScale = currentDrawSprite.transform.localScale.x;
+            float endScale = startScale + Vector2.Distance(startPos, endPos);
+
+            endPos = startPos + ((endPos - startPos) / 2);
+
+            float timer = duration;
+
+            while (timer > 0f)
+            {
+                yield return waitForEndOfFrame;
+                timer -= Time.deltaTime;
+
+                currentDrawSprite.transform.position = Vector2.Lerp(startPos, endPos, 1f - (timer / duration));
+                Vector3 scale = currentDrawSprite.transform.localScale;
+                currentDrawSprite.transform.localScale = new Vector3(Mathf.Lerp(startScale, endScale, 1f - (timer / duration)), scale.y, scale.z);
+            }
+        }
+
+        private void SetCurrentDrawSpriteAngleByLookDir(Vector2 lookDir)
+        {
+            float angle = GetAngleByVec2(lookDir);
+            currentDrawSprite.transform.eulerAngles = new Vector3(0, 0, angle);
+        }
+        private bool DrawSpriteAngleIsSourceAngle()
+        {
+            float angle = GetAngleByVec2(source.GetPropagationIntVector());
+            return (angle == currentDrawSprite.transform.eulerAngles.z);
+        }
+        private float GetAngleByVec2(Vector2 vec) { return Mathf.Atan2(vec.y, vec.x) * Mathf.Rad2Deg; }
+
+        private Vector2 GetCurrentDrawSpriteTipPos()
+        {
+            return currentDrawSprite.transform.position + (currentDrawSprite.transform.right * (currentDrawSprite.transform.localScale.x / 2));
+        }
         #endregion
     }
 }

@@ -71,7 +71,7 @@ Shader "Unlit/PhotonBeamShader"
             fixed4 frag (v2f i) : SV_Target
             {
                 _LineGapSize = _LineLength - _LineGapSize;
-                //TODO FIX WIGGLE BUG
+
                 fixed4 col;
                 float zeroOffset;
 

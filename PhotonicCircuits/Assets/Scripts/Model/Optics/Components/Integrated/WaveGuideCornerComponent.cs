@@ -27,6 +27,11 @@ namespace Game
 
         }
 
+        public override void SetOrientation(Orientation orientation)
+        {
+            GridManager.Instance.GridController.TryRotateComponentClockwise(this, this.orientation.GetIncrementsDiff(orientation));
+        }
+
         public override ComponentPort GetOutPort(int inPortIndex)
         {
             return inPortIndex switch

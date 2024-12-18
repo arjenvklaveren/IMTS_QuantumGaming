@@ -70,7 +70,7 @@ namespace Game
         #region Overwrite Movement
         public void ForceMoveTile(Vector2 startPos, Vector2 endPos) => ForceMove(startPos, endPos, timeToTravelTile);
         public void ForceMoveHalfTile(Vector2 startPos, Vector2 endPos) => ForceMove(startPos, endPos, timeToTravelTile / 2f);
-        public void ForceMoveAlongNodes(Vector2[] nodes, ComponentPort outPort = null)
+        public override void ForceMoveAlongNodes(Vector2[] nodes, ComponentPort outPort = null)
         {
             if (moveRoutine != null)
                 StopCoroutine(moveRoutine);

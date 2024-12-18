@@ -14,6 +14,8 @@ namespace Game
         private PhotonVisuals photonPrefab;
         private ICBeamSplitterComponent sourceSplitter;
 
+        private PhotonBeamVisuals tempBeamVisuals;
+
         #region Awake / Destroy
         public override void SetSource(OpticComponent component)
         {
@@ -58,22 +60,17 @@ namespace Game
 
         private void CreatePhotonVisuals(Photon photon, int index)
         {
-            PhotonVisuals photonVisuals = null;
+            PhotonVisuals photonVisuals = Instantiate(photonPrefab);
+            photonVisuals.SetSource(photon);
+            photonVisuals.SetAsInComponent(sourceSplitter);
 
-            if (photonPrefab is PhotonParticleVisuals)
-            {
-                PhotonParticleVisuals particleVisuals = Instantiate(photonParticlePrefab);
-                particleVisuals.SetSource(photon);
-                particleVisuals.SetAsInComponent(sourceSplitter);
+            int outPort = index == 0 ? 1 : 2;
+            int nodePath = outPort == 1 ? 0 : -1;
 
-                int outPort = index == 0 ? 1 : 2;
-                int nodePath = outPort == 1 ? 0 : -1;
-
-                List<Vector2> nodes = sourceWaveguide.GetNodesByInPortIndex(nodePath).ToList();
-                nodes.RemoveAt(0);
-                particleVisuals.transform.position = pathNodes[0].position;
-                particleVisuals.ForceMoveAlongNodes(nodes.ToArray(), sourceSplitter.OutPorts[outPort]);
-            }
+            List<Vector2> nodes = sourceWaveguide.GetNodesByInPortIndex(nodePath).ToList();
+            nodes.RemoveAt(0);
+            photonVisuals.transform.position = pathNodes[0].position;
+            photonVisuals.ForceMoveAlongNodes(nodes.ToArray(), sourceSplitter.OutPorts[outPort]);
         }
         #endregion
 
@@ -89,8 +86,16 @@ namespace Game
             {
                 photonPrefab = photonBeamPrefab;
                 PhotonBeamVisuals photonBeam = photon as PhotonBeamVisuals;
-
+                photonBeam.ForceMoveAlongNodes(sourceWaveguide.GetNodesByInPortIndex(inPortId), sourceWaveguide.GetOutPort(inPortId));
+                tempBeamVisuals = photonBeam;
             }
         }
+
+        #region Handle Rotation
+        protected override void HandleRotationChanged(Orientation orientation)
+        {
+            RotateToLookAtOrientation(visualsHolder, orientation);
+        }
+        #endregion 
     }
 }

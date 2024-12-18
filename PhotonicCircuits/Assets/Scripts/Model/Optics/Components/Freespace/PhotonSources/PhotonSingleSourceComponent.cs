@@ -26,6 +26,11 @@ namespace Game
             SetupListeners();
         }
 
+        public override void SetOrientation(Orientation orientation)
+        {
+            GridManager.Instance.GridController.TryRotateComponentClockwise(this, this.orientation.GetIncrementsDiff(orientation));
+        }
+
         #region Handle Events
         private void SetupListeners()
         {

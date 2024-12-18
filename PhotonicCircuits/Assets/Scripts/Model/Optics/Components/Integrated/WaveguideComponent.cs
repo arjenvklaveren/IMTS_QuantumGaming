@@ -31,6 +31,11 @@ namespace Game
 
         }
 
+        public override void SetOrientation(Orientation orientation)
+        {
+            GridManager.Instance.GridController.TryRotateComponentClockwise(this, this.orientation.GetIncrementsDiff(orientation));
+        }
+
         public void SetPathNodesCopy(List<Transform> pathNodes) { this.pathNodes = pathNodes; }
 
         protected override IEnumerator HandlePhotonCo(ComponentPort port, Photon photon)

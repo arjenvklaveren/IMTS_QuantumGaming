@@ -133,6 +133,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   photonParticlePrefab: {fileID: 1252529590538980857, guid: bed9709cd1adb9a40801087d54f0b24e, type: 3}
   photonBeamPrefab: {fileID: 718248258048210290, guid: e66e7735f1c0afd42aa88124221dae85, type: 3}
+  visualsHolder: {fileID: 4588381303040805398}
 --- !u!61 &3031334460742304521
 BoxCollider2D:
   m_ObjectHideFlags: 0
