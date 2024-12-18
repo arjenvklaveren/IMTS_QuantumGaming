@@ -113,7 +113,7 @@ namespace Game.UI
             GridPathButtonHandler buttonHandler = Instantiate(gridPathButtonPrefab, pathHolder);
 
             string gridName = grid.gridName;
-            buttonHandler.Init(HandleButtonClick, gridName);
+            buttonHandler.Init(grid, HandleButtonClick, gridName);
         }
 
         private void GenerateSeperator()

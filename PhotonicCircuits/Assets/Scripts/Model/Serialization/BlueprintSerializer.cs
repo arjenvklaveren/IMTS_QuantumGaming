@@ -198,7 +198,11 @@ namespace Game
             if (ICBlueprintManager.DoesBlueprintExist(name))
                 await HandleNameAlreadyExists(component, name);
             else
+            {
+                component.InternalGrid.gridName = name;
+                component.InternalGrid.TriggerNameBlueprint(name);
                 await SaveBlueprint(component);
+            }
         }
 
         #region Name Already Exists

@@ -21,7 +21,7 @@ namespace Game
         [SerializeField] private GameObject inPortPrefab;
         [SerializeField] private GameObject outPortPrefab;
 
-        private ICComponentBase sourceICComponent;
+        public ICComponentBase sourceICComponent;
 
         #region Create / Destroy
         public override void SetSource(OpticComponent component)
