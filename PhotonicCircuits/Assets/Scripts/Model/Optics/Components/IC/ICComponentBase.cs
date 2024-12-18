@@ -8,7 +8,10 @@ namespace Game
 {
     public abstract class ICComponentBase : OpticComponent
     {
+        public static event Action OnAnyBlueprintNameChanged;
+
         public event Action<Photon, ComponentPort> OnPhotonExitIC;
+        public event Action<string> OnNameChanged;
 
         public Dictionary<string, int> containedBlueprints;
 
@@ -256,6 +259,9 @@ namespace Game
         #region Handle Blueprint Changed
         public void SyncToBlueprint(ICBlueprintData data)
         {
+            if (InternalGrid.gridName != data.Name)
+                return;
+
             RemoveOldListeners();
 
             containedBlueprints = new(data.containedBlueprints);
@@ -414,6 +420,16 @@ namespace Game
                 Orientation.Left => Vector2Int.down,
                 _ => Vector2Int.zero
             };
+        }
+        #endregion
+
+        #region Handle Name
+        public void SetName(string name)
+        {
+            InternalGrid.gridName = name;
+
+            OnAnyBlueprintNameChanged?.Invoke();
+            OnNameChanged?.Invoke(name);
         }
         #endregion
 

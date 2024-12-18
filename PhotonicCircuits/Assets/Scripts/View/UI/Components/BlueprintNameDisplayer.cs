@@ -11,19 +11,19 @@ namespace Game.UI
 
         private void Start()
         {
-            component.sourceICComponent.InternalGrid.OnBlueprintNamed += Rename;
+            SetName(component.sourceICComponent.InternalGrid.gridName);
 
-            Rename(component.sourceICComponent.InternalGrid.gridName);
+            component.sourceICComponent.OnNameChanged += SetName;
         }
 
         private void OnDestroy()
         {
-            component.sourceICComponent.InternalGrid.OnBlueprintNamed -= Rename;
+            component.sourceICComponent.OnNameChanged -= SetName;
         }
 
-        private void Rename(string newName)
+        private void SetName(string name)
         {
-            label.text = newName;
+            label.text = name;
         }
     }
 }

@@ -35,17 +35,38 @@ namespace Game.UI
         private void SetupListeners()
         {
             GridController.OnGridChanged += GridController_OnGridChanged;
+            ICComponentBase.OnAnyBlueprintNameChanged += ReconstructPath;
         }
 
         private void RemoveListeners()
         {
             GridController.OnGridChanged -= GridController_OnGridChanged;
+            ICComponentBase.OnAnyBlueprintNameChanged -= ReconstructPath;
         }
         #endregion
 
         #region Handle Listeners
         private void GridController_OnGridChanged(GridData grid) => GeneratePath();
         #endregion
+
+        private void ReconstructPath()
+        {
+            StartCoroutine(ReconstructPathCo());
+        }
+
+        private IEnumerator ReconstructPathCo()
+        {
+            RemoveAllPathSteps();
+
+            yield return null;
+
+            List<GridData> grids = new(GridManager.Instance.GetAllGrids());
+            for (int i = grids.Count - 1; i >= 0; i--)
+                GeneratePathStep(grids[i], i == grids.Count - 1);
+
+            lastPathLength = grids.Count;
+            LayoutRebuilder.ForceRebuildLayoutImmediate(pathHolder);
+        }
 
         private void GeneratePath()
         {
@@ -80,6 +101,12 @@ namespace Game.UI
                 Destroy(pathHolder.GetChild(i).gameObject);
             }
         }
+
+        private void RemoveAllPathSteps()
+        {
+            for (int i = pathHolder.childCount - 1; i >= 0; i--)
+                Destroy(pathHolder.GetChild(i).gameObject);
+        }
         #endregion
 
         #region Generate Step
@@ -113,7 +140,7 @@ namespace Game.UI
             GridPathButtonHandler buttonHandler = Instantiate(gridPathButtonPrefab, pathHolder);
 
             string gridName = grid.gridName;
-            buttonHandler.Init(grid, HandleButtonClick, gridName);
+            buttonHandler.Init(HandleButtonClick, gridName);
         }
 
         private void GenerateSeperator()

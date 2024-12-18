@@ -181,7 +181,7 @@ namespace Game
             }
 
             // Save as new blueprint
-            sourceICComponent.InternalGrid.gridName = name;
+            sourceICComponent.SetName(name);
             ICBlueprintData newBlueprint = new(
                 sourceICComponent.containedBlueprints,
                 sourceICComponent.InternalGrid,
@@ -189,7 +189,7 @@ namespace Game
 
             Task.Run(() => ICBlueprintManager.Instance.SaveBlueprint(newBlueprint));
 
-            sourceICComponent.InternalGrid.TriggerNameBlueprint(name);
+            GridManager.Instance.GetActiveGrid().TriggerNameBlueprint(name);
         }
 
         private bool IsInvalidName(string name)

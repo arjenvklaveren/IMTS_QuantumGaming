@@ -45,7 +45,6 @@ namespace Game
             Task.Run(async () =>
             {
                 await SerializeProjectAsync(grids);
-                ExecuteOnMainThread(() => Debug.Log("is action null? " + completeCallback == null));
                 ExecuteOnMainThread(() => completeCallback?.Invoke());
             });
         }

@@ -11,7 +11,7 @@ namespace Game
     {
         private const int DELAY_TIME_STEP = 100;
 
-        private enum UnsavedChangesResponse { Discard, Overwrite, NewFile }
+        private enum UnsavedChangesResponse { Discard, Overwrite }
         private enum NewFileResponse { Submit, Cancel }
         private enum NameExistsResponse { Overwrite, Cancel }
 
@@ -77,13 +77,11 @@ namespace Game
             UnsavedChangesResponse? popupResponse = null;
 
             void Overwrite() { popupResponse = UnsavedChangesResponse.Overwrite; }
-            void NewFile() { popupResponse = UnsavedChangesResponse.NewFile; }
             void Discard() { popupResponse = UnsavedChangesResponse.Discard; }
 
             PopupData popupData = GetUnsavedChangesPopupData(
                 component,
                 Overwrite,
-                NewFile,
                 Discard);
 
             ExecuteOnMainThread(() => PopupManager.ShowPopup(popupData));
@@ -109,10 +107,6 @@ namespace Game
 
                 case UnsavedChangesResponse.Overwrite:
                     await HandleOverwriteResponse(component);
-                    break;
-
-                case UnsavedChangesResponse.NewFile:
-                    await HandleNewFileReponse(component);
                     break;
             }
         }
@@ -147,128 +141,21 @@ namespace Game
             await ICBlueprintManager.SaveBlueprint(newData);
         }
         #endregion
-
-        #region New Blueprint File
-        private async Task HandleNewFileReponse(ICComponentBase component)
-        {
-            Tuple<NewFileResponse, string> responseData = await HandleNewFileNamePopup();
-
-            NewFileResponse response = responseData.Item1;
-
-            // Handle Cancel Response
-            if (response == NewFileResponse.Cancel)
-            {
-                await SaveDirtyICComponent(component);
-                return;
-            }
-
-            // Handle New File Response
-            await HandleNewFilePromptResponse(component, responseData.Item2);
-        }
-
-        private async Task<Tuple<NewFileResponse, string>> HandleNewFileNamePopup()
-        {
-            NewFileResponse? response = null;
-            string submitData = "";
-
-            void UpdateSubmitData(string data) => submitData = data;
-            void Submit() => response = NewFileResponse.Submit;
-            void Cancel() => response = NewFileResponse.Cancel;
-
-            PopupData popupData = GetNewFilePopupData(
-                UpdateSubmitData,
-                Submit,
-                Cancel);
-
-            ExecuteOnMainThread(() => PopupManager.ShowPopup(popupData));
-
-            while (response == null)
-            {
-                if (isCanceled)
-                    break;
-
-                await Task.Delay(DELAY_TIME_STEP);
-            }
-
-            return new((NewFileResponse)response, submitData);
-        }
-
-        private async Task HandleNewFilePromptResponse(ICComponentBase component, string name)
-        {
-            if (ICBlueprintManager.DoesBlueprintExist(name))
-                await HandleNameAlreadyExists(component, name);
-            else
-            {
-                component.InternalGrid.gridName = name;
-                component.InternalGrid.TriggerNameBlueprint(name);
-                await SaveBlueprint(component);
-            }
-        }
-
-        #region Name Already Exists
-        private async Task HandleNameAlreadyExists(ICComponentBase component, string name)
-        {
-            NameExistsResponse response = await HandleNameAlreadyExistsPopup(name);
-
-            if (response == NameExistsResponse.Overwrite)
-                await SaveBlueprint(component);
-            else
-                await HandleNewFileReponse(component);
-        }
-
-        private async Task<NameExistsResponse> HandleNameAlreadyExistsPopup(string name)
-        {
-            NameExistsResponse? response = null;
-
-            void Overwrite() => response = NameExistsResponse.Overwrite;
-            void Cancel() => response = NameExistsResponse.Cancel;
-
-            PopupData popupData = GetNameExistsPopupData(
-                name,
-                Overwrite,
-                Cancel);
-
-            ExecuteOnMainThread(() => PopupManager.ShowPopup(popupData));
-
-            while (response == null)
-            {
-                if (isCanceled)
-                    break;
-
-                await Task.Delay(DELAY_TIME_STEP);
-            }
-
-            return (NameExistsResponse)response;
-        }
-        #endregion
-
-        private async Task SaveBlueprint(ICComponentBase component)
-        {
-            ICBlueprintData blueprintData = new(
-                component.containedBlueprints,
-                component.InternalGrid,
-                component.Type);
-
-            await ICBlueprintManager.SaveBlueprint(blueprintData);
-        }
-        #endregion
         #endregion
 
         #region Popup Data
         private PopupData GetUnsavedChangesPopupData(
             ICComponentBase component,
             Action overWriteCallback,
-            Action newFileCallback,
             Action discardCallback)
         {
             string title = $"{component.InternalGrid.gridName} contains unsaved changes";
 
             PopupTextContentData textContent = new("Would you like to save these changes?");
 
-            PopupTextButtonData[] buttons = new PopupTextButtonData[3]
+            PopupTextButtonData[] buttons = new PopupTextButtonData[2]
             {
                 new(overWriteCallback, "Overwrite Blueprint"),
-                new(newFileCallback, "Save as new File"),
                 new(discardCallback, "Discard Changes")
             };
 
