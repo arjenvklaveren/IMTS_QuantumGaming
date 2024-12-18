@@ -122,6 +122,7 @@ namespace Game
             InternalGrid.OnComponentAdded += GridData_OnComponentAdded;
             InternalGrid.OnComponentRemoved += GridData_OnComponentRemoved;
             InternalGrid.OnBlueprintNamed += GridData_OnBlueprintNamed;
+            InternalGrid.OnBlueprintRenamed += GridData_OnBlueprintRenamed;
         }
         #endregion
 
@@ -129,6 +130,7 @@ namespace Game
         private void GridData_OnComponentAdded(OpticComponent component) => TryAddPortHandlerComponent(component);
         private void GridData_OnComponentRemoved(OpticComponent component) => TryRemovePortHandlerComponent(component);
         private void GridData_OnBlueprintNamed(string name) => RegisterNamedBlueprint(name);
+        private void GridData_OnBlueprintRenamed(string oldName, string newName) => RegisterBlueprintNameChange(oldName, newName);
         private void ICBlueprintManager_OnBlueprintUpdated(ICBlueprintData data) => SyncToBlueprint(data);
 
         #region Handle Add Component
@@ -164,7 +166,14 @@ namespace Game
 
         private void RegisterNamedBlueprint(string name)
         {
-            containedBlueprints.Add(name, 1);
+            AddContainedBlueprintInstance(name);
+        }
+
+        private void RegisterBlueprintNameChange(string oldName, string newName)
+        {
+            RemoveBlueprintInstance(oldName);
+
+            AddContainedBlueprintInstance(newName);
         }
         #endregion
 
@@ -284,6 +293,7 @@ namespace Game
             InternalGrid.OnComponentAdded -= GridData_OnComponentAdded;
             InternalGrid.OnComponentRemoved -= GridData_OnComponentRemoved;
             InternalGrid.OnBlueprintNamed -= GridData_OnBlueprintNamed;
+            InternalGrid.OnBlueprintRenamed -= GridData_OnBlueprintRenamed;
         }
 
         private void ResetIOComponentData()
