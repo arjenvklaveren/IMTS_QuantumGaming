@@ -5,7 +5,7 @@ namespace Game
 {
     public class CameraZoomInputDecoder : IScrollInputDecoder
     {
-        private CameraController camController;
+        private readonly CameraController camController;
 
         public CameraZoomInputDecoder()
         {

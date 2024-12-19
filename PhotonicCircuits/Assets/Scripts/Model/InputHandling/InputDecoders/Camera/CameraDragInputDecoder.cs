@@ -1,5 +1,6 @@
 using Game.Data;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 namespace Game
 {
@@ -21,10 +22,16 @@ namespace Game
             if (code != MouseInputCode.LeftMouseButton)
                 return;
 
-            if (inputType == ButtonInputType.Hold)
-                return;
+            switch (inputType)
+            {
+                case ButtonInputType.Up:
+                    isDragging = false;
+                    break;
 
-            isDragging = inputType == ButtonInputType.Down;
+                case ButtonInputType.Down:
+                    isDragging = CanStartDrag();
+                    break;
+            }
         }
 
         public void DecodeInput(Vector2 mousePositionDelta)
@@ -33,6 +40,11 @@ namespace Game
                 return;
 
             camController.Drag(mousePositionDelta);
+        }
+
+        private bool CanStartDrag()
+        {
+            return GridTile.IsHovered || ComponentVisuals.IsHovered || !EventSystem.current.IsPointerOverGameObject();
         }
 
         public void OnDisable()
