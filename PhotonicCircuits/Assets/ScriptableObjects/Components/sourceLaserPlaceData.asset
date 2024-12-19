@@ -16,7 +16,7 @@ MonoBehaviour:
   previewSprite: {fileID: 0}
   previewScale: {x: 1, y: 1}
   iconSprite: {fileID: 21300000, guid: 20de22416f631d94db579ed7654603d4, type: 3}
-  restrictionType: 2
+  restrictionType: 1
   tileOffsetsToOccupy:
   - {x: 0, y: 0}
   defaultOrientation: 0
