@@ -17,13 +17,15 @@ namespace Game
         public ICOutComponent(
             GridData hostGrid,
             Vector2Int[] tilesToOccupy,
-            Orientation orientation,
+            Orientation defaultOrientation,
+            Orientation placeOrientation,
             ComponentPort[] inPorts,
             ComponentPort[] outPorts,
             int portId = 0) : base(
                 hostGrid,
                 tilesToOccupy,
-                orientation,
+                defaultOrientation,
+                placeOrientation,
                 inPorts,
                 outPorts)
         {

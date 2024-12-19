@@ -11,6 +11,7 @@ namespace Game
             return new BeamSplitterComponent(
                 hostGrid,
                 tilesToOccupy,
+                defaultOrientation,
                 placeOrientation,
                 inPorts,
                 outPorts);

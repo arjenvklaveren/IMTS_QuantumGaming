@@ -15,6 +15,19 @@ namespace Game.Data
             return orientation.RotateClockwise(-increments);
         }
 
+        public static int GetClockwiseIncrementsDiff(this Orientation orientation, Orientation target)
+        {
+            int dir = (int)orientation;
+            int targetDir = (int)target;
+
+            int difference = targetDir - dir;
+
+            if (difference < 0)
+                difference += 4;
+
+            return difference;
+        }
+
         public static int GetRotationDifferenceInClockwiseIncrements(Orientation currentOrientation, Orientation targetOrientation)
         {
             int dir = (int)currentOrientation;
@@ -66,12 +79,12 @@ namespace Game.Data
         }
         public static bool IsOnSameAxis(this Orientation orientation, Orientation other)
         {
-            return 
+            return
                 (IsVertical(orientation) && IsVertical(other) ||
-                (IsHorizontal(orientation) && IsHorizontal(other))); 
+                (IsHorizontal(orientation) && IsHorizontal(other)));
         }
         #endregion
-        
+
         #region Arithmetic
         public static Orientation Add(this Orientation orientation, int toAdd)
         {
@@ -87,19 +100,6 @@ namespace Game.Data
         public static Orientation Subtract(this Orientation orientation, int toSubtract)
         {
             return orientation.Add(-toSubtract);
-        }
-        #endregion
-
-        #region Misc
-        public static int GetIncrementsDiff(this Orientation orientation, Orientation other)
-        {
-            int curOrientationInt = (int)orientation;
-            int newOrientationInt = (int)other;
-            int increments = 0;
-
-            if (newOrientationInt > curOrientationInt) increments = newOrientationInt - curOrientationInt;
-            else increments = (3 - curOrientationInt) + (1 + newOrientationInt);
-            return increments;
         }
         #endregion
     }

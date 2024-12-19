@@ -1,10 +1,7 @@
-using DG.Tweening;
-using DG.Tweening.Plugins;
 using Game.Data;
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 
 namespace Game
@@ -18,22 +15,24 @@ namespace Game
         public WaveGuideComponent(
             GridData hostGrid,
             Vector2Int[] tilesToOccupy,
-            Orientation orientation,
+            Orientation defaultOrientation,
+            Orientation placeOrientation,
             ComponentPort[] inPorts,
             ComponentPort[] outPorts
             ) : base(
                 hostGrid,
                 tilesToOccupy,
-                orientation,
+                defaultOrientation,
+                placeOrientation,
                 inPorts,
                 outPorts)
         {
 
         }
 
-        public override void SetOrientation(Orientation orientation)
+        public void SetOrientation(Orientation orientation)
         {
-            GridManager.Instance.GridController.TryRotateComponentClockwise(this, this.orientation.GetIncrementsDiff(orientation));
+            GridManager.Instance.GridController.TryRotateComponentClockwise(this, this.orientation.GetClockwiseIncrementsDiff(orientation));
         }
 
         public void SetPathNodesCopy(List<Transform> pathNodes) { this.pathNodes = pathNodes; }
@@ -60,7 +59,7 @@ namespace Game
             float timeToTravelTile = 1f / PhotonMovementManager.Instance.MoveSpeed;
             totalDistance += Vector2.Distance(GetOutPort(inPort.portId).position, nodes[nodes.Length - 1]);
             float outTimeVal = (totalDistance * timeToTravelTile);
-            if(includeHalfTileOffset) outTimeVal += (timeToTravelTile / 2);
+            if (includeHalfTileOffset) outTimeVal += (timeToTravelTile / 2);
             return outTimeVal;
         }
 

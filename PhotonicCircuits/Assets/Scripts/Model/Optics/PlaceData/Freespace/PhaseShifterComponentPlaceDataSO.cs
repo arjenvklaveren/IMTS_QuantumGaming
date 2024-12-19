@@ -12,6 +12,7 @@ namespace Game
             return new PhaseShifterComponent(
                 hostGrid,
                 tilesToOccupy,
+                defaultOrientation,
                 placeOrientation,
                 inPorts,
                 outPorts,

@@ -8,31 +8,33 @@ namespace Game
     {
         public override OpticComponentType Type => OpticComponentType.PhaseShifter;
 
-        [ComponentContext("Phase shift", "SetShiftValue"), Range(0.0f,Mathf.PI * 2)]
+        [ComponentContext("Phase shift", "SetShiftValue"), Range(0.0f, Mathf.PI * 2)]
         private float shiftValueRadians;
-        [ComponentContext("Phase offset", "SetOffsetValue"), Range(-Mathf.PI / 2, Mathf.PI / 2)] 
+        [ComponentContext("Phase offset", "SetOffsetValue"), Range(-Mathf.PI / 2, Mathf.PI / 2)]
         private float offsetValue = 0;
 
         public PhaseShifterComponent(
             GridData hostGrid,
             Vector2Int[] tilesToOccupy,
-            Orientation orientation,
+            Orientation defaultOrientation,
+            Orientation placeOrientation,
             ComponentPort[] inPorts,
             ComponentPort[] outPorts,
             float shiftValueRadians
             ) : base(
                 hostGrid,
                 tilesToOccupy,
-                orientation,
+                defaultOrientation,
+                placeOrientation,
                 inPorts,
                 outPorts)
         {
             this.shiftValueRadians = shiftValueRadians;
         }
 
-        public override void SetOrientation(Orientation orientation)
+        public void SetOrientation(Orientation orientation)
         {
-            GridManager.Instance.GridController.TryRotateComponentClockwise(this, this.orientation.GetIncrementsDiff(orientation));
+            GridManager.Instance.GridController.TryRotateComponentClockwise(this, this.orientation.GetClockwiseIncrementsDiff(orientation));
         }
 
         protected override IEnumerator HandlePhotonCo(ComponentPort port, Photon photon)

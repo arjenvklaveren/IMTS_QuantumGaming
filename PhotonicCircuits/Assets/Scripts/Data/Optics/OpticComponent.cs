@@ -18,9 +18,9 @@ namespace Game.Data
 
         public HashSet<Vector2Int> OccupiedTiles { get; protected set; }
 
-        [ComponentContext("Root position", "SetRootTile")] 
         public readonly Vector2Int occupiedRootTile;
-        [ComponentContext("Orientation", "SetOrientation")] 
+
+        [ComponentContext("Orientation", "SetOrientation")]
         public Orientation orientation;
 
         public ComponentPort[] InPorts { get; protected set; }
@@ -30,7 +30,8 @@ namespace Game.Data
         public OpticComponent(
             GridData hostGrid,
             Vector2Int[] tilesToOccupy,
-            Orientation orientation,
+            Orientation defaultOrientation,
+            Orientation placeOrientation,
             ComponentPort[] inPorts,
             ComponentPort[] outPorts)
         {
@@ -39,13 +40,12 @@ namespace Game.Data
             OccupiedTiles = new(tilesToOccupy);
             occupiedRootTile = GetOccupiedRootTile(tilesToOccupy);
 
-            this.orientation = orientation;
-
             InPorts = GetPortCopies(inPorts);
             OutPorts = GetPortCopies(outPorts);
             InitPorts();
-        }
 
+            InitRotation(defaultOrientation, placeOrientation);
+        }
 
         protected virtual Vector2Int GetOccupiedRootTile(Vector2Int[] tilesToOccupy)
         {
@@ -84,6 +84,15 @@ namespace Game.Data
                 idCounter++;
             }
         }
+
+        private void InitRotation(Orientation defaultOrientation, Orientation placeOrientation)
+        {
+            orientation = defaultOrientation;
+
+            int incrementsToRotate = defaultOrientation.GetClockwiseIncrementsDiff(placeOrientation);
+
+            RotateClockwise(incrementsToRotate);
+        }
         #endregion
 
         #region Host Grid
@@ -98,7 +107,7 @@ namespace Game.Data
         public void RotateClockwise(int increments = 1)
         {
             Orientation targetOrientation = orientation.RotateClockwise(increments);
-            int incrementsToRotate = OrientationUtils.GetRotationDifferenceInClockwiseIncrements(orientation, targetOrientation);
+            int incrementsToRotate = orientation.GetClockwiseIncrementsDiff(targetOrientation);
 
             for (int i = 0; i < incrementsToRotate; i++)
                 RotateComponent90Degrees();
@@ -182,9 +191,6 @@ namespace Game.Data
 
         public virtual void Destroy() { }
         public virtual void Reset() { }
-
-        public virtual void SetOrientation(Orientation orientation) { }
-        public void SetRootTile(Vector2Int occupiedRootTile) { }
 
         public virtual string SerializeArgs() { return ""; }
 

@@ -11,6 +11,7 @@ namespace Game
             return new PhotonSingleSourceComponent(
                 hostGrid,
                 tilesToOccupy,
+                defaultOrientation,
                 placeOrientation,
                 inPorts,
                 outPorts);

@@ -9,7 +9,7 @@ namespace Game
     {
         private struct BlueprintData
         {
-            public List<KeyValuePair<string, int>> containedBlueprintsList;
+            public KeyValuePair<string, int>[] containedBlueprintsList;
 
             public GridData internalGrid;
             public OpticComponentType type;
@@ -26,16 +26,16 @@ namespace Game
             BlueprintData blueprintData = serializer.Deserialize<BlueprintData>(reader);
 
             return new(
-                ListToDictionary(blueprintData.containedBlueprintsList),
+                ArrayToDictionary(blueprintData.containedBlueprintsList),
                 blueprintData.internalGrid,
                 blueprintData.type);
         }
 
-        private Dictionary<string, int> ListToDictionary(List<KeyValuePair<string, int>> list)
+        private Dictionary<string, int> ArrayToDictionary(KeyValuePair<string, int>[] array)
         {
             Dictionary<string, int> dict = new();
 
-            foreach (KeyValuePair<string, int> pair in list)
+            foreach (KeyValuePair<string, int> pair in array)
                 dict.Add(pair.Key, pair.Value);
 
             return dict;
@@ -50,7 +50,7 @@ namespace Game
         {
             BlueprintData blueprintData = new()
             {
-                containedBlueprintsList = DictionaryToList(value.containedBlueprints),
+                containedBlueprintsList = DictionaryToArray(value.containedBlueprints),
 
                 internalGrid = value.internalGrid,
                 type = value.type
@@ -59,14 +59,14 @@ namespace Game
             serializer.Serialize(writer, blueprintData);
         }
 
-        private List<KeyValuePair<string, int>> DictionaryToList(Dictionary<string, int> dict)
+        private KeyValuePair<string, int>[] DictionaryToArray(Dictionary<string, int> dict)
         {
             List<KeyValuePair<string, int>> list = new();
 
             foreach (KeyValuePair<string, int> pair in dict)
                 list.Add(pair);
 
-            return list;
+            return list.ToArray();
         }
         #endregion
     }

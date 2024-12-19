@@ -11,6 +11,7 @@ namespace Game
             return new ICPhaseShifterComponent(
                 hostGrid,
                 tilesToOccupy,
+                defaultOrientation,
                 placeOrientation,
                 inPorts,
                 outPorts);

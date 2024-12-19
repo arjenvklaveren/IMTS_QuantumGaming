@@ -11,6 +11,7 @@ namespace Game
             return new MirrorComponent(
                 hostGrid,
                 tilesToOccupy,
+                defaultOrientation,
                 placeOrientation,
                 inPorts,
                 outPorts);

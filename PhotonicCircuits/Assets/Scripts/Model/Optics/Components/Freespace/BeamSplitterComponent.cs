@@ -2,8 +2,8 @@ using Game.Data;
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
 using System.Linq;
+using UnityEngine;
 
 namespace Game
 {
@@ -18,22 +18,24 @@ namespace Game
         public BeamSplitterComponent(
             GridData hostGrid,
             Vector2Int[] tilesToOccupy,
-            Orientation orientation,
+            Orientation defaultOrientation,
+            Orientation placeOrientation,
             ComponentPort[] inPorts,
             ComponentPort[] outPorts
             ) : base(
                 hostGrid,
                 tilesToOccupy,
-                orientation,
+                defaultOrientation,
+                placeOrientation,
                 inPorts,
                 outPorts)
         {
-            
+
         }
 
-        public override void SetOrientation(Orientation orientation)
+        public void SetOrientation(Orientation orientation)
         {
-            GridManager.Instance.GridController.TryRotateComponentClockwise(this, this.orientation.GetIncrementsDiff(orientation));
+            GridManager.Instance.GridController.TryRotateComponentClockwise(this, this.orientation.GetClockwiseIncrementsDiff(orientation));
         }
 
         protected override IEnumerator HandlePhotonCo(ComponentPort port, Photon photon)
@@ -60,7 +62,7 @@ namespace Game
                 ResolveSplitPhoton(singlePair.Key, singlePair.Value);
                 photonCount = 0;
             }
-            for(int i = 0; i < photonCount; i++)
+            for (int i = 0; i < photonCount; i++)
             {
                 bool isInterfering = false;
                 KeyValuePair<Photon, ComponentPort> outerPair = currentPhotons.ElementAt(i);
@@ -68,7 +70,7 @@ namespace Game
                 {
                     KeyValuePair<Photon, ComponentPort> innerPair = currentPhotons.ElementAt(j);
                     if (i == j) continue;
-                    if(PhotonInterferenceManager.Instance.IsInterfering(outerPair.Key, innerPair.Key, false) &&
+                    if (PhotonInterferenceManager.Instance.IsInterfering(outerPair.Key, innerPair.Key, false) &&
                         IsInterferePort(outerPair.Value, innerPair.Value))
                     {
                         ResolveInterferePhotons(outerPair, innerPair);

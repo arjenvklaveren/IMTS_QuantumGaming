@@ -11,6 +11,7 @@ namespace Game
             return new TestComponent(
                 hostGrid,
                 tilesToOccupy,
+                defaultOrientation,
                 placeOrientation,
                 inPorts,
                 outPorts);

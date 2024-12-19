@@ -36,6 +36,7 @@ namespace Game
                 hostGrid,
                 tilesToOccupy,
                 orientation,
+                orientation,
                 new ComponentPort[0],
                 new ComponentPort[0])
         {
@@ -52,6 +53,7 @@ namespace Game
             ICBlueprintData data) : base(
                 hostGrid,
                 tilesToOccupy,
+                orientation,
                 orientation,
                 new ComponentPort[0],
                 new ComponentPort[0])

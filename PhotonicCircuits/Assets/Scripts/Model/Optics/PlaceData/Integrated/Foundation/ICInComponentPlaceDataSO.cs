@@ -11,6 +11,7 @@ namespace Game
             return new ICInComponent(
                 hostGrid,
                 tilesToOccupy,
+                defaultOrientation,
                 placeOrientation,
                 inPorts,
                 outPorts);

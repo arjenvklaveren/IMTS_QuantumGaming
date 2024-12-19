@@ -11,6 +11,7 @@ namespace Game
             return new ICOutComponent(
                 hostGrid,
                 tilesToOccupy,
+                defaultOrientation,
                 placeOrientation,
                 inPorts,
                 outPorts);

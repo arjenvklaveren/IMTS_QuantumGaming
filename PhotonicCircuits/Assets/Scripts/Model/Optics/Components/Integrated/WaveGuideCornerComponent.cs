@@ -1,8 +1,5 @@
-using DG.Tweening;
 using Game.Data;
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace Game
@@ -18,22 +15,24 @@ namespace Game
         public WaveGuideCornerComponent(
             GridData hostGrid,
             Vector2Int[] tilesToOccupy,
-            Orientation orientation,
+            Orientation defaultOrientation,
+            Orientation placeOrientation,
             ComponentPort[] inPorts,
             ComponentPort[] outPorts
             ) : base(
                 hostGrid,
                 tilesToOccupy,
-                orientation,
+                defaultOrientation,
+                placeOrientation,
                 inPorts,
                 outPorts)
         {
-            if(isAltCorner) OnChangeCornerType(isAltCorner);
+            if (isAltCorner) OnChangeCornerType(isAltCorner);
         }
 
-        public override void SetOrientation(Orientation orientation)
+        public void SetOrientation(Orientation orientation)
         {
-            GridManager.Instance.GridController.TryRotateComponentClockwise(this, this.orientation.GetIncrementsDiff(orientation));
+            GridManager.Instance.GridController.TryRotateComponentClockwise(this, this.orientation.GetClockwiseIncrementsDiff(orientation));
         }
 
         public void OnChangeCornerType(bool isAlt)

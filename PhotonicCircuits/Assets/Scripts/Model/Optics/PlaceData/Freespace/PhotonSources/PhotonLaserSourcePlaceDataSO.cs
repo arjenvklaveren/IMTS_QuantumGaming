@@ -11,6 +11,7 @@ namespace Game
             return new PhotonLaserSourceComponent(
                 hostGrid,
                 tilesToOccupy,
+                defaultOrientation,
                 placeOrientation,
                 inPorts,
                 outPorts);

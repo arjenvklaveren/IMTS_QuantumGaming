@@ -35,7 +35,7 @@ namespace Game
             {
                 OpticComponentType.Test => LoadTestComponent(data),
                 OpticComponentType.SourceSingle => LoadSingleSourceComponent(data),
-                OpticComponentType.SourceLaser => LoadSingleSourceComponent(data),
+                OpticComponentType.SourceLaser => LoadLaserSourceComponent(data),
                 OpticComponentType.Mirror => LoadMirrorComponent(data),
                 OpticComponentType.BeamSplitter => LoadBeamSplitterComponent(data),
                 OpticComponentType.PhaseShifter => LoadPhaseShifterComponent(data),
@@ -60,6 +60,7 @@ namespace Game
                 null,
                 data.occupiedTiles,
                 data.orientation,
+                data.orientation,
                 data.inPorts,
                 data.outPorts);
         }
@@ -69,6 +70,7 @@ namespace Game
             return new(
                 null,
                 data.occupiedTiles,
+                data.orientation,
                 data.orientation,
                 data.inPorts,
                 data.outPorts);
@@ -80,6 +82,7 @@ namespace Game
                 null,
                 data.occupiedTiles,
                 data.orientation,
+                data.orientation,
                 data.inPorts,
                 data.outPorts);
         }
@@ -90,6 +93,7 @@ namespace Game
                 null,
                 data.occupiedTiles,
                 data.orientation,
+                data.orientation,
                 data.inPorts,
                 data.outPorts);
         }
@@ -99,6 +103,7 @@ namespace Game
             return new(
                 null,
                 data.occupiedTiles,
+                data.orientation,
                 data.orientation,
                 data.inPorts,
                 data.outPorts);
@@ -113,6 +118,7 @@ namespace Game
                 null,
                 data.occupiedTiles,
                 data.orientation,
+                data.orientation,
                 data.inPorts,
                 data.outPorts,
                 shiftParse);
@@ -123,6 +129,7 @@ namespace Game
             return new(
                 null,
                 data.occupiedTiles,
+                data.orientation,
                 data.orientation,
                 data.inPorts,
                 data.outPorts);
@@ -161,6 +168,7 @@ namespace Game
                 null,
                 data.occupiedTiles,
                 data.orientation,
+                data.orientation,
                 data.inPorts,
                 data.outPorts);
         }
@@ -172,6 +180,7 @@ namespace Game
             return new(
                 null,
                 data.occupiedTiles,
+                data.orientation,
                 data.orientation,
                 data.inPorts,
                 data.outPorts,

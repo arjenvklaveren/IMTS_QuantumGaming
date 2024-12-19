@@ -1,6 +1,4 @@
 using Game.Data;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace Game
@@ -13,6 +11,7 @@ namespace Game
             return new ICBeamSplitterComponent(
                 hostGrid,
                 tilesToOccupy,
+                defaultOrientation,
                 placeOrientation,
                 inPorts,
                 outPorts);

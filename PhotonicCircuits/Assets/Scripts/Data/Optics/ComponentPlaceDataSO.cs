@@ -42,7 +42,7 @@ namespace Game.Data
             // Return position with offsets.
             Vector2Int[] tilesToOccupy = new Vector2Int[tileOffsetsToOccupy.Length];
 
-            int rotateIncrements = OrientationUtils.GetRotationDifferenceInClockwiseIncrements(defaultOrientation, placeOrientation);
+            int rotateIncrements = defaultOrientation.GetClockwiseIncrementsDiff(placeOrientation);
 
             for (int i = 0; i < tileOffsetsToOccupy.Length; i++)
             {

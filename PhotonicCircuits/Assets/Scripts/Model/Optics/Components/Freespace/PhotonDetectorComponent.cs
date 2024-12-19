@@ -11,22 +11,24 @@ namespace Game
         public PhotonDetectorComponent(
             GridData hostGrid,
             Vector2Int[] tilesToOccupy,
-            Orientation orientation,
+            Orientation defaultOrientation,
+            Orientation placeOrientation,
             ComponentPort[] inPorts,
             ComponentPort[] outPorts
             ) : base(
                 hostGrid,
                 tilesToOccupy,
-                orientation,
+                defaultOrientation,
+                placeOrientation,
                 inPorts,
                 outPorts)
         {
 
         }
 
-        public override void SetOrientation(Orientation orientation)
+        public void SetOrientation(Orientation orientation)
         {
-            GridManager.Instance.GridController.TryRotateComponentClockwise(this, this.orientation.GetIncrementsDiff(orientation));
+            GridManager.Instance.GridController.TryRotateComponentClockwise(this, this.orientation.GetClockwiseIncrementsDiff(orientation));
         }
 
         protected override IEnumerator HandlePhotonCo(ComponentPort port, Photon photon)

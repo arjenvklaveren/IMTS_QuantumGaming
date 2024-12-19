@@ -1,4 +1,3 @@
-using Codice.Client.Common.FsNodeReaders;
 using Game.Data;
 using System;
 using System.Collections;
@@ -19,22 +18,24 @@ namespace Game
         public ICBeamSplitterComponent(
             GridData hostGrid,
             Vector2Int[] tilesToOccupy,
-            Orientation orientation,
+            Orientation defaultOrientation,
+            Orientation placeOrientation,
             ComponentPort[] inPorts,
             ComponentPort[] outPorts
             ) : base(
                 hostGrid,
                 tilesToOccupy,
-                orientation,
+                defaultOrientation,
+                placeOrientation,
                 inPorts,
                 outPorts)
         {
 
         }
 
-        public override void SetOrientation(Orientation orientation)
+        public void SetOrientation(Orientation orientation)
         {
-            GridManager.Instance.GridController.TryRotateComponentClockwise(this, this.orientation.GetIncrementsDiff(orientation));
+            GridManager.Instance.GridController.TryRotateComponentClockwise(this, this.orientation.GetClockwiseIncrementsDiff(orientation));
         }
 
         protected override IEnumerator HandlePhotonCo(ComponentPort port, Photon photon)
@@ -56,7 +57,7 @@ namespace Game
         private void HandleAllCurrentPhotons()
         {
             int photonCount = currentPhotons.Count;
-            for(int i = 0; i < photonCount; i++)
+            for (int i = 0; i < photonCount; i++)
             {
                 KeyValuePair<Photon, ComponentPort> outerpair = currentPhotons.ElementAt(i);
                 if (outerpair.Value.portId == 0)

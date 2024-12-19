@@ -11,6 +11,7 @@ namespace Game
             return new PhotonDetectorComponent(
                 hostGrid,
                 tilesToOccupy,
+                defaultOrientation,
                 placeOrientation,
                 inPorts,
                 outPorts);
