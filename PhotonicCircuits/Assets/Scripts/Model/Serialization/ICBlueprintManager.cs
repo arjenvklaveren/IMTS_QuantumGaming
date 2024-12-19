@@ -135,6 +135,11 @@ namespace Game
             return exists;
         }
 
+        public List<string> GetAllBlueprintNames()
+        {
+            return new List<string>(loadedBlueprints.Keys);
+        }
+
         public bool DoesBlueprintExist(string name) => loadedBlueprints.ContainsKey(name);
         #endregion
     }
