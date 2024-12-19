@@ -7,6 +7,8 @@ namespace Game
     {
         [Header("Movement Settings")]
         [SerializeField] private float moveSpeed;
+        [SerializeField] private float dragSensitivity;
+        [SerializeField] private Vector2 zoomDragMultRange;
 
         [Header("Zoom Settings")]
         [SerializeField] private float zoomSensitivity;
@@ -49,6 +51,21 @@ namespace Game
         public void SetMoveDir(Vector2 moveDir)
         {
             lastInputDir = moveDir;
+        }
+
+        public void Drag(Vector2 dragDelta)
+        {
+            Vector2 dragDir = dragDelta * (-dragSensitivity * GetZoomDragMult() / 100f);
+
+            transform.Translate(dragDir);
+        }
+
+        private float GetZoomDragMult()
+        {
+            float zoomRelative = (currentZoom - zoomLimits.x) / (zoomLimits.y - zoomLimits.x);
+
+            float zoomMultMaxDif = zoomDragMultRange.y - zoomDragMultRange.x;
+            return zoomDragMultRange.x + (zoomMultMaxDif * zoomRelative);
         }
 
         public void UpdateZoom(float zoomChange)

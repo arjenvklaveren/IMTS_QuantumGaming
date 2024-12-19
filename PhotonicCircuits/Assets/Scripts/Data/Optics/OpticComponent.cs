@@ -20,7 +20,7 @@ namespace Game.Data
 
         public readonly Vector2Int occupiedRootTile;
 
-        [ComponentContext("Orientation", "SetOrientation")]
+        [ComponentContext("Orientation", nameof(SetOrientation))]
         public Orientation orientation;
 
         public ComponentPort[] InPorts { get; protected set; }
@@ -191,6 +191,8 @@ namespace Game.Data
 
         public virtual void Destroy() { }
         public virtual void Reset() { }
+
+        public abstract void SetOrientation(Orientation orientation);
 
         public virtual string SerializeArgs() { return ""; }
 

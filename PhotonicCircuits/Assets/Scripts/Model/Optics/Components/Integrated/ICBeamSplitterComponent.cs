@@ -33,10 +33,7 @@ namespace Game
 
         }
 
-        public void SetOrientation(Orientation orientation)
-        {
-            GridManager.Instance.GridController.TryRotateComponentClockwise(this, this.orientation.GetClockwiseIncrementsDiff(orientation));
-        }
+        public override void SetOrientation(Orientation orientation) => ComponentRotateUtil.SetOrientation(this, orientation);
 
         protected override IEnumerator HandlePhotonCo(ComponentPort port, Photon photon)
         {

@@ -43,5 +43,7 @@ namespace Game
         {
             return JsonConvert.SerializeObject(portId);
         }
+
+        public override void SetOrientation(Orientation orientation) => ComponentRotateUtil.SetOrientation(this, orientation);
     }
 }

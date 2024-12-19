@@ -6,24 +6,10 @@ namespace Game
     {
         private readonly GridController gridController;
 
-        private bool isDeleting;
-
         #region Constructor
         public ComponentDeleteInputDecoder()
         {
             gridController = GridManager.Instance.GridController;
-
-            SetupListeners();
-        }
-
-        private void SetupListeners()
-        {
-            ComponentVisuals.OnHover += ComponentVisuals_OnHover;
-        }
-
-        private void RemoveListeners()
-        {
-            ComponentVisuals.OnHover -= ComponentVisuals_OnHover;
         }
         #endregion
 
@@ -33,28 +19,13 @@ namespace Game
             if (code != MouseInputCode.RightMouseButton)
                 return;
 
-            switch (inputType)
-            {
-                case ButtonInputType.Up:
-                    isDeleting = false;
-                    break;
-
-                case ButtonInputType.Down:
-                    isDeleting = true;
-                    if (ComponentVisuals.TryGetHoveredComponent(out ComponentVisuals componentVisuals))
-                        SendDeleteInput(componentVisuals);
-                    break;
-            }
-        }
-        #endregion
-
-        #region Handle Events
-        private void ComponentVisuals_OnHover(ComponentVisuals componentVisuals)
-        {
-            if (!isDeleting)
+            if (inputType != ButtonInputType.Down)
                 return;
 
-            SendDeleteInput(componentVisuals);
+            if (ComponentVisuals.TryGetHoveredComponent(out ComponentVisuals componentVisuals))
+                SendDeleteInput(componentVisuals);
+            else
+                PlayerInputManager.Instance.PopInputHandler();
         }
         #endregion
 
@@ -63,14 +34,7 @@ namespace Game
             gridController.TryRemoveComponent(componentVisuals.SourceComponent);
         }
 
-        public void OnDisable()
-        {
-            isDeleting = false;
-        }
-
-        public void Destroy()
-        {
-            RemoveListeners();
-        }
+        public void OnDisable() { }
+        public void Destroy() { }
     }
 }

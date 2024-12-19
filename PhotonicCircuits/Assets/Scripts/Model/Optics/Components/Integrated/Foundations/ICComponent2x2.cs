@@ -34,5 +34,7 @@ namespace Game
                 blueprintData)
         {
         }
+
+        public override void SetOrientation(Orientation orientation) => ComponentRotateUtil.SetOrientation(this, orientation);
     }
 }

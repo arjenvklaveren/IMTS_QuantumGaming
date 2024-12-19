@@ -4,7 +4,7 @@ namespace Game
 {
     public static class ComponentRotateUtil
     {
-        public static void SetOrientation(this OpticComponent component, Orientation targetOrientation)
+        public static void SetOrientation(OpticComponent component, Orientation targetOrientation)
         {
             int incrementsToRotate = component.orientation.GetClockwiseIncrementsDiff(targetOrientation);
 

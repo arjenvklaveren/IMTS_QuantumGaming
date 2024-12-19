@@ -36,5 +36,7 @@ namespace Game
 
             OnHandlePhoton?.Invoke(photon);
         }
+
+        public override void SetOrientation(Orientation orientation) => ComponentRotateUtil.SetOrientation(this, orientation);
     }
 }

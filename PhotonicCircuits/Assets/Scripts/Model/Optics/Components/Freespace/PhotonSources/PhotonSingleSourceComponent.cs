@@ -28,11 +28,6 @@ namespace Game
             SetupListeners();
         }
 
-        public void SetOrientation(Orientation orientation)
-        {
-            GridManager.Instance.GridController.TryRotateComponentClockwise(this, this.orientation.GetClockwiseIncrementsDiff(orientation));
-        }
-
         #region Handle Events
         private void SetupListeners()
         {
@@ -67,5 +62,7 @@ namespace Game
             TriggerOnPhotonExit(photon);
         }
         #endregion
+
+        public override void SetOrientation(Orientation orientation) => ComponentRotateUtil.SetOrientation(this, orientation);
     }
 }

@@ -26,11 +26,6 @@ namespace Game
         {
         }
 
-        public void SetOrientation(Orientation orientation)
-        {
-            GridManager.Instance.GridController.TryRotateComponentClockwise(this, this.orientation.GetClockwiseIncrementsDiff(orientation));
-        }
-
         protected override IEnumerator HandlePhotonCo(ComponentPort port, Photon photon)
         {
             yield return PhotonMovementManager.Instance.GetWaitMoveTime(photon.GetPhotonType(), true);
@@ -56,5 +51,7 @@ namespace Game
             // could look like this:
             // return inPort += inPort % 2 == 0 ? 1 : -1;
         }
+
+        public override void SetOrientation(Orientation orientation) => ComponentRotateUtil.SetOrientation(this, orientation);
     }
 }

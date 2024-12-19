@@ -27,12 +27,6 @@ namespace Game
                 inPorts,
                 outPorts)
         {
-
-        }
-
-        public void SetOrientation(Orientation orientation)
-        {
-            GridManager.Instance.GridController.TryRotateComponentClockwise(this, this.orientation.GetClockwiseIncrementsDiff(orientation));
         }
 
         public void SetPathNodesCopy(List<Transform> pathNodes) { this.pathNodes = pathNodes; }
@@ -82,5 +76,7 @@ namespace Game
                 _ => throw new ArgumentException("Invalid inPort")
             };
         }
+
+        public override void SetOrientation(Orientation orientation) => ComponentRotateUtil.SetOrientation(this, orientation);
     }
 }

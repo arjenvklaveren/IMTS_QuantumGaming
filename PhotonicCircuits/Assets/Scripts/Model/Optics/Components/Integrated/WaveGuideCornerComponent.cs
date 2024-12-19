@@ -30,10 +30,7 @@ namespace Game
             if (isAltCorner) OnChangeCornerType(isAltCorner);
         }
 
-        public void SetOrientation(Orientation orientation)
-        {
-            GridManager.Instance.GridController.TryRotateComponentClockwise(this, this.orientation.GetClockwiseIncrementsDiff(orientation));
-        }
+        public override void SetOrientation(Orientation orientation) => ComponentRotateUtil.SetOrientation(this, orientation);
 
         public void OnChangeCornerType(bool isAlt)
         {

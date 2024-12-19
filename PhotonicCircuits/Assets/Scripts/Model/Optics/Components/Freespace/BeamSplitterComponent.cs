@@ -33,11 +33,6 @@ namespace Game
 
         }
 
-        public void SetOrientation(Orientation orientation)
-        {
-            GridManager.Instance.GridController.TryRotateComponentClockwise(this, this.orientation.GetClockwiseIncrementsDiff(orientation));
-        }
-
         protected override IEnumerator HandlePhotonCo(ComponentPort port, Photon photon)
         {
             currentPhotons.Add(photon, port);
@@ -160,5 +155,7 @@ namespace Game
                 _ => throw new ArgumentException("Invalid inPort")
             };
         }
+
+        public override void SetOrientation(Orientation orientation) => ComponentRotateUtil.SetOrientation(this, orientation);
     }
 }
