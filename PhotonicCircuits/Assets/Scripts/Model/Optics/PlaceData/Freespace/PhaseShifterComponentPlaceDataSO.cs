@@ -7,7 +7,7 @@ namespace Game
     public class PhaseShifterComponentPlaceDataSO : ComponentPlaceDataSO
     {
         [SerializeField] private float shiftAmountRadians;
-        public override OpticComponent CreateOpticComponent(GridData hostGrid, Vector2Int[] tilesToOccupy)
+        public override OpticComponent CreateOpticComponent(GridData hostGrid, Vector2Int[] tilesToOccupy, Orientation placeOrientation)
         {
             return new PhaseShifterComponent(
                 hostGrid,

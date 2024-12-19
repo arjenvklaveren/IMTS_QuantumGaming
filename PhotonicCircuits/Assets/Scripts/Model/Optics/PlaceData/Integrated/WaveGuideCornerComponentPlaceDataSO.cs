@@ -8,12 +8,12 @@ namespace Game
     [CreateAssetMenu(fileName = "waveGuideCornerPlaceData", menuName = "ScriptableObjects/Components/Place Data/waveguide corner")]
     public class WaveGuideCornerComponentPlaceDataSO : ComponentPlaceDataSO
     {
-        public override OpticComponent CreateOpticComponent(GridData hostGrid, Vector2Int[] tilesToOccupy)
+        public override OpticComponent CreateOpticComponent(GridData hostGrid, Vector2Int[] tilesToOccupy, Orientation placeOrientation)
         {
             return new WaveGuideCornerComponent(
                 hostGrid,
                 tilesToOccupy,
-                orientation,
+                placeOrientation,
                 inPorts,
                 outPorts);
         }

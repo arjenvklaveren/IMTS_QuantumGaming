@@ -8,12 +8,12 @@ namespace Game
     [CreateAssetMenu(fileName = "integratedBeamSplitterPlaceData", menuName = "ScriptableObjects/Components/Place Data/integrated beamSplitter")]
     public class ICBeamSplitterComponentPlaceDataSO : ComponentPlaceDataSO
     {
-        public override OpticComponent CreateOpticComponent(GridData hostGrid, Vector2Int[] tilesToOccupy)
+        public override OpticComponent CreateOpticComponent(GridData hostGrid, Vector2Int[] tilesToOccupy, Orientation placeOrientation)
         {
             return new ICBeamSplitterComponent(
                 hostGrid,
                 tilesToOccupy,
-                orientation,
+                placeOrientation,
                 inPorts,
                 outPorts);
         }

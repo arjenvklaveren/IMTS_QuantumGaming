@@ -56,9 +56,6 @@ namespace Game
             if (selected.SourceComponent.Type == Data.OpticComponentType.IC1x1 ||
                 selected.SourceComponent.Type == Data.OpticComponentType.IC2x2)
                 (selected as ICComponentVisuals).Interact();
-
-            if (selected.SourceComponent.Type == Data.OpticComponentType.Source)
-                GridManager.Instance.GridController.TryRotateComponentClockwise(selected.SourceComponent);
         }
 
         public void Deselect()
