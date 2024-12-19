@@ -67,12 +67,22 @@ namespace Game
             if (grids.Count <= 1)
                 return;
 
-            GridData closedGrid = grids.Pop();
-
-            ComponentPortsManager.Instance.CompileComponentPorts(closedGrid);
+            CloseAndCompileActiveGrid();
 
             // save closed Grid
             SaveProject(OpenCurrentGrid);
+        }
+
+        public void ForceCloseActiveGrid()
+        {
+            CloseAndCompileActiveGrid();
+        }
+
+        private void CloseAndCompileActiveGrid()
+        {
+            GridData closedGrid = grids.Pop();
+
+            ComponentPortsManager.Instance.CompileComponentPorts(closedGrid);
         }
 
         private void SaveProject(Action completeCallback)

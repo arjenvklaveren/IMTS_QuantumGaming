@@ -15,7 +15,7 @@ MonoBehaviour:
   title: IC In Component
   previewSprite: {fileID: 0}
   previewScale: {x: 1, y: 1}
-  restrictionType: 2
+  restrictionType: 0
   tileOffsetsToOccupy:
   - {x: 0, y: 0}
   defaultOrientation: 1

@@ -1,5 +1,4 @@
 using Game.Data;
-using SadUtils;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -46,9 +45,10 @@ namespace Game.UI
         #endregion
 
         #region Handle Listeners
-        private void GridController_OnGridChanged(GridData grid) => GeneratePath();
+        private void GridController_OnGridChanged(GridData grid) => ReconstructPath();
         #endregion
 
+        #region Create Path
         private void ReconstructPath()
         {
             StartCoroutine(ReconstructPathCo());
@@ -67,41 +67,9 @@ namespace Game.UI
             lastPathLength = grids.Count;
             LayoutRebuilder.ForceRebuildLayoutImmediate(pathHolder);
         }
+        #endregion
 
-        private void GeneratePath()
-        {
-            IEnumerable<GridData> grids = GridManager.Instance.GetAllGrids();
-            int gridCount = grids.Count();
-
-            // Path shortened
-            if (lastPathLength > gridCount)
-                RemoveLastPathSteps(lastPathLength - gridCount);
-
-            else
-                GeneratePathEnd(grids, gridCount);
-
-            lastPathLength = gridCount;
-            LayoutRebuilder.ForceRebuildLayoutImmediate(pathHolder);
-        }
-
-        #region Remove Step
-        private void RemoveLastPathSteps(int steps)
-        {
-            for (int i = 0; i < steps; i++)
-                RemoveLastPathStep(i);
-        }
-
-        private void RemoveLastPathStep(int currentStep)
-        {
-            int startIndex = pathHolder.childCount - (2 * currentStep) - 1;
-
-            // Remove button and divider
-            for (int i = startIndex; i >= Mathf.Max(0, startIndex - 1); i--)
-            {
-                Destroy(pathHolder.GetChild(i).gameObject);
-            }
-        }
-
+        #region Remove Steps
         private void RemoveAllPathSteps()
         {
             for (int i = pathHolder.childCount - 1; i >= 0; i--)
@@ -110,23 +78,6 @@ namespace Game.UI
         #endregion
 
         #region Generate Step
-        private void GeneratePathEnd(IEnumerable<GridData> grids, int gridCount)
-        {
-            int stepsToGenerate = gridCount - lastPathLength;
-            bool isFirstStep = lastPathLength == 0;
-
-            foreach (GridData grid in grids)
-            {
-                GeneratePathStep(grid, isFirstStep);
-
-                isFirstStep = false;
-                stepsToGenerate--;
-
-                if (stepsToGenerate <= 0)
-                    break;
-            }
-        }
-
         private void GeneratePathStep(GridData grid, bool isFirstStep)
         {
             if (!isFirstStep)

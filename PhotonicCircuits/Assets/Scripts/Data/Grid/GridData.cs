@@ -29,13 +29,14 @@ namespace Game.Data
 
         public Dictionary<Vector2Int, ChunkPortData> inPortsData;
 
+        #region Constructors
         public GridData(
             string gridName,
             Vector2 spacing,
             Vector2Int size,
             bool isIntegrated = false)
         {
-            placementCondition = (OpticComponent component) => true;
+            placementCondition = CanPlaceComponent;
 
             this.gridName = gridName;
 
@@ -54,7 +55,7 @@ namespace Game.Data
         // Copy constructor
         public GridData(GridData source)
         {
-            placementCondition = (OpticComponent component) => true;
+            placementCondition = source.placementCondition;
 
             gridName = source.gridName;
 
@@ -78,7 +79,13 @@ namespace Game.Data
                 Mathf.CeilToInt(floatSize.x / CHUNK_SIZE),
                 Mathf.CeilToInt(floatSize.y / CHUNK_SIZE));
         }
+        #endregion
 
+        #region Default Place Condition
+        private bool CanPlaceComponent(OpticComponent opticComponent) => true;
+        #endregion
+
+        #region Manage Components
         public void AddComponent(OpticComponent component)
         {
             placedComponents.Add(component);
@@ -98,8 +105,11 @@ namespace Game.Data
 
             OnComponentRemoved?.Invoke(component);
         }
+        #endregion
 
+        #region Trigger Events
         public void TriggerNameBlueprint(string name) => OnBlueprintNamed?.Invoke(name);
         public void TriggerBlueprintRename(string oldName, string newName) => OnBlueprintRenamed?.Invoke(oldName, newName);
+        #endregion
     }
 }

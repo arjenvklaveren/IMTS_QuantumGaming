@@ -18,7 +18,7 @@ namespace Game.Data
         {
             this.containedBlueprints = new(containedBlueprints);
 
-            internalGrid = grid;
+            internalGrid = new(grid);
             this.type = type;
         }
     }
