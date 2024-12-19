@@ -1,9 +1,5 @@
-using CodiceApp;
 using Game.Data;
-using System.Collections;
 using System.Collections.Generic;
-using TMPro;
-using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
@@ -70,7 +66,7 @@ namespace Game.UI
         {
             if (AnimatorIsPlaying()) return;
             isOpen = !isOpen;
-            if(isOpen) animator.Play("OpenAddComponentBox");
+            if (isOpen) animator.Play("OpenAddComponentBox");
             else animator.Play("CloseAddComponentBox");
         }
 
@@ -85,7 +81,7 @@ namespace Game.UI
 
         void GenerateComponentList()
         {
-            foreach(ComponentPlaceDataSO placeData in allComponentPlaceData)
+            foreach (ComponentPlaceDataSO placeData in allComponentPlaceData)
             {
                 ComponentListItem listItem = Instantiate(listItemPrefab, listItemHolder.transform);
                 UnityAction mainAction = () => ComponentPaintManager.Instance.SelectComponent(placeData);
@@ -96,7 +92,7 @@ namespace Game.UI
 
         void GenerateBlueprintList()
         {
-            foreach(string blueprintName in ICBlueprintManager.Instance.GetAllBlueprintNames())
+            foreach (string blueprintName in ICBlueprintManager.Instance.GetAllBlueprintNames())
             {
                 ComponentListItem listItem = Instantiate(listItemPrefab, listItemHolder.transform);
                 UnityAction mainAction = () => ComponentPaintManager.Instance.SelectBlueprint(blueprintName);
@@ -125,7 +121,7 @@ namespace Game.UI
 
         void DestroyCurrentListItems()
         {
-            foreach(Transform child in listItemHolder.transform) Destroy(child.gameObject);
+            foreach (Transform child in listItemHolder.transform) Destroy(child.gameObject);
         }
 
         bool AnimatorIsPlaying()

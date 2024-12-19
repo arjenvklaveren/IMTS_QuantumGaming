@@ -1,11 +1,11 @@
 using Game.Data;
+using Newtonsoft.Json;
 using SadUtils;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
-using Unity.Plastic.Newtonsoft.Json;
 using UnityEngine;
 
 namespace Game
