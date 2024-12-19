@@ -2,15 +2,18 @@ using Game.Data;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 namespace Game.UI
 {
     public class ComponentHierarchyPanel : Panel
     {
         [SerializeField] private GameObject componentItemContainer;
-        [SerializeField] private ComponentHierarchyItem componentItemPrefab;
+        [SerializeField] private ComponentListItem componentItemPrefab;
 
-        private Dictionary<OpticComponent, ComponentHierarchyItem> items = new Dictionary<OpticComponent, ComponentHierarchyItem>();
+        [SerializeField] private GameObject componentVisualsHolder;
+
+        private Dictionary<OpticComponent, ComponentListItem> listItems = new Dictionary<OpticComponent, ComponentListItem>();
 
         private void Start()
         {
@@ -40,39 +43,29 @@ namespace Game.UI
         {
             foreach(OpticComponent component in grid.placedComponents)
             {
-                ComponentHierarchyItem item = Instantiate(componentItemPrefab, componentItemContainer.transform);
-                items.Add(component, item);
-                item.OnCreate(component, () => OnClickItem(item));
+                ComponentListItem listItem = Instantiate(componentItemPrefab, componentItemContainer.transform);
+                listItems.Add(component, listItem);
             }
         }
 
         void SyncSelectedComponentVisual()
         {
-            foreach(KeyValuePair<OpticComponent, ComponentHierarchyItem> item in items)
+            foreach(KeyValuePair<OpticComponent, ComponentListItem> item in listItems)
             {
-                if(ComponentSelectionManager.Instance.SelectedVisuals.SourceComponent == item.Key) 
-                {
-                    item.Value.SetBackgroundActive(true);
-                } 
-                else item.Value.SetBackgroundActive(false);
+                item.Value.SetActiveState(ComponentSelectionManager.Instance.SelectedVisuals.SourceComponent == item.Key);
             }
-        }
-
-        void OnClickItem(ComponentHierarchyItem item)
-        {
-            Debug.Log("CLICKED ITEM");
         }
 
         void GridController_OnAddComponent(OpticComponent component)
         {
-            ComponentHierarchyItem item = Instantiate(componentItemPrefab, componentItemContainer.transform);
-            items.Add(component, item);
+            ComponentListItem item = Instantiate(componentItemPrefab, componentItemContainer.transform);
+            listItems.Add(component, item);
         }
 
         void GridController_OnDeleteComponent(OpticComponent component)
         {
-            Destroy(items[component].gameObject);
-            items.Remove(component);
+            Destroy(listItems[component].gameObject);
+            listItems.Remove(component);
         }
 
         void ClearComponentItems()
@@ -81,7 +74,7 @@ namespace Game.UI
             {
                 Destroy(child.gameObject);
             }
-            items.Clear();
+            listItems.Clear();
         }
     }
 }

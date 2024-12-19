@@ -15,6 +15,7 @@ MonoBehaviour:
   title: 1x1 Integrated Circuit
   previewSprite: {fileID: 0}
   previewScale: {x: 1, y: 1}
+  iconSprite: {fileID: 21300000, guid: 9a22eaa65abd3e043a98728f066d8624, type: 3}
   restrictionType: 2
   tileOffsetsToOccupy:
   - {x: 0, y: 0}

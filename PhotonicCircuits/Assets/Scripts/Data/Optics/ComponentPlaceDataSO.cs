@@ -10,6 +10,9 @@ namespace Game.Data
         public Sprite previewSprite;
         public Vector2 previewScale;
 
+        [Header("Other Settings")]
+        public Sprite iconSprite;
+
         [Header("Grid Settings")]
         public PlaceRestrictionType restrictionType = PlaceRestrictionType.Both;
         public Vector2Int[] tileOffsetsToOccupy;

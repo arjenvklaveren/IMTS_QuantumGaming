@@ -15,6 +15,7 @@ MonoBehaviour:
   title: Photon Detector
   previewSprite: {fileID: 21300000, guid: 90eb6d28a1eac4442a1f540b3f1f5551, type: 3}
   previewScale: {x: 1, y: 1}
+  iconSprite: {fileID: 21300000, guid: 6222b73c167b0b04383ac0276129e6dd, type: 3}
   restrictionType: 1
   tileOffsetsToOccupy:
   - {x: 0, y: 0}

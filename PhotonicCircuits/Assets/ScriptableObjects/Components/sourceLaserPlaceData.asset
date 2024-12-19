@@ -15,10 +15,11 @@ MonoBehaviour:
   title: Laser Photon Source
   previewSprite: {fileID: 0}
   previewScale: {x: 1, y: 1}
-  isIntegratedOnly: 0
+  iconSprite: {fileID: 21300000, guid: 20de22416f631d94db579ed7654603d4, type: 3}
+  restrictionType: 2
   tileOffsetsToOccupy:
   - {x: 0, y: 0}
-  orientation: 1
+  defaultOrientation: 0
   inPorts: []
   outPorts:
   - portId: 0

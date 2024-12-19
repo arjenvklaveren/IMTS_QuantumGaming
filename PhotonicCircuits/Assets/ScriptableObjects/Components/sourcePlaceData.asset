@@ -15,6 +15,7 @@ MonoBehaviour:
   title: Single Photon Source
   previewSprite: {fileID: 21300000, guid: d11a40dc968d0364689bf8b1acb84530, type: 3}
   previewScale: {x: 1, y: 1}
+  iconSprite: {fileID: 21300000, guid: 20de22416f631d94db579ed7654603d4, type: 3}
   restrictionType: 1
   tileOffsetsToOccupy:
   - {x: 0, y: 0}

@@ -1,7 +1,9 @@
+using CodiceApp;
 using Game.Data;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
@@ -24,10 +26,16 @@ namespace Game.UI
         [SerializeField] List<ComponentPlaceDataSO> allComponentPlaceData = new List<ComponentPlaceDataSO>();
         [SerializeField] ComponentListItem listItemPrefab;
 
+        [Header("Visuals references")]
+        [SerializeField] Sprite addCrossSprite;
+        [SerializeField] Sprite blueprintIconSprite;
+
         private bool isOpen;
         private bool isComponentList = true;
 
         ComponentPlaceDataSO currentPlace;
+        Color activeItemColor = new Color(21, 87, 136, 255);
+        Color inactiveItemColor = new Color(21, 87, 136, 0);
 
         #region Initialisation
         private void Start()
@@ -82,13 +90,19 @@ namespace Game.UI
                 ComponentListItem listItem = Instantiate(listItemPrefab, listItemHolder.transform);
                 UnityAction mainAction = () => ComponentPaintManager.Instance.SelectComponent(placeData);
                 listItem.SetButtonActions(mainAction);
-                listItem.SetVisuals(placeData.title);
+                listItem.SetVisuals(placeData.title, activeItemColor, inactiveItemColor, placeData.iconSprite, addCrossSprite);
             }
         }
 
         void GenerateBlueprintList()
         {
-
+            foreach(string blueprintName in ICBlueprintManager.Instance.GetAllBlueprintNames())
+            {
+                ComponentListItem listItem = Instantiate(listItemPrefab, listItemHolder.transform);
+                UnityAction mainAction = () => ComponentPaintManager.Instance.SelectBlueprint(blueprintName);
+                listItem.SetButtonActions(mainAction);
+                listItem.SetVisuals(blueprintName, activeItemColor, inactiveItemColor, blueprintIconSprite, addCrossSprite);
+            }
         }
 
         void VisualiseSelectedList()
