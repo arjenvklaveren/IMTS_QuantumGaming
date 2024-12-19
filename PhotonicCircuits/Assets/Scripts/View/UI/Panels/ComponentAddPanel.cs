@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.UI;
 
 namespace Game.UI
@@ -21,7 +22,7 @@ namespace Game.UI
 
         [Header("External references")]
         [SerializeField] List<ComponentPlaceDataSO> allComponentPlaceData = new List<ComponentPlaceDataSO>();
-        [SerializeField] GameObject listItemPrefab;
+        [SerializeField] ComponentListItem listItemPrefab;
 
         private bool isOpen;
         private bool isComponentList = true;
@@ -78,11 +79,10 @@ namespace Game.UI
         {
             foreach(ComponentPlaceDataSO placeData in allComponentPlaceData)
             {
-                GameObject listItem = Instantiate(listItemPrefab, listItemHolder.transform);
-                Button itemButton = listItem.GetComponentInChildren<Button>();
-                TextMeshProUGUI itemText = listItem.GetComponentInChildren<TextMeshProUGUI>();
-                itemButton.onClick.AddListener(() => ComponentPaintManager.Instance.SelectComponent(placeData));
-                itemText.text = placeData.title;
+                ComponentListItem listItem = Instantiate(listItemPrefab, listItemHolder.transform);
+                UnityAction mainAction = () => ComponentPaintManager.Instance.SelectComponent(placeData);
+                listItem.SetButtonActions(mainAction);
+                listItem.SetVisuals(placeData.title);
             }
         }
 
