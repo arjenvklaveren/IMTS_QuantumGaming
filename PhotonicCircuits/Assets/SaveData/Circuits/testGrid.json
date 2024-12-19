@@ -1,1 +1,1 @@
-{"gridName":"testGrid","spacing":[1.0,1.0],"size":[48,27],"placedComponents":[{"type":101,"occupiedTiles":[[23,14],[24,14],[23,13],[24,13]],"orientation":0,"inPorts":[{"position":[0,0],"orientation":3},{"position":[0,-1],"orientation":3}],"outPorts":[{"position":[1,0],"orientation":1},{"position":[1,-1],"orientation":1}],"args":"test"}],"isIntegrated":false}
+{"name":"testGrid","gridData":{"gridName":"testGrid","spacing":[1.0,1.0],"size":[48,27],"placedComponents":[],"isIntegrated":false},"timeStamp":"2024-12-19T10:56:30.2713713+01:00"}

@@ -66,13 +66,5 @@ namespace Game
             return reader.ReadToEnd();
         }
         #endregion
-
-        // TEST
-        private void Update()
-        {
-            if (Input.GetKeyDown(KeyCode.L))
-                LoadCircuit("testGrid.json");
-
-        }
     }
 }
