@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 namespace Game
 {
@@ -14,8 +15,16 @@ namespace Game
 
         public void DecodeInput(float scrollDelta)
         {
+            if (!CanScroll())
+                return;
+
             // Inverse scroll delta.
             camController.UpdateZoom(-scrollDelta);
+        }
+
+        private bool CanScroll()
+        {
+            return GridTile.IsHovered || ComponentVisuals.IsHovered || !EventSystem.current.IsPointerOverGameObject();
         }
 
         public void OnDisable() { }

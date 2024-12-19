@@ -32,6 +32,8 @@ namespace Game
             return isHovered;
         }
 
+        public static bool IsHovered => isHovered;
+
         private void OnDestroy()
         {
             if (isHovered && lastHoveredPosition == position)

@@ -87,6 +87,8 @@ namespace Game
             componentVisuals = lastHoveredVisuals;
             return isHovered;
         }
+
+        public static bool IsHovered => isHovered;
         #endregion
     }
 }
