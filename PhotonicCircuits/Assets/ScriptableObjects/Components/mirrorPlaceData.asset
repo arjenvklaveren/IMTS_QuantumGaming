@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 20ab6fa81ea31054ca592bcb1cff93db, type: 3}
   m_Name: mirrorPlaceData
   m_EditorClassIdentifier: 
-  title: Mirror
+  title: Standard Mirror
   previewSprite: {fileID: 21300000, guid: 7191d208925597345a4de8ee364234ab, type: 3}
   previewScale: {x: 1, y: 1}
   restrictionType: 1

@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f716313424cfa3346ae1811551cb4aa8, type: 3}
   m_Name: ICBeamSplitterPlaceData
   m_EditorClassIdentifier: 
-  title: Integrated beam splitter
+  title: IC Beamsplitter
   previewSprite: {fileID: 0}
   previewScale: {x: 3, y: 3}
   isIntegratedOnly: 0

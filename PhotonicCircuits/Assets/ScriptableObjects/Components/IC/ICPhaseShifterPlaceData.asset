@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f2bae33d6120ca04da14bd0b4888ad32, type: 3}
   m_Name: ICPhaseShifterPlaceData
   m_EditorClassIdentifier: 
-  title: Integrated phase shifter
+  title: IC Phase Shifter
   previewSprite: {fileID: 0}
   previewScale: {x: 1, y: 1}
   isIntegratedOnly: 0

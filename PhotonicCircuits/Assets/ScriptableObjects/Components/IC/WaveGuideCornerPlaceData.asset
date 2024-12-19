@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8e5fa05278250ff4c84d36e22d3fae9f, type: 3}
   m_Name: WaveGuideCornerPlaceData
   m_EditorClassIdentifier: 
-  title: Wave guide corner
+  title: IC Waveguide Corner
   previewSprite: {fileID: 0}
   previewScale: {x: 2, y: 2}
   isIntegratedOnly: 0

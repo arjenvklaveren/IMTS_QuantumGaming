@@ -8,9 +8,9 @@ namespace Game.UI
     public class ComponentHierarchyPanel : Panel
     {
         [SerializeField] private GameObject componentItemContainer;
-        [SerializeField] private ComponentItem componentItemPrefab;
+        [SerializeField] private ComponentHierarchyItem componentItemPrefab;
 
-        private Dictionary<OpticComponent, ComponentItem> items = new Dictionary<OpticComponent, ComponentItem>();
+        private Dictionary<OpticComponent, ComponentHierarchyItem> items = new Dictionary<OpticComponent, ComponentHierarchyItem>();
 
         private void Start()
         {
@@ -40,7 +40,7 @@ namespace Game.UI
         {
             foreach(OpticComponent component in grid.placedComponents)
             {
-                ComponentItem item = Instantiate(componentItemPrefab, componentItemContainer.transform);
+                ComponentHierarchyItem item = Instantiate(componentItemPrefab, componentItemContainer.transform);
                 items.Add(component, item);
                 item.OnCreate(component, () => OnClickItem(item));
             }
@@ -48,7 +48,7 @@ namespace Game.UI
 
         void SyncSelectedComponentVisual()
         {
-            foreach(KeyValuePair<OpticComponent, ComponentItem> item in items)
+            foreach(KeyValuePair<OpticComponent, ComponentHierarchyItem> item in items)
             {
                 if(ComponentSelectionManager.Instance.SelectedVisuals.SourceComponent == item.Key) 
                 {
@@ -58,14 +58,14 @@ namespace Game.UI
             }
         }
 
-        void OnClickItem(ComponentItem item)
+        void OnClickItem(ComponentHierarchyItem item)
         {
             Debug.Log("CLICKED ITEM");
         }
 
         void GridController_OnAddComponent(OpticComponent component)
         {
-            ComponentItem item = Instantiate(componentItemPrefab, componentItemContainer.transform);
+            ComponentHierarchyItem item = Instantiate(componentItemPrefab, componentItemContainer.transform);
             items.Add(component, item);
         }
 

@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f88a873b8e807d640a0ac11a5e8478b9, type: 3}
   m_Name: sourcePlaceData
   m_EditorClassIdentifier: 
-  title: Simple Photon Source
+  title: Single Photon Source
   previewSprite: {fileID: 21300000, guid: d11a40dc968d0364689bf8b1acb84530, type: 3}
   previewScale: {x: 1, y: 1}
   restrictionType: 1

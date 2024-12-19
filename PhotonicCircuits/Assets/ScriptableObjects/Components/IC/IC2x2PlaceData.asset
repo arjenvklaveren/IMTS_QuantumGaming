@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7e7c70932f9c2a240aaf551fa426b760, type: 3}
   m_Name: IC2x2PlaceData
   m_EditorClassIdentifier: 
-  title: 
+  title: 2x2 Integrated Circuit
   previewSprite: {fileID: 0}
   previewScale: {x: 2, y: 2}
   restrictionType: 2

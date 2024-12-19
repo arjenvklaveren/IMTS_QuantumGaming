@@ -7,7 +7,7 @@ using UnityEngine.UI;
 
 namespace Game.UI
 {
-    public class ComponentItem : MonoBehaviour
+    public class ComponentHierarchyItem : MonoBehaviour
     {
         [SerializeField] Image backgroundVisual;
         [SerializeField] Button mainButton;

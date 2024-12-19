@@ -12,9 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e60c8ba597f20854e9913f42b0b5be09, type: 3}
   m_Name: sourceLaserPlaceData
   m_EditorClassIdentifier: 
-  title: Laser photon source
+  title: Laser Photon Source
   previewSprite: {fileID: 0}
   previewScale: {x: 1, y: 1}
+  isIntegratedOnly: 0
   tileOffsetsToOccupy:
   - {x: 0, y: 0}
   orientation: 1

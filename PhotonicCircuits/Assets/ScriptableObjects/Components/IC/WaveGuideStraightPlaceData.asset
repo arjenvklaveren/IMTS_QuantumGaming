@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9f719f82d225f2e40a46bc0ff9ed24eb, type: 3}
   m_Name: WaveGuideStraightPlaceData
   m_EditorClassIdentifier: 
-  title: Wave guide straight
+  title: 'IC Waveguide Straight '
   previewSprite: {fileID: 0}
   previewScale: {x: 1, y: 1}
   isIntegratedOnly: 0

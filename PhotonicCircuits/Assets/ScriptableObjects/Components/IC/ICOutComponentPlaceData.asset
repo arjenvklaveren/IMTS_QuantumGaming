@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1a42cca2303b4ad43ba7ce6ac8a201f5, type: 3}
   m_Name: ICOutComponentPlaceData
   m_EditorClassIdentifier: 
-  title: ICOutComponent
+  title: IC Out Component
   previewSprite: {fileID: 0}
   previewScale: {x: 1, y: 1}
   restrictionType: 2
