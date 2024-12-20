@@ -19,13 +19,10 @@ MonoBehaviour:
   restrictionType: 0
   tileOffsetsToOccupy:
   - {x: 0, y: 0}
-  - {x: -1, y: -1}
   - {x: -1, y: 0}
-  - {x: -1, y: 1}
   - {x: 0, y: -1}
   - {x: 0, y: 1}
   - {x: 1, y: -1}
-  - {x: 1, y: 0}
   - {x: 1, y: 1}
   defaultOrientation: 1
   inPorts:

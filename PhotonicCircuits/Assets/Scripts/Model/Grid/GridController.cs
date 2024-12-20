@@ -25,8 +25,9 @@ namespace Game
         {
             Orientation placeOrientation = placeData.GetPlaceOrientation(orientationOffset);
             Vector2Int[] tilesToOccupy = placeData.GetTilesToOccupy(position);
+            Vector2Int[] rotatedTilesToOccupy = placeData.GetRotatedTilesToOccupy(tilesToOccupy, placeOrientation);
 
-            if (!CanPlaceComponent(placeData, tilesToOccupy))
+            if (!CanPlaceComponent(placeData, rotatedTilesToOccupy))
                 return false;
 
             OpticComponent componentToAdd = placeData.CreateOpticComponent(activeGrid, tilesToOccupy, placeOrientation);

@@ -9,6 +9,7 @@ namespace Game
     {
         [Header("Preview Settings")]
         [SerializeField] private Color previewColor;
+        [SerializeField] private float tileOffsetSize;
 
         [Header("Refs")]
         [SerializeField] private RectTransform previewHolder;
@@ -78,6 +79,8 @@ namespace Game
             previewImage.sprite = placeData.previewSprite;
             imageHolder.sizeDelta = defaultImageSizeDelta * placeData.previewScale;
 
+            previewImage.rectTransform.anchoredPosition = (Vector2)placeData.previewTileOffset * tileOffsetSize;
+
             if (!previewHolder.gameObject.activeSelf)
             {
                 previewHolder.gameObject.SetActive(true);
@@ -91,7 +94,7 @@ namespace Game
             Orientation placeOrientation = currentDefaultOrientation.RotateClockwise(offsetIncrements);
 
             Vector3 targetLookAt = (Vector3)placeOrientation.ToVector2();
-            previewImage.rectTransform.rotation = LookAt2D.GetLookAtRotation(Vector3.zero, targetLookAt);
+            imageHolder.rotation = LookAt2D.GetLookAtRotation(Vector3.zero, targetLookAt);
         }
         #endregion
 

@@ -9,6 +9,7 @@ namespace Game.Data
         [Header("Preview Settings")]
         public Sprite previewSprite;
         public Vector2 previewScale;
+        public Vector2Int previewTileOffset;
 
         [Header("Other Settings")]
         public Sprite iconSprite;
@@ -45,6 +46,29 @@ namespace Game.Data
                 tilesToOccupy[i] = position + tileOffsetsToOccupy[i];
 
             return tilesToOccupy;
+        }
+
+        public Vector2Int[] GetRotatedTilesToOccupy(Vector2Int[] tiles, Orientation placeOrientation)
+        {
+            Vector2Int[] rotatedTiles = new Vector2Int[tiles.Length];
+
+            Vector2Int position = tiles[0] - tileOffsetsToOccupy[0];
+            int incrementsToRotate = defaultOrientation.GetClockwiseIncrementsDiff(placeOrientation);
+
+            for (int i = 0; i < tiles.Length; i++)
+                rotatedTiles[i] = GetRotatedTile(tiles[i], position, incrementsToRotate);
+
+            return rotatedTiles;
+        }
+
+        private Vector2Int GetRotatedTile(Vector2Int tile, Vector2Int position, int increments)
+        {
+            tile -= position;
+
+            for (int i = 0; i < increments; i++)
+                tile = new(tile.y, -tile.x);
+
+            return tile + position;
         }
         #endregion
     }

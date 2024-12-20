@@ -16,7 +16,7 @@ namespace Game
         private Vector2 currentGridSpacing;
 
         private Dictionary<OpticComponentType, List<ComponentVisuals>> placedComponentVisuals;
-        private GameObject[,] tiles;
+        private GridTile[,] tiles;
 
         private void Awake()
         {
@@ -85,7 +85,7 @@ namespace Game
         private void GenerateGrid(GridData gridData)
         {
             currentGridSpacing = gridData.spacing;
-            tiles = new GameObject[gridData.size.x, gridData.size.y];
+            tiles = new GridTile[gridData.size.x, gridData.size.y];
 
             GenerateTiles(gridData.size);
             SetTileStates(gridData.occupiedTiles, false);
@@ -120,7 +120,7 @@ namespace Game
             tile.position = position;
             tile.transform.name = $"{{{position.x}, {position.y}}}";
 
-            tiles[position.x, position.y] = tile.gameObject;
+            tiles[position.x, position.y] = tile;
         }
         #endregion
 
@@ -170,7 +170,7 @@ namespace Game
         {
             foreach (Vector2Int tile in tilesToSet)
                 if (IsPositionInBounds(tile))
-                    tiles[tile.x, tile.y].SetActive(state);
+                    tiles[tile.x, tile.y].ToggleState(state);
         }
         #endregion
 
