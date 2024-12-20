@@ -42,13 +42,13 @@ namespace Game
             if (isAlt)
             {
                 OutPorts[1].orientation = OutPorts[1].orientation.Subtract(1);
-                InPorts[1].orientation = OutPorts[1].orientation.Subtract(1);
+                InPorts[1].orientation = InPorts[1].orientation.Subtract(1);
                 Debug.Log(OutPorts[1].orientation);
             }
             else
             {
                 OutPorts[1].orientation = OutPorts[1].orientation.Add(1);
-                InPorts[1].orientation = OutPorts[1].orientation.Add(1);
+                InPorts[1].orientation = InPorts[1].orientation.Add(1);
                 Debug.Log(OutPorts[1].orientation);
             }
         }

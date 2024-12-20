@@ -27,7 +27,7 @@ MonoBehaviour:
   - {x: 1, y: -1}
   - {x: 1, y: 0}
   - {x: 1, y: 1}
-  defaultOrientation: 0
+  defaultOrientation: 1
   inPorts:
   - portId: 0
     position: {x: 0, y: 1}
