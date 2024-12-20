@@ -217,13 +217,8 @@ namespace Game
             if (tiles == null)
                 return false;
 
-            if (tiles.Length <= position.x)
-                return false;
-
-            if (tiles.GetLength(1) <= position.y)
-                return false;
-
-            return true;
+            return position.x >= 0 && position.x < tiles.GetLength(0) &&
+                position.y >= 0 && position.y < tiles.GetLength(1);
         }
 
         private ComponentVisuals GetVisualsPrefabByType(OpticComponentType type)
