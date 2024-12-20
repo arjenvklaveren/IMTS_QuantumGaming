@@ -80,11 +80,11 @@ namespace Game
         {
             foreach (IButtonInputDecoder buttonDecoder in buttonDecoders)
                 foreach (InputCode code in heldButtons)
-                    buttonDecoder.DecodeInput(code, ButtonInputType.Down);
+                    buttonDecoder.DecodeInput(code, ButtonInputType.Down, true);
 
             foreach (IMouseButtonInputDecoder mouseButtonDecoder in mouseButtonDecoders)
                 foreach (MouseInputCode code in heldMouseButtons)
-                    mouseButtonDecoder.DecodeInput(code, ButtonInputType.Down);
+                    mouseButtonDecoder.DecodeInput(code, ButtonInputType.Down, true);
         }
 
         public virtual void OnDisable()

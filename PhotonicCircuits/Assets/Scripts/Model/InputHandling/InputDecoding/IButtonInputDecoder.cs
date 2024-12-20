@@ -4,6 +4,6 @@ namespace Game
 {
     public interface IButtonInputDecoder : IInputDecoder
     {
-        public void DecodeInput(InputCode code, ButtonInputType inputType);
+        public void DecodeInput(InputCode code, ButtonInputType inputType, bool isRetroActive = false);
     }
 }

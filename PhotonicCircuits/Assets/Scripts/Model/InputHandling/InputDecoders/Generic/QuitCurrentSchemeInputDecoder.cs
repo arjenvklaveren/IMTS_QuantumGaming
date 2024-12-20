@@ -4,8 +4,11 @@ namespace Game
 {
     public class QuitCurrentSchemeInputDecoder : IButtonInputDecoder
     {
-        public void DecodeInput(InputCode code, ButtonInputType inputType)
+        public void DecodeInput(InputCode code, ButtonInputType inputType, bool isRetroActive)
         {
+            if (isRetroActive)
+                return;
+
             if (code != InputCode.Escape)
                 return;
 

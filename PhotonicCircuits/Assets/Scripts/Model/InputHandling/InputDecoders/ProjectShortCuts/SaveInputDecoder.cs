@@ -7,7 +7,7 @@ namespace Game
         private bool ctrlModifierActive;
 
         #region Handle inputs
-        public void DecodeInput(InputCode code, ButtonInputType inputType)
+        public void DecodeInput(InputCode code, ButtonInputType inputType, bool isRetroActive)
         {
             if (code == InputCode.LeftControl)
                 HandleCTRLButtonState(inputType);

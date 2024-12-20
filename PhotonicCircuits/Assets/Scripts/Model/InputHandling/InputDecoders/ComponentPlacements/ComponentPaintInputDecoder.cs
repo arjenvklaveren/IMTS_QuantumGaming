@@ -25,7 +25,7 @@ namespace Game
         #endregion
 
         #region Handle Input
-        public void DecodeInput(MouseInputCode code, ButtonInputType inputType)
+        public void DecodeInput(MouseInputCode code, ButtonInputType inputType, bool isRetroActive)
         {
             if (inputType == ButtonInputType.Hold)
                 return;
@@ -43,7 +43,7 @@ namespace Game
                     SendPaintInput(position);
         }
 
-        public void DecodeInput(InputCode code, ButtonInputType inputType)
+        public void DecodeInput(InputCode code, ButtonInputType inputType, bool isRetroActive)
         {
             if (inputType != ButtonInputType.Down)
                 return;

@@ -20,7 +20,7 @@ namespace Game
         }
 
         #region Decode Input
-        public void DecodeInput(InputCode code, ButtonInputType inputType)
+        public void DecodeInput(InputCode code, ButtonInputType inputType, bool isRetroActive)
         {
             if (inputType == ButtonInputType.Hold)
                 return;

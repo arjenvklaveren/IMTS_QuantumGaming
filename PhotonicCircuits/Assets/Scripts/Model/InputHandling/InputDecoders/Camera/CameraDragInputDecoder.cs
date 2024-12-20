@@ -17,7 +17,7 @@ namespace Game
             camController = cam.GetComponent<CameraController>();
         }
 
-        public void DecodeInput(MouseInputCode code, ButtonInputType inputType)
+        public void DecodeInput(MouseInputCode code, ButtonInputType inputType, bool isRetroActive)
         {
             if (code != MouseInputCode.LeftMouseButton)
                 return;
