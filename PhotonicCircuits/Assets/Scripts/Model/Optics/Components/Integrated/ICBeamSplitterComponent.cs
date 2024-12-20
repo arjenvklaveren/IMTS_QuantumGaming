@@ -193,10 +193,10 @@ namespace Game
         {
             return inPortIndex switch
             {
-                -1 => new Vector2[] { pathNodes[0].position, pathNodes[2].position, },
-                0 => new Vector2[] { pathNodes[0].position, pathNodes[1].position, },
-                1 => new Vector2[] { pathNodes[1].position, pathNodes[0].position, },
-                2 => new Vector2[] { pathNodes[2].position, pathNodes[0].position, },
+                -1 => new Vector2[] { new Vector2(-0.425f, 0) + occupiedRootTile, new Vector2(0.575f, -1) + occupiedRootTile, },
+                0 => new Vector2[] { new Vector2(-0.425f, 0) + occupiedRootTile, new Vector2(0.575f, 1) + occupiedRootTile, },
+                1 => new Vector2[] { new Vector2(0.575f, 1) + occupiedRootTile, new Vector2(-0.425f, 0) + occupiedRootTile, },
+                2 => new Vector2[] { new Vector2(0.575f, -1) + occupiedRootTile, new Vector2(-0.425f, 0) + occupiedRootTile, },
                 _ => throw new ArgumentException("Invalid inPort")
             };
         }
