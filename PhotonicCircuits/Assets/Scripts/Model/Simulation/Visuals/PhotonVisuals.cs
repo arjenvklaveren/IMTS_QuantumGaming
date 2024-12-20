@@ -12,7 +12,7 @@ namespace Game
 
         public static event Action<PhotonVisuals, OpticComponent> OnEnterComponent;
 
-        protected Photon source;
+        public Photon source { get; protected set; }
         protected GridData openGrid;
 
         protected OpticComponent hostComponent;

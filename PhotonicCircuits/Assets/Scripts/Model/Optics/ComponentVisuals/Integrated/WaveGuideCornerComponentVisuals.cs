@@ -53,16 +53,27 @@ namespace Game
 
         protected override void HandlePhotonAlt(PhotonVisuals photon, int inPortId)
         {
+            sourceWaveguide.SetTotalTravelTime(GetTotalNodeTravelTime(photon, inPortId));
             if (photon is PhotonParticleVisuals)
             {
                 PhotonParticleVisuals photonParticle = photon as PhotonParticleVisuals;
-                photonParticle.ForceMoveAlongNodes(sourceWaveguide.GetNodesByInPortIndex(inPortId));
+                photonParticle.ForceMoveAlongNodes(GetNodesByInPortIndex(inPortId));
             }
             else
             {
                 PhotonBeamVisuals photonBeam = photon as PhotonBeamVisuals;
-                photonBeam.ForceMoveAlongNodes(sourceWaveguide.GetNodesByInPortIndex(inPortId));
+                photonBeam.ForceMoveAlongNodes(GetNodesByInPortIndex(inPortId));
             }
+        }
+
+        public override Vector2[] GetNodesByInPortIndex(int inPortIndex)
+        {
+            return inPortIndex switch
+            {
+                0 => new Vector2[] { pathNodes[0].position, pathNodes[1].position, },
+                1 => new Vector2[] { pathNodes[1].position, pathNodes[0].position, },
+                _ => throw new ArgumentException("Invalid inPort")
+            };
         }
 
         #region Handle Rotation

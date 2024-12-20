@@ -62,15 +62,5 @@ namespace Game
                 _ => throw new ArgumentException("Invalid inPort")
             };
         }
-
-        public override Vector2[] GetNodesByInPortIndex(int inPortIndex)
-        {
-            return inPortIndex switch
-            {
-                0 => new Vector2[] { new Vector2(-0.5f, -0.5f) + occupiedRootTile, new Vector2(0.5f, 0.5f) + occupiedRootTile, },
-                1 => new Vector2[] { new Vector2(0.5f, 0.5f) + occupiedRootTile, new Vector2(-0.5f, -0.5f) + occupiedRootTile, },
-                _ => throw new ArgumentException("Invalid inPort")
-            };
-        }
     }
 }

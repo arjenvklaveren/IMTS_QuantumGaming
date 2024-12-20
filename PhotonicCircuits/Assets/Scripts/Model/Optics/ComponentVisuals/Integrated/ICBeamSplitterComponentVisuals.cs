@@ -1,4 +1,5 @@
 using Game.Data;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -65,7 +66,7 @@ namespace Game
             int outPort = index == 0 ? 1 : 2;
             int nodePath = outPort == 1 ? 0 : -1;
 
-            List<Vector2> nodes = sourceWaveguide.GetNodesByInPortIndex(nodePath).ToList();
+            List<Vector2> nodes = GetNodesByInPortIndex(nodePath).ToList();
             nodes.RemoveAt(0);
             photonVisuals.transform.position = pathNodes[0].position;
             photonVisuals.ForceMoveAlongNodes(nodes.ToArray(), sourceSplitter.OutPorts[outPort]);
@@ -74,9 +75,30 @@ namespace Game
 
         protected override void HandlePhotonAlt(PhotonVisuals photon, int inPortId)
         {
+            sourceWaveguide.SetTotalTravelTime(GetTotalNodeTravelTime(photon, inPortId));
+            sourceSplitter.SetInteractionTimeOffset(GetInteractionNodeTimeOffset());
             if (photon is PhotonParticleVisuals) photonPrefab = photonParticlePrefab; 
             else photonPrefab = photonBeamPrefab; 
-            photon.ForceMoveAlongNodes(sourceWaveguide.GetNodesByInPortIndex(inPortId), sourceWaveguide.GetOutPort(inPortId));
+            photon.ForceMoveAlongNodes(GetNodesByInPortIndex(inPortId), sourceWaveguide.GetOutPort(inPortId));
+        }
+
+        public override Vector2[] GetNodesByInPortIndex(int inPortIndex)
+        {
+            return inPortIndex switch
+            {
+                -1 => new Vector2[] { pathNodes[0].position, pathNodes[2].position, },
+                0 => new Vector2[] { pathNodes[0].position, pathNodes[1].position, },
+                1 => new Vector2[] { pathNodes[1].position, pathNodes[0].position, },
+                2 => new Vector2[] { pathNodes[2].position, pathNodes[0].position, },
+                _ => throw new ArgumentException("Invalid inPort")
+            };
+        }
+
+        private float GetInteractionNodeTimeOffset()
+        {
+            float totalDistance = Vector2.Distance(sourceWaveguide.InPorts[0].position, pathNodes[0].position);
+            float timeToTravelTile = 1f / PhotonMovementManager.Instance.MoveSpeed;
+            return (totalDistance * timeToTravelTile);
         }
 
         #region Handle Rotation

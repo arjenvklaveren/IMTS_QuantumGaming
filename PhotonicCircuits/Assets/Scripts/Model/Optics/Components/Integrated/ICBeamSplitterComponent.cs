@@ -14,6 +14,7 @@ namespace Game
 
         private Dictionary<Photon, ComponentPort> currentPhotons = new Dictionary<Photon, ComponentPort>();
         private Photon firstEnter = null;
+        float interactionTimeOffset;
 
         public ICBeamSplitterComponent(
             GridData hostGrid,
@@ -95,8 +96,8 @@ namespace Game
         {
             currentPhotons.Remove(photon);
 
-            float totalWaitTime = GetTotalNodeTravelTime(port, false);
-            float splitWaitTime = GetInteractionNodeTimeOffset();
+            float totalWaitTime = totalNodeTravelTime - ((1f / PhotonMovementManager.Instance.MoveSpeed) / 2);
+            float splitWaitTime = interactionTimeOffset;
 
             yield return new WaitForSeconds(splitWaitTime);
 
@@ -123,8 +124,8 @@ namespace Game
 
         private IEnumerator ResolveInterferePhotons(KeyValuePair<Photon, ComponentPort> photonA, KeyValuePair<Photon, ComponentPort> photonB)
         {
-            float totalWaitTime = GetTotalNodeTravelTime(photonA.Value, false);
-            float interfereWaitTime = GetInteractionNodeTimeOffset();
+            float totalWaitTime = GetTotalWaitTimeWithOffset(photonA.Key.GetPhotonType());
+            float interfereWaitTime = interactionTimeOffset;
 
             yield return new WaitForSeconds(totalWaitTime - interfereWaitTime);
 
@@ -145,7 +146,7 @@ namespace Game
         {
             currentPhotons.Remove(photon);
 
-            yield return new WaitForSeconds(GetTotalNodeTravelTime(port, false));
+            yield return new WaitForSeconds(totalNodeTravelTime - ((1f / PhotonMovementManager.Instance.MoveSpeed) / 2));
 
             photon.SetPosition(GetOutPort(port.portId).position);
             photon.TriggerExitComponent(this);
@@ -171,11 +172,14 @@ namespace Game
             };
         }
 
-        private float GetInteractionNodeTimeOffset()
+        public void SetInteractionTimeOffset(float timeOffset) { interactionTimeOffset = timeOffset; }
+        float GetTotalWaitTimeWithOffset(PhotonType type)
         {
-            float totalDistance = Vector2.Distance(InPorts[0].position, pathNodes[0].position);
-            float timeToTravelTile = 1f / PhotonMovementManager.Instance.MoveSpeed;
-            return (totalDistance * timeToTravelTile);
+            if (type == PhotonType.Quantum)
+            {
+                return totalNodeTravelTime - ((1f / PhotonMovementManager.Instance.MoveSpeed) / 2);
+            }
+            else return totalNodeTravelTime - ((1f / PhotonMovementManager.Instance.ClassicCombinedSpeed()) / 2);
         }
 
         public override ComponentPort GetOutPort(int inPortIndex)
@@ -185,18 +189,6 @@ namespace Game
                 0 => OutPorts[1],
                 1 => OutPorts[0],
                 2 => OutPorts[0],
-                _ => throw new ArgumentException("Invalid inPort")
-            };
-        }
-
-        public override Vector2[] GetNodesByInPortIndex(int inPortIndex)
-        {
-            return inPortIndex switch
-            {
-                -1 => new Vector2[] { new Vector2(-0.425f, 0) + occupiedRootTile, new Vector2(0.575f, -1) + occupiedRootTile, },
-                0 => new Vector2[] { new Vector2(-0.425f, 0) + occupiedRootTile, new Vector2(0.575f, 1) + occupiedRootTile, },
-                1 => new Vector2[] { new Vector2(0.575f, 1) + occupiedRootTile, new Vector2(-0.425f, 0) + occupiedRootTile, },
-                2 => new Vector2[] { new Vector2(0.575f, -1) + occupiedRootTile, new Vector2(-0.425f, 0) + occupiedRootTile, },
                 _ => throw new ArgumentException("Invalid inPort")
             };
         }

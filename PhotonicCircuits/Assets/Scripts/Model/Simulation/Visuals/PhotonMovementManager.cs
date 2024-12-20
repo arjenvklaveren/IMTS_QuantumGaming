@@ -114,13 +114,13 @@ namespace Game
             WaitForSeconds waitSeconds = GetWaitMoveTime(type);
 
             if(type == PhotonType.Classical)
-                waitSeconds = new(1f / (MoveSpeed * ClassicSpeedMultiplier));
+                waitSeconds = new(1f / ClassicCombinedSpeed());
 
             if (Vector2Int.Distance(currentPos, targetPos) <= 1f)
             {
                 waitSeconds = GetWaitMoveTime(type, true); 
                 if (type == PhotonType.Classical)
-                    waitSeconds = new(1f / ((MoveSpeed * ClassicSpeedMultiplier) * 2f));
+                    waitSeconds = new(1f / (ClassicCombinedSpeed() * 2f));
             }
             return waitSeconds;
         }
@@ -129,10 +129,15 @@ namespace Game
         public WaitForSeconds GetWaitMoveTime(PhotonType type, bool half = false)
         {
             float waitValue = 1f / MoveSpeed;
-            if(type == PhotonType.Classical) waitValue = 1f / (MoveSpeed * ClassicSpeedMultiplier);
+            if(type == PhotonType.Classical) waitValue = 1f / ClassicCombinedSpeed();
             if (half) waitValue /= 2;
 
             return new WaitForSeconds(waitValue);
+        }
+
+        public float ClassicCombinedSpeed()
+        {
+            return MoveSpeed * ClassicSpeedMultiplier;
         }
 
         private IEnumerator MovePhotonToGridEdgeCo(Photon photon)
