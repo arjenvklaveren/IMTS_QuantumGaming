@@ -744,6 +744,10 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7568646195540837372, guid: d53ed02c1661f754cb83a3854bace0a0, type: 3}
+      propertyPath: componentVisualsHolder
+      value: 
+      objectReference: {fileID: 231079468}
     - target: {fileID: 7916425737882729171, guid: d53ed02c1661f754cb83a3854bace0a0, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -786,19 +790,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8610903767773775747, guid: d53ed02c1661f754cb83a3854bace0a0, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8610903767773775747, guid: d53ed02c1661f754cb83a3854bace0a0, type: 3}
       propertyPath: m_AnchorMin.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8610903767773775747, guid: d53ed02c1661f754cb83a3854bace0a0, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 0
+      value: 275.10553
       objectReference: {fileID: 0}
     - target: {fileID: 8610903767773775747, guid: d53ed02c1661f754cb83a3854bace0a0, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0
+      value: -30
       objectReference: {fileID: 0}
     - target: {fileID: 8729803183128871809, guid: d53ed02c1661f754cb83a3854bace0a0, type: 3}
       propertyPath: m_AnchorMax.y

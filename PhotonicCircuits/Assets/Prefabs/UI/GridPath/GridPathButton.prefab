@@ -1,5 +1,175 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &5251566797691020861
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3245895816654159922}
+  - component: {fileID: 8915824427191301200}
+  - component: {fileID: 7417367351177694257}
+  - component: {fileID: 3919365511590956738}
+  - component: {fileID: 6917181433768868695}
+  m_Layer: 5
+  m_Name: Button
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &3245895816654159922
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5251566797691020861}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1701998272245219897}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 10, y: -20}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!222 &8915824427191301200
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5251566797691020861}
+  m_CullTransparentMesh: 1
+--- !u!114 &7417367351177694257
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5251566797691020861}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 0, g: 0, b: 0, a: 0}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Sprite: {fileID: 0}
+  m_Type: 0
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+  m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 1
+--- !u!114 &3919365511590956738
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5251566797691020861}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 64052d8ece862d240b277d648c473424, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  interactable: 1
+  frozen: 0
+  transitions: 1
+  targetImage: {fileID: 7417367351177694257}
+  targetAnimator: {fileID: 0}
+  targetText: {fileID: 0}
+  visualDataDict:
+    dictionary:
+    - key: 0
+      value:
+        color: {r: 0, g: 0, b: 0, a: 0}
+        colorTransitionDuration: 0.01
+        sprite: {fileID: 0}
+        transitionTrigger: Normal
+        text: 
+        textColor: {r: 0, g: 0, b: 0, a: 1}
+        textColorTransitionDuration: 0.1
+        ignoreTimeScale: 0
+    - key: 1
+      value:
+        color: {r: 0.07058824, g: 0.30588236, b: 0.47843137, a: 0.5882353}
+        colorTransitionDuration: 0.1
+        sprite: {fileID: 0}
+        transitionTrigger: Highlighted
+        text: 
+        textColor: {r: 0, g: 0, b: 0, a: 1}
+        textColorTransitionDuration: 0.1
+        ignoreTimeScale: 0
+    - key: 2
+      value:
+        color: {r: 0.071434624, g: 0.3058085, b: 0.4792453, a: 1}
+        colorTransitionDuration: 0.1
+        sprite: {fileID: 0}
+        transitionTrigger: Pressed
+        text: 
+        textColor: {r: 0, g: 0, b: 0, a: 1}
+        textColorTransitionDuration: 0.1
+        ignoreTimeScale: 0
+    - key: 3
+      value:
+        color: {r: 1, g: 1, b: 1, a: 1}
+        colorTransitionDuration: 0.1
+        sprite: {fileID: 0}
+        transitionTrigger: Selected
+        text: 
+        textColor: {r: 0, g: 0, b: 0, a: 1}
+        textColorTransitionDuration: 0.1
+        ignoreTimeScale: 0
+    - key: 4
+      value:
+        color: {r: 1, g: 1, b: 1, a: 1}
+        colorTransitionDuration: 0.1
+        sprite: {fileID: 0}
+        transitionTrigger: Disabled
+        text: 
+        textColor: {r: 0, g: 0, b: 0, a: 1}
+        textColorTransitionDuration: 0.1
+        ignoreTimeScale: 0
+  onClick:
+    m_PersistentCalls:
+      m_Calls: []
+--- !u!114 &6917181433768868695
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5251566797691020861}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 306cc8c2b49d7114eaa3623786fc2126, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_IgnoreLayout: 1
+  m_MinWidth: -1
+  m_MinHeight: -1
+  m_PreferredWidth: -1
+  m_PreferredHeight: -1
+  m_FlexibleWidth: -1
+  m_FlexibleHeight: -1
+  m_LayoutPriority: 1
 --- !u!1001 &7082355641750732698
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -28,6 +198,10 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3820158121650857033, guid: 6f50605216f8f8649a30b3be2768d8ef, type: 3}
+      propertyPath: button
+      value: 
+      objectReference: {fileID: 3919365511590956738}
     - target: {fileID: 7341924437098506918, guid: 6f50605216f8f8649a30b3be2768d8ef, type: 3}
       propertyPath: m_Name
       value: GridPathButton
@@ -112,8 +286,20 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 9143862768461193310, guid: 6f50605216f8f8649a30b3be2768d8ef, type: 3}
+      propertyPath: m_text
+      value: button
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
-    m_AddedGameObjects: []
+    m_AddedGameObjects:
+    - targetCorrespondingSourceObject: {fileID: 8491293588297645475, guid: 6f50605216f8f8649a30b3be2768d8ef, type: 3}
+      insertIndex: 0
+      addedObject: {fileID: 3245895816654159922}
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6f50605216f8f8649a30b3be2768d8ef, type: 3}
+--- !u!224 &1701998272245219897 stripped
+RectTransform:
+  m_CorrespondingSourceObject: {fileID: 8491293588297645475, guid: 6f50605216f8f8649a30b3be2768d8ef, type: 3}
+  m_PrefabInstance: {fileID: 7082355641750732698}
+  m_PrefabAsset: {fileID: 0}

@@ -49,5 +49,5 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   pathHolder: {fileID: 0}
-  gridPathButtonPrefab: {fileID: 8413913904993279828, guid: 587bf5d394ae7264fb922ec286fbdcfe, type: 3}
+  gridPathButtonPrefab: {fileID: 6289973407175646163, guid: 587bf5d394ae7264fb922ec286fbdcfe, type: 3}
   dividerPrefab: {fileID: 8491293588297645475, guid: 6f50605216f8f8649a30b3be2768d8ef, type: 3}
