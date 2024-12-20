@@ -13,8 +13,10 @@ MonoBehaviour:
   m_Name: ICPhaseShifterPlaceData
   m_EditorClassIdentifier: 
   title: IC Phase Shifter
+  canRotate: 1
   previewSprite: {fileID: 21300000, guid: fcbda296f7d678948a293a9dda121cc8, type: 3}
   previewScale: {x: 1, y: 1}
+  previewTileOffset: {x: 0, y: 0}
   iconSprite: {fileID: 21300000, guid: a70afdd3fdca29140a6c2f10da6f2d53, type: 3}
   restrictionType: 0
   tileOffsetsToOccupy:

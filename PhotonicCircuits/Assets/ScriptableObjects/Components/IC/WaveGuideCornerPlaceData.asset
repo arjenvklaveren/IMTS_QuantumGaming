@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: WaveGuideCornerPlaceData
   m_EditorClassIdentifier: 
   title: IC Waveguide Corner
+  canRotate: 1
   previewSprite: {fileID: 21300000, guid: f7d85925124b77c47b30fee444766494, type: 3}
   previewScale: {x: 2, y: 2}
   previewTileOffset: {x: 1, y: -1}

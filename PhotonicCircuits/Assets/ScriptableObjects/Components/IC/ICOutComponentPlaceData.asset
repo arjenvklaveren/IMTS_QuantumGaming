@@ -13,8 +13,11 @@ MonoBehaviour:
   m_Name: ICOutComponentPlaceData
   m_EditorClassIdentifier: 
   title: IC Out Component
+  canRotate: 1
   previewSprite: {fileID: 0}
   previewScale: {x: 1, y: 1}
+  previewTileOffset: {x: 0, y: 0}
+  iconSprite: {fileID: 0}
   restrictionType: 0
   tileOffsetsToOccupy:
   - {x: 0, y: 0}

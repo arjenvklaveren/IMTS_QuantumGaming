@@ -7,6 +7,7 @@ namespace Game.Data
         public string title;
 
         [Header("Preview Settings")]
+        public bool canRotate = true;
         public Sprite previewSprite;
         public Vector2 previewScale;
         public Vector2Int previewTileOffset;

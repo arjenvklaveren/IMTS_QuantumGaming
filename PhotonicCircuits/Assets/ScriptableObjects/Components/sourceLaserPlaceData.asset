@@ -13,8 +13,10 @@ MonoBehaviour:
   m_Name: sourceLaserPlaceData
   m_EditorClassIdentifier: 
   title: Laser Photon Source
+  canRotate: 1
   previewSprite: {fileID: 21300000, guid: 77f3026d05305bb4a88003374c6d0c60, type: 3}
   previewScale: {x: 1, y: 1}
+  previewTileOffset: {x: 0, y: 0}
   iconSprite: {fileID: 21300000, guid: 20de22416f631d94db579ed7654603d4, type: 3}
   restrictionType: 1
   tileOffsetsToOccupy:

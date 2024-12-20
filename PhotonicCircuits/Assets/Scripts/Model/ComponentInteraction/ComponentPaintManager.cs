@@ -19,6 +19,8 @@ namespace Game
 
         private GridController gridController;
 
+        private bool canRotateComponent;
+
         protected override void Awake()
         {
             SetInstance(this);
@@ -33,6 +35,9 @@ namespace Game
         #region Rotate Preview
         public void RotatePreview()
         {
+            if (!canRotateComponent)
+                return;
+
             orientationOffset = orientationOffset.RotateClockwise();
 
             OnOrientationOffsetChanged?.Invoke(orientationOffset);
@@ -82,6 +87,12 @@ namespace Game
         {
             // Set paint control scheme.
             TrySetPaintMode();
+
+            if (placeData != null)
+                canRotateComponent = placeData.canRotate;
+
+            if (!canRotateComponent)
+                orientationOffset = Orientation.Up;
 
             selectedComponent = placeData;
             OnPlaceDataChanged?.Invoke(placeData);

@@ -13,8 +13,10 @@ MonoBehaviour:
   m_Name: ICBeamSplitterPlaceData
   m_EditorClassIdentifier: 
   title: IC Beamsplitter
+  canRotate: 1
   previewSprite: {fileID: 21300000, guid: 1522c9892ada93d4894b0381035d5cfa, type: 3}
   previewScale: {x: 3, y: 3}
+  previewTileOffset: {x: 0, y: 0}
   iconSprite: {fileID: 21300000, guid: 88def17104a9a99489d01f7a8c3a653c, type: 3}
   restrictionType: 0
   tileOffsetsToOccupy:
