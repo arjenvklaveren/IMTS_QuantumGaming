@@ -45,7 +45,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 91f10b79a517ae640957c833b8140f08, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  photonPrefab: {fileID: 2330733071325848398, guid: bed9709cd1adb9a40801087d54f0b24e, type: 3}
+  photonPrefab: {fileID: 1252529590538980857, guid: bed9709cd1adb9a40801087d54f0b24e, type: 3}
   visualsHolder: {fileID: 6579677539905052706}
 --- !u!1 &7631883124022403435
 GameObject:

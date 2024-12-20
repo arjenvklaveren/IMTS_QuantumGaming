@@ -441,7 +441,7 @@ MonoBehaviour:
   visualsHolder: {fileID: 1898408314435157100}
   inPortsHolder: {fileID: 1130783168336541028}
   outPortsHolder: {fileID: 7767606091864119070}
-  photonPrefab: {fileID: 2330733071325848398, guid: bed9709cd1adb9a40801087d54f0b24e, type: 3}
+  photonPrefab: {fileID: 1252529590538980857, guid: bed9709cd1adb9a40801087d54f0b24e, type: 3}
   inPortPrefab: {fileID: 7407642573016115116, guid: b9b3926124f8cd944ba424b95a82334e, type: 3}
   outPortPrefab: {fileID: 2929217159962694918, guid: d6505491d54c7944f8d9fd1007081bac, type: 3}
 --- !u!114 &6852120152585908978

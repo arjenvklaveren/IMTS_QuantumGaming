@@ -48,13 +48,15 @@ namespace Game
         #endregion
 
         #region Disable / Destroy
-        public void OnDisable()
+        public void OnDisable() => ResetMoveInputs();
+
+        public void Destroy() => ResetMoveInputs();
+
+        private void ResetMoveInputs()
         {
             moveDir = Vector2.zero;
             camController.SetMoveDir(moveDir);
         }
-
-        public void Destroy() { }
         #endregion
     }
 }

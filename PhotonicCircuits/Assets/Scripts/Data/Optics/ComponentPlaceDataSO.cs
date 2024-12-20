@@ -34,36 +34,17 @@ namespace Game.Data
         }
 
         #region Get Tiles To Occupy
-        public Vector2Int[] GetTilesToOccupy(Vector2Int position, Orientation placeOrientation)
+        public Vector2Int[] GetTilesToOccupy(Vector2Int position)
         {
             if (tileOffsetsToOccupy == null || tileOffsetsToOccupy.Length == 0)
-                return new Vector2Int[] { position };
+                return new Vector2Int[1] { position };
 
-            // Return position with offsets.
             Vector2Int[] tilesToOccupy = new Vector2Int[tileOffsetsToOccupy.Length];
 
-            int rotateIncrements = defaultOrientation.GetClockwiseIncrementsDiff(placeOrientation);
-
             for (int i = 0; i < tileOffsetsToOccupy.Length; i++)
-            {
-                Vector2Int rotatedTileOffset = GetRotatedTileOffsetToOccupy(tileOffsetsToOccupy[i], rotateIncrements);
-                tilesToOccupy[i] = position + rotatedTileOffset;
-            }
+                tilesToOccupy[i] = position + tileOffsetsToOccupy[i];
 
             return tilesToOccupy;
-        }
-
-        private Vector2Int GetRotatedTileOffsetToOccupy(Vector2Int tile, int rotateIncrements)
-        {
-            for (int i = 0; i < rotateIncrements; i++)
-                RotateTileOffsetClockwise(ref tile);
-
-            return tile;
-        }
-
-        private void RotateTileOffsetClockwise(ref Vector2Int tile)
-        {
-            tile = new(tile.y, -tile.x);
         }
         #endregion
     }

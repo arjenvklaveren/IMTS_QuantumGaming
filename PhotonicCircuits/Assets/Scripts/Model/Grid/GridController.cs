@@ -24,7 +24,7 @@ namespace Game
         public bool TryAddComponent(ComponentPlaceDataSO placeData, Vector2Int position, Orientation orientationOffset)
         {
             Orientation placeOrientation = placeData.GetPlaceOrientation(orientationOffset);
-            Vector2Int[] tilesToOccupy = placeData.GetTilesToOccupy(position, placeOrientation);
+            Vector2Int[] tilesToOccupy = placeData.GetTilesToOccupy(position);
 
             if (!CanPlaceComponent(placeData, tilesToOccupy))
                 return false;
