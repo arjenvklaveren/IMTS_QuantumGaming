@@ -80,6 +80,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6918716222466693775, guid: dfd388e0ab42c934fad9e35d7c26feb3, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 6940779671512396237, guid: dfd388e0ab42c934fad9e35d7c26feb3, type: 3}
       propertyPath: m_Name
       value: ICComponent2x2

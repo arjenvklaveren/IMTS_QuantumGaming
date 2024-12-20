@@ -6,18 +6,24 @@ using System;
 using System.Collections.Generic;
 using System.Collections;
 using UnityEngine.UI;
+using TMPro;
 
 namespace Game.UI
 {
     public class ComponentContextPanel : Panel
     {
-        [Header("Object references")]
+        [Header("External references")]
         [SerializeField] GameObject contextPropertiesContainer;
         [SerializeField] ComponentPropertyLookup prefabLookup;
+        [SerializeField] ComponentPlaceDataLookup dataLookup;
 
-        List<ComponentPropertyContext> contexts = new List<ComponentPropertyContext>();
+        [Header("Visuals references")]
+        [SerializeField] TextMeshProUGUI componentText;
+        [SerializeField] Image componentImage;
 
         OpticComponent selectedComponent;
+        List<ComponentPropertyContext> contexts = new List<ComponentPropertyContext>();
+
         bool toggleDisableBackground = false;
 
         ComponentSelectionManager selectionManager;
@@ -28,16 +34,37 @@ namespace Game.UI
             SetupListeners();
         }
 
+        private void OnDestroy()
+        {
+            RemoveListeners();
+        }
+
         void SetupListeners()
         {
             selectionManager.OnSelectedComponent += ComponentSelectionManager_OnSelectComponent;
+            selectionManager.OnDeselect += ComponentSelectionManager_OnDeselectComponent;
+        }
+
+        void RemoveListeners()
+        {
+            selectionManager.OnSelectedComponent -= ComponentSelectionManager_OnSelectComponent;
+            selectionManager.OnDeselect -= ComponentSelectionManager_OnDeselectComponent;
         }
 
         private void ComponentSelectionManager_OnSelectComponent(ComponentVisuals component)
         {
             selectedComponent = selectionManager.SelectedVisuals.SourceComponent;
+            ComponentPlaceDataSO componentData = dataLookup.GetPlaceDataByType(selectedComponent.Type);
+            componentText.text = componentData.title;
+            componentImage.sprite = componentData.iconSprite;
+
             ClearContextItems();
             ReflectComponentAttributes();
+        }
+
+        private void ComponentSelectionManager_OnDeselectComponent()
+        {
+            
         }
 
         void ReflectComponentAttributes()
@@ -91,6 +118,7 @@ namespace Game.UI
             {
                 Destroy(child.gameObject);
             }
+            toggleDisableBackground = false;
         }
 
         ComponentPropertyType ConvertAttributeToPropertyType(FieldInfo field)

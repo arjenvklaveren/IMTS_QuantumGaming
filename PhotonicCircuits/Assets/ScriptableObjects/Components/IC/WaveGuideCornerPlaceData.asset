@@ -15,24 +15,25 @@ MonoBehaviour:
   title: IC Waveguide Corner
   previewSprite: {fileID: 21300000, guid: f7d85925124b77c47b30fee444766494, type: 3}
   previewScale: {x: 2, y: 2}
-  restrictionType: 0
+  iconSprite: {fileID: 21300000, guid: 284b4cb93586c3540bb6e4dbe064b56f, type: 3}
+  restrictionType: 2
   tileOffsetsToOccupy:
   - {x: 0, y: 0}
-  - {x: 0, y: 1}
   - {x: 1, y: 0}
-  - {x: 1, y: 1}
-  defaultOrientation: 0
+  - {x: 0, y: -1}
+  - {x: 1, y: -1}
+  defaultOrientation: 1
   inPorts:
   - portId: 0
-    position: {x: 0, y: 0}
+    position: {x: 0, y: -1}
     orientation: 3
   - portId: 0
-    position: {x: 1, y: 1}
+    position: {x: 1, y: 0}
     orientation: 1
   outPorts:
   - portId: 0
-    position: {x: 0, y: 0}
+    position: {x: 0, y: -1}
     orientation: 3
   - portId: 0
-    position: {x: 1, y: 1}
+    position: {x: 1, y: 0}
     orientation: 1

@@ -15,6 +15,7 @@ MonoBehaviour:
   title: 'IC Waveguide Straight '
   previewSprite: {fileID: 21300000, guid: 4afed3ce8b69841448b7deab1e403bb0, type: 3}
   previewScale: {x: 1, y: 1}
+  iconSprite: {fileID: 21300000, guid: 20ed223ff592693469689598b0b54810, type: 3}
   restrictionType: 0
   tileOffsetsToOccupy:
   - {x: 0, y: 0}

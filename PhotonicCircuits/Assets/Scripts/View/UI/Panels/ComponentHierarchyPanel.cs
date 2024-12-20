@@ -10,14 +10,21 @@ namespace Game.UI
     {
         [SerializeField] private GameObject componentItemContainer;
         [SerializeField] private ComponentListItem componentItemPrefab;
+        [SerializeField] private Sprite rightArrowSprite;
 
         [SerializeField] private GameObject componentVisualsHolder;
+        [SerializeField] private ComponentPlaceDataLookup placeDataLookup;
 
-        private Dictionary<OpticComponent, ComponentListItem> listItems = new Dictionary<OpticComponent, ComponentListItem>();
+        private Dictionary<ComponentVisuals, ComponentListItem> listItems = new Dictionary<ComponentVisuals, ComponentListItem>();
 
         private void Start()
         {
             SetupListeners();
+        }
+
+        private void OnDestroy()
+        {
+            RemoveListeners();
         }
 
         void SetupListeners()
@@ -28,6 +35,14 @@ namespace Game.UI
             ComponentSelectionManager.Instance.OnSelectedComponent += ComponentSelectionManager_OnSelectedComponent;
         }
 
+        void RemoveListeners()
+        {
+            GridController.OnGridChanged -= GridController_OnGridChanged;
+            GridController.OnComponentAdded -= GridController_OnAddComponent;
+            GridController.OnComponentRemoved -= GridController_OnDeleteComponent;
+            ComponentSelectionManager.Instance.OnSelectedComponent -= ComponentSelectionManager_OnSelectedComponent;
+        }
+
         void ComponentSelectionManager_OnSelectedComponent(ComponentVisuals visuals)
         {
             SyncSelectedComponentVisual();
@@ -35,37 +50,43 @@ namespace Game.UI
 
         void GridController_OnGridChanged(GridData grid)
         {
-            ClearComponentItems();
-            CreateComponentItems(grid);
+            CreateComponentItems();
         }
 
-        void CreateComponentItems(GridData grid)
+        void CreateComponentItems()
         {
-            foreach(OpticComponent component in grid.placedComponents)
+            ClearComponentItems();
+            foreach (ComponentVisuals component in componentVisualsHolder.GetComponentsInChildren<ComponentVisuals>())
             {
                 ComponentListItem listItem = Instantiate(componentItemPrefab, componentItemContainer.transform);
+                ComponentPlaceDataSO placeData = placeDataLookup.GetPlaceDataByType(component.SourceComponent.Type);
+
+                listItem.SetVisuals(placeData.title, placeData.iconSprite, rightArrowSprite);
+
+                UnityAction selectAction = () => { ComponentSelectionManager.Instance.SelectComponent(component); };
+                listItem.SetButtonActions(selectAction, selectAction);
+
                 listItems.Add(component, listItem);
             }
+            SyncSelectedComponentVisual();
         }
 
         void SyncSelectedComponentVisual()
         {
-            foreach(KeyValuePair<OpticComponent, ComponentListItem> item in listItems)
+            foreach (KeyValuePair<ComponentVisuals, ComponentListItem> item in listItems)
             {
-                item.Value.SetActiveState(ComponentSelectionManager.Instance.SelectedVisuals.SourceComponent == item.Key);
+                item.Value.SetActiveState(ComponentSelectionManager.Instance.SelectedVisuals == item.Key);
             }
         }
 
-        void GridController_OnAddComponent(OpticComponent component)
-        {
-            ComponentListItem item = Instantiate(componentItemPrefab, componentItemContainer.transform);
-            listItems.Add(component, item);
-        }
+        void GridController_OnAddComponent(OpticComponent component) { CreateComponentItems(); }
 
         void GridController_OnDeleteComponent(OpticComponent component)
         {
-            Destroy(listItems[component].gameObject);
-            listItems.Remove(component);
+            foreach (KeyValuePair<ComponentVisuals, ComponentListItem> item in listItems)
+            {
+                if (item.Key.SourceComponent == component) Destroy(item.Value.gameObject);
+            }
         }
 
         void ClearComponentItems()

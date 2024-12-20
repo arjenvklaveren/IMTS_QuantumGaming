@@ -298,7 +298,7 @@ RectTransform:
   m_AnchorMin: {x: 1, y: 0}
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 20, y: 0}
+  m_SizeDelta: {x: 10, y: 0}
   m_Pivot: {x: 1, y: 1}
 --- !u!222 &3368227190106178840
 CanvasRenderer:
@@ -613,7 +613,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   componentItemContainer: {fileID: 1335228073981208691}
-  componentItemPrefab: {fileID: 2651577149405015248, guid: 165d150d1753f6249a00fe752e83ffce, type: 3}
+  componentItemPrefab: {fileID: 0}
+  rightArrowSprite: {fileID: 21300000, guid: 033d8a87c0db6394a85a0f6baf10ec9c, type: 3}
+  componentVisualsHolder: {fileID: 0}
+  placeDataLookup: {fileID: 0}
 --- !u!114 &9161181898624744598
 MonoBehaviour:
   m_ObjectHideFlags: 0

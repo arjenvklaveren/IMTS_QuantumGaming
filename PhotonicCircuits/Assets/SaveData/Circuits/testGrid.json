@@ -1,0 +1,1 @@
+{"name":"testGrid","gridData":{"gridName":"testGrid","spacing":[1.0,1.0],"size":[48,27],"placedComponents":[{"type":101,"occupiedTiles":[[17,14],[18,14],[17,13],[18,13]],"orientation":0,"inPorts":[],"outPorts":[],"args":"New"}],"isIntegrated":false},"timeStamp":"2024-12-19T17:08:47.3653796+01:00"}

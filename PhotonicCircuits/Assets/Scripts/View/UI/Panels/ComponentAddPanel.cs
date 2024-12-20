@@ -30,9 +30,7 @@ namespace Game.UI
         private bool isOpen;
         private bool isComponentList = true;
 
-        ComponentPlaceDataSO currentPlace;
-        Color activeItemColor = new Color(21, 87, 136, 255);
-        Color inactiveItemColor = new Color(21, 87, 136, 0);
+        ComponentPlaceDataSO currentPlaceData;
 
         #region Initialisation
         private void Start()
@@ -87,7 +85,7 @@ namespace Game.UI
                 ComponentListItem listItem = Instantiate(listItemPrefab, listItemHolder.transform);
                 UnityAction mainAction = () => ComponentPaintManager.Instance.SelectComponent(placeData);
                 listItem.SetButtonActions(mainAction);
-                listItem.SetVisuals(placeData.title, activeItemColor, inactiveItemColor, placeData.iconSprite, addCrossSprite);
+                listItem.SetVisuals(placeData.title, placeData.iconSprite, addCrossSprite);
             }
         }
 
@@ -98,7 +96,7 @@ namespace Game.UI
                 ComponentListItem listItem = Instantiate(listItemPrefab, listItemHolder.transform);
                 UnityAction mainAction = () => ComponentPaintManager.Instance.SelectBlueprint(blueprintName);
                 listItem.SetButtonActions(mainAction);
-                listItem.SetVisuals(blueprintName, activeItemColor, inactiveItemColor, blueprintIconSprite, addCrossSprite);
+                listItem.SetVisuals(blueprintName, blueprintIconSprite, addCrossSprite);
             }
         }
 
@@ -112,6 +110,11 @@ namespace Game.UI
 
             SetListImageAlpha(componentListImage, isComponentList ? activeAlpha : inactiveAlpha);
             SetListImageAlpha(blueprintListImage, isComponentList ? inactiveAlpha : activeAlpha);
+        }
+
+        void VisualiseSelectedItem()
+        {
+
         }
 
         void SetListImageAlpha(Image image, float alpha)

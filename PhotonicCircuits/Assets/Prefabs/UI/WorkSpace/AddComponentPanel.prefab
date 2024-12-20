@@ -999,6 +999,8 @@ MonoBehaviour:
   - {fileID: 11400000, guid: b55c79fa622110b49a3c2fa5b408de97, type: 2}
   - {fileID: 11400000, guid: bcffebd3989984d47ba5002bffccf1c3, type: 2}
   listItemPrefab: {fileID: 9079959781694346499, guid: 165d150d1753f6249a00fe752e83ffce, type: 3}
+  addCrossSprite: {fileID: 0}
+  blueprintIconSprite: {fileID: 0}
 --- !u!95 &8041483977123457758
 Animator:
   serializedVersion: 5
@@ -2235,7 +2237,7 @@ RectTransform:
   m_AnchorMin: {x: 1, y: 0}
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 20, y: 0}
+  m_SizeDelta: {x: 10, y: 0}
   m_Pivot: {x: 1, y: 1}
 --- !u!222 &5473633583497117204
 CanvasRenderer:

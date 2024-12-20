@@ -15,7 +15,8 @@ MonoBehaviour:
   title: IC Beamsplitter
   previewSprite: {fileID: 21300000, guid: 1522c9892ada93d4894b0381035d5cfa, type: 3}
   previewScale: {x: 3, y: 3}
-  restrictionType: 0
+  iconSprite: {fileID: 21300000, guid: 88def17104a9a99489d01f7a8c3a653c, type: 3}
+  restrictionType: 2
   tileOffsetsToOccupy:
   - {x: -1, y: -1}
   - {x: -1, y: 0}
