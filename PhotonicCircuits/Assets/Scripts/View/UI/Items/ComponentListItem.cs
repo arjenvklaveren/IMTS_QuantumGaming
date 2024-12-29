@@ -19,13 +19,17 @@ namespace Game.UI
         [SerializeField] Button itemButton;
         [SerializeField] Button actionButton;
 
+        object itemReference;
+        string itemName;
+
         bool isActive = false;
 
         #region Initialisation
 
-        public void SetVisuals(string itemText, Sprite iconSprite = null, Sprite actionSprite = null)
+        public void SetVisuals(string itemName, Sprite iconSprite = null, Sprite actionSprite = null)
         {
-            this.itemText.text = itemText;
+            this.itemName = itemName;
+            itemText.text = this.itemName;
             if(iconSprite != null) iconImage.sprite = iconSprite;
             if(actionSprite != null) actionImage.sprite = actionSprite;
         }
@@ -34,6 +38,7 @@ namespace Game.UI
             actionButton.onClick.AddListener(mainAction);
             if(itemAction != null) itemButton.onClick.AddListener(itemAction);
         }
+        public void SetItemReference(object item) { itemReference = item; }
 
         private void OnDestroy()
         {
@@ -54,5 +59,7 @@ namespace Game.UI
             background.enabled = state;
         }
         public bool GetActiveState() { return isActive; }
+        public object GetItemReference() { return itemReference; }
+        public string GetItemName() {  return itemName; }
     }
 }

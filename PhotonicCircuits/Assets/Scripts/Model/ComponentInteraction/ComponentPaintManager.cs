@@ -78,6 +78,7 @@ namespace Game
 
             blueprintPlaceData.previewScale = templatePlaceData.previewScale;
             blueprintPlaceData.previewSprite = templatePlaceData.previewSprite;
+            blueprintPlaceData.title = blueprintName;
             blueprintPlaceData.SetBlueprintReference(templatePlaceData, blueprintData);
 
             SelectComponent(blueprintPlaceData);

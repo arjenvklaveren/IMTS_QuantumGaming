@@ -1,5 +1,9 @@
+using Codice.CM.SEIDInfo;
 using Game.Data;
+using System.Collections;
 using System.Collections.Generic;
+using System.ComponentModel;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
@@ -29,7 +33,7 @@ namespace Game.UI
         private bool isOpen;
         private bool isComponentList = true;
 
-        ComponentPlaceDataSO currentPlaceData;
+        Dictionary<ComponentListItem, ComponentPlaceDataSO> currentPlaceDataList = new Dictionary<ComponentListItem, ComponentPlaceDataSO>();
 
         #region Initialisation
         private void Start()
@@ -49,6 +53,7 @@ namespace Game.UI
             toggleButtonBox.onClick.AddListener(TogglePanel);
             selectComponentListButton.onClick.AddListener(ToggleListType);
             selectBlueprintListButton.onClick.AddListener(ToggleListType);
+            ComponentPaintManager.Instance.OnPlaceDataChanged += ComponentPaintManager_OnPlaceDataChanged;
         }
 
         void RemoveListeners()
@@ -57,6 +62,7 @@ namespace Game.UI
             toggleButtonBox.onClick.RemoveListener(TogglePanel);
             selectComponentListButton.onClick.RemoveListener(ToggleListType);
             selectBlueprintListButton.onClick.RemoveListener(ToggleListType);
+            ComponentPaintManager.Instance.OnPlaceDataChanged -= ComponentPaintManager_OnPlaceDataChanged;
         }
         #endregion
 
@@ -83,8 +89,9 @@ namespace Game.UI
             {
                 ComponentListItem listItem = Instantiate(listItemPrefab, listItemHolder.transform);
                 UnityAction mainAction = () => ComponentPaintManager.Instance.SelectComponent(placeData);
-                listItem.SetButtonActions(mainAction);
+                listItem.SetButtonActions(mainAction, mainAction);
                 listItem.SetVisuals(placeData.title, placeData.iconSprite, addCrossSprite);
+                currentPlaceDataList.Add(listItem, placeData);
             }
         }
 
@@ -94,8 +101,9 @@ namespace Game.UI
             {
                 ComponentListItem listItem = Instantiate(listItemPrefab, listItemHolder.transform);
                 UnityAction mainAction = () => ComponentPaintManager.Instance.SelectBlueprint(blueprintName);
-                listItem.SetButtonActions(mainAction);
+                listItem.SetButtonActions(mainAction, mainAction);
                 listItem.SetVisuals(blueprintName, blueprintIconSprite, addCrossSprite);
+                currentPlaceDataList.Add(listItem, null);
             }
         }
 
@@ -111,9 +119,16 @@ namespace Game.UI
             SetListImageAlpha(blueprintListImage, isComponentList ? inactiveAlpha : activeAlpha);
         }
 
-        void VisualiseSelectedItem()
-        {
+        void ComponentPaintManager_OnPlaceDataChanged(ComponentPlaceDataSO placeData) => VisualiseSelectedItem(placeData);
 
+        void VisualiseSelectedItem(ComponentPlaceDataSO placeData)
+        {
+            foreach(KeyValuePair<ComponentListItem, ComponentPlaceDataSO> data in currentPlaceDataList)
+            {
+                if (placeData == null) { data.Key.SetActiveState(false); continue; }
+                if(isComponentList) data.Key.SetActiveState(placeData == data.Value);
+                else data.Key.SetActiveState(placeData.title == data.Key.GetItemName());
+            }
         }
 
         void SetListImageAlpha(Image image, float alpha)
@@ -125,6 +140,7 @@ namespace Game.UI
         void DestroyCurrentListItems()
         {
             foreach (Transform child in listItemHolder.transform) Destroy(child.gameObject);
+            currentPlaceDataList.Clear();
         }
 
         bool AnimatorIsPlaying()
