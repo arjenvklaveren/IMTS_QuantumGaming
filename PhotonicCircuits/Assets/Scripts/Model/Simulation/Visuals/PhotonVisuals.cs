@@ -2,6 +2,7 @@ using Game.Data;
 using SadUtils;
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace Game
@@ -102,7 +103,14 @@ namespace Game
 
         public virtual void SyncVisuals() { }
         public virtual void StartMovement() { }
-        public virtual void ForceMoveAlongNodes(Vector2[] nodes, ComponentPort outPort = null) {  }
+        public virtual void ForceMoveAlongNodes(List<Vector2> nodes, WaveguideNodeHandler nodeHandler)
+        {
+            if (moveRoutine != null)
+                StopCoroutine(moveRoutine);
+
+            moveRoutine = StartCoroutine(ForceMoveAlongNodesCo(nodes, nodeHandler));
+        }
+        protected virtual IEnumerator ForceMoveAlongNodesCo(List<Vector2> nodes, WaveguideNodeHandler nodeHandler) { yield break; }
 
         protected virtual void HandleDestroySource(bool storeVisuals = false) { }
         public void SetAsInComponent(OpticComponent component) { hostComponent = component; isInComponent = true; }

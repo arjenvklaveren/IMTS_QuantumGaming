@@ -70,13 +70,6 @@ namespace Game
         #region Overwrite Movement
         public void ForceMoveTile(Vector2 startPos, Vector2 endPos) => ForceMove(startPos, endPos, timeToTravelTile);
         public void ForceMoveHalfTile(Vector2 startPos, Vector2 endPos) => ForceMove(startPos, endPos, timeToTravelTile / 2f);
-        public override void ForceMoveAlongNodes(Vector2[] nodes, ComponentPort outPort = null)
-        {
-            if (moveRoutine != null)
-                StopCoroutine(moveRoutine);
-
-            moveRoutine = StartCoroutine(ForceMoveAlongNodesCo(nodes, outPort));
-        }
 
         public void ForceMove(Vector2 startPos, Vector2 endPos, float duration)
         {
@@ -102,16 +95,14 @@ namespace Game
             transform.position = endPos;
         }
 
-        private IEnumerator ForceMoveAlongNodesCo(Vector2[] nodes, ComponentPort outPort = null)
+        protected override IEnumerator ForceMoveAlongNodesCo(List<Vector2> nodes, WaveguideNodeHandler nodeHandler)
         {
-            List<Vector2> nodeList = nodes.ToList();
-            if(outPort != null) nodeList.Add(outPort.position); 
-
-            for(int i = 0; i < nodeList.Count; i++)
+            for(int i = 0; i < nodes.Count; i++)
             {
-                float dist = Vector2.Distance(transform.position, nodeList[i]);
+                float dist = Vector2.Distance(transform.position, nodes[i]);
                 float duration = timeToTravelTile * dist;
-                yield return StartCoroutine(ForceMoveCo(transform.position, nodeList[i], duration));
+                yield return StartCoroutine(ForceMoveCo(transform.position, nodes[i], duration));
+                nodeHandler.ExecuteNodeActions(this.source, nodes[i]);
             }
         }
         #endregion

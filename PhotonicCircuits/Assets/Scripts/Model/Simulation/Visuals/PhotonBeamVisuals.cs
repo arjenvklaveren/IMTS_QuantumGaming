@@ -14,6 +14,8 @@ namespace Game
         private Orientation currentOrientation;
         private float currentAmplitude;
 
+        bool isInactive = false;
+
         protected override void SetDefaultValues(Photon photon)
         {
             base.SetDefaultValues(photon);
@@ -93,10 +95,11 @@ namespace Game
         }
         protected override void HandleDestroySource(bool storeVisuals)
         {
-            if (moveRoutine != null)
-                StopCoroutine(moveRoutine);            
+            if (moveRoutine != null) 
+                StopCoroutine(moveRoutine);
 
-            if(storeVisuals) PhotonManager.Instance.StoreBeamVisual(this);
+            isInactive = true;
+            if (storeVisuals) PhotonManager.Instance.StoreBeamVisual(this);
             else Destroy(gameObject);
         }
         #endregion
@@ -107,32 +110,23 @@ namespace Game
             moveRoutine = StartCoroutine(MoveCo());
         }
 
-        public override void ForceMoveAlongNodes(Vector2[] nodes, ComponentPort outPort = null)
+        protected override IEnumerator ForceMoveAlongNodesCo(List<Vector2> nodes, WaveguideNodeHandler nodeHandler)
         {
-            if (moveRoutine != null)
-                StopCoroutine(moveRoutine);
-
-            moveRoutine = StartCoroutine(ForceMoveAlongNodesCo(nodes, outPort));
-        }
-
-        private IEnumerator ForceMoveAlongNodesCo(Vector2[] nodes, ComponentPort outPort = null)
-        {
-            List<Vector2> nodeList = nodes.ToList();
-            if (outPort != null) nodeList.Add(outPort.position);
-
-            for (int i = 0; i < nodeList.Count; i++)
+            for (int i = 0; i < nodes.Count; i++)
             {
+                if (isInactive) yield break;
                 Vector2 currentTipPos = GetCurrentDrawSpriteTipPos();
-                float dist = Vector2.Distance(currentTipPos, nodeList[i]);
+                float dist = Vector2.Distance(currentTipPos, nodes[i]);
                 float duration = timeToTravelTile * dist;
 
                 if (dist == 0) continue;
 
                 if(currentDrawSprite.transform.localScale.x != 0) CreateNewDrawSprite();
                 currentDrawSprite.transform.position = currentTipPos;
-                SetCurrentDrawSpriteAngleByLookDir(nodeList[i] - currentTipPos);
+                SetCurrentDrawSpriteAngleByLookDir(nodes[i] - currentTipPos);
 
-                yield return StartCoroutine(MoveCurrentDrawSpriteCo(currentTipPos, nodeList[i], duration));
+                yield return StartCoroutine(MoveCurrentDrawSpriteCo(currentTipPos, nodes[i], duration));
+                nodeHandler.ExecuteNodeActions(this.source, nodes[i]);
             }
         }
 

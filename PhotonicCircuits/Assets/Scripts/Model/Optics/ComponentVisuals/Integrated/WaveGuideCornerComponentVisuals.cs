@@ -50,29 +50,12 @@ namespace Game
             cornerAlt.SetActive(isAlt);
         }
 
-
-        protected override void HandlePhotonAlt(PhotonVisuals photon, int inPortId)
+        public override List<List<Vector2>> NodePathIndexesMapper()
         {
-            sourceWaveguide.SetTotalTravelTime(GetTotalNodeTravelTime(photon, inPortId));
-            if (photon is PhotonParticleVisuals)
+            return new List<List<Vector2>>
             {
-                PhotonParticleVisuals photonParticle = photon as PhotonParticleVisuals;
-                photonParticle.ForceMoveAlongNodes(GetNodesByInPortIndex(inPortId));
-            }
-            else
-            {
-                PhotonBeamVisuals photonBeam = photon as PhotonBeamVisuals;
-                photonBeam.ForceMoveAlongNodes(GetNodesByInPortIndex(inPortId));
-            }
-        }
-
-        public override Vector2[] GetNodesByInPortIndex(int inPortIndex)
-        {
-            return inPortIndex switch
-            {
-                0 => new Vector2[] { pathNodes[0].position, pathNodes[1].position, },
-                1 => new Vector2[] { pathNodes[1].position, pathNodes[0].position, },
-                _ => throw new ArgumentException("Invalid inPort")
+                new List<Vector2> { nodePositions[0].position, nodePositions[1].position },
+                new List<Vector2> { nodePositions[1].position, nodePositions[0].position },
             };
         }
 

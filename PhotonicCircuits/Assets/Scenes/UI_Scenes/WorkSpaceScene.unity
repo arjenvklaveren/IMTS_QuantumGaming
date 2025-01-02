@@ -709,11 +709,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7682823541844361029, guid: a30327617b2795c4ea8a1d37aa79e209, type: 3}
       propertyPath: <MoveSpeed>k__BackingField
-      value: 4
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 7682823541844361029, guid: a30327617b2795c4ea8a1d37aa79e209, type: 3}
       propertyPath: <ClassicSpeedMultiplier>k__BackingField
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

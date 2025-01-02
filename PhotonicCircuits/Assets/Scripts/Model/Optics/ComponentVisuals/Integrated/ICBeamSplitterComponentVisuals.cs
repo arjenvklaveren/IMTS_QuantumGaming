@@ -9,6 +9,10 @@ namespace Game
 {
     public class ICBeamSplitterComponentVisuals : WaveGuideComponentVisuals
     {
+        [Header("Object references")]
+        [SerializeField] private Transform interfereNode;
+
+        [Header("Prefab references")]
         [SerializeField] private PhotonParticleVisuals photonParticlePrefab;
         [SerializeField] private PhotonBeamVisuals photonBeamPrefab;
 
@@ -62,43 +66,32 @@ namespace Game
             PhotonVisuals photonVisuals = Instantiate(photonPrefab);
             photonVisuals.SetSource(photon);
             photonVisuals.SetAsInComponent(sourceSplitter);
+            photonVisuals.transform.position = interfereNode.position;
 
-            int outPort = index == 0 ? 1 : 2;
-            int nodePath = outPort == 1 ? 0 : -1;
-
-            List<Vector2> nodes = GetNodesByInPortIndex(nodePath).ToList();
-            nodes.RemoveAt(0);
-            photonVisuals.transform.position = pathNodes[0].position;
-            photonVisuals.ForceMoveAlongNodes(nodes.ToArray(), sourceSplitter.OutPorts[outPort]);
+            int outPortId = index == 0 ? 1 : 2;
+            List<Vector2> nodePath = sourceWaveguide.nodeHandler.GetNodePath(interfereNode.position, sourceSplitter.OutPorts[outPortId].position);
+            photonVisuals.ForceMoveAlongNodes(nodePath, sourceWaveguide.nodeHandler);
         }
         #endregion
 
-        protected override void HandlePhotonAlt(PhotonVisuals photon, int inPortId)
+        public override List<List<Vector2>> NodePathIndexesMapper()
         {
-            sourceWaveguide.SetTotalTravelTime(GetTotalNodeTravelTime(photon, inPortId));
-            sourceSplitter.SetInteractionTimeOffset(GetInteractionNodeTimeOffset());
-            if (photon is PhotonParticleVisuals) photonPrefab = photonParticlePrefab; 
-            else photonPrefab = photonBeamPrefab; 
-            photon.ForceMoveAlongNodes(GetNodesByInPortIndex(inPortId), sourceWaveguide.GetOutPort(inPortId));
-        }
-
-        public override Vector2[] GetNodesByInPortIndex(int inPortIndex)
-        {
-            return inPortIndex switch
+            return new List<List<Vector2>>
             {
-                -1 => new Vector2[] { pathNodes[0].position, pathNodes[2].position, },
-                0 => new Vector2[] { pathNodes[0].position, pathNodes[1].position, },
-                1 => new Vector2[] { pathNodes[1].position, pathNodes[0].position, },
-                2 => new Vector2[] { pathNodes[2].position, pathNodes[0].position, },
-                _ => throw new ArgumentException("Invalid inPort")
+                new List<Vector2> { nodePositions[0].position, nodePositions[1].position, nodePositions[2].position, nodePositions[3].position },
+                new List<Vector2> { nodePositions[0].position, nodePositions[1].position, nodePositions[4].position, nodePositions[5].position },
+                new List<Vector2> { nodePositions[3].position, nodePositions[2].position, nodePositions[1].position, nodePositions[0].position },
+                new List<Vector2> { nodePositions[5].position, nodePositions[4].position, nodePositions[1].position, nodePositions[0].position }
             };
         }
 
-        private float GetInteractionNodeTimeOffset()
+        protected override void HandlePhotonAlt(PhotonVisuals photon, int inPortId)
         {
-            float totalDistance = Vector2.Distance(sourceWaveguide.InPorts[0].position, pathNodes[0].position);
-            float timeToTravelTile = 1f / PhotonMovementManager.Instance.MoveSpeed;
-            return (totalDistance * timeToTravelTile);
+            if (photon is PhotonParticleVisuals) photonPrefab = photonParticlePrefab; 
+            else photonPrefab = photonBeamPrefab;
+            sourceSplitter.SetInferereNode(interfereNode.position);
+            List<Vector2> nodePath = sourceWaveguide.nodeHandler.GetNodePath(sourceSplitter.InPorts[inPortId].position, sourceSplitter.GetOutPort(inPortId).position);
+            photon.ForceMoveAlongNodes(nodePath, sourceWaveguide.nodeHandler);
         }
 
         #region Handle Rotation

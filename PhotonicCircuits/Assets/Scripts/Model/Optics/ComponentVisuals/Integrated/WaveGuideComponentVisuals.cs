@@ -2,13 +2,14 @@ using Game.Data;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 namespace Game
 {
     public class WaveGuideComponentVisuals : ComponentVisuals
     {
-        [SerializeField] protected List<Transform> pathNodes = new List<Transform>();
+        [SerializeField] protected List<Transform> nodePositions = new List<Transform>();
 
         protected WaveGuideComponent sourceWaveguide;
         protected PhotonVisuals visuals;
@@ -26,6 +27,8 @@ namespace Game
         protected virtual void SetDefaultValues()
         {
             sourceWaveguide = SourceComponent as WaveGuideComponent;
+            if(!sourceWaveguide.nodeHandler.HasSetup()) 
+                sourceWaveguide.nodeHandler.SetupNodes(nodePositions.Select(t => (Vector2)t.position).ToList(), NodePathIndexesMapper());
         }
 
         protected override void OnDestroy()
@@ -49,45 +52,15 @@ namespace Game
         protected override void HandlePhoton(PhotonVisuals photon) { visuals = photon; }
         protected virtual void HandlePhotonAlt(PhotonVisuals photon, int inPortId)
         {
-            sourceWaveguide.SetTotalTravelTime(GetTotalNodeTravelTime(photon, inPortId));
-            if (photon is PhotonParticleVisuals)
-            {
-                PhotonParticleVisuals photonParticle = photon as PhotonParticleVisuals;
-                photonParticle.ForceMoveAlongNodes(GetNodesByInPortIndex(inPortId));
-            }
-            else
-            {
-                PhotonBeamVisuals photonBeam = photon as PhotonBeamVisuals;
-
-            }
+            List<Vector2> nodePath = sourceWaveguide.nodeHandler.GetNodePath(sourceWaveguide.InPorts[inPortId].position, sourceWaveguide.GetOutPort(inPortId).position);
+            photon.ForceMoveAlongNodes(nodePath, sourceWaveguide.nodeHandler);
         }
 
-        protected float GetTotalNodeTravelTime(PhotonVisuals photon, int inPortIndex, bool includeHalfTileOffset = true)
-        { 
-            ComponentPort inPort = sourceWaveguide.InPorts[inPortIndex];
-            Vector2[] nodes = GetNodesByInPortIndex(inPortIndex);
-            float totalDistance = Vector2.Distance(inPort.position, nodes[0]);
-            for (int i = 0; i < nodes.Length - 1; i++)
-            {
-                totalDistance += Vector2.Distance(nodes[i], nodes[i + 1]);
-            }
-            float timeToTravelTile = (photon.source.GetPhotonType() == PhotonType.Quantum) 
-                ? 1f / PhotonMovementManager.Instance.MoveSpeed :
-                1f / (PhotonMovementManager.Instance.MoveSpeed * PhotonMovementManager.Instance.ClassicSpeedMultiplier);
-
-            totalDistance += Vector2.Distance(sourceWaveguide.GetOutPort(inPort.portId).position, nodes[nodes.Length - 1]);
-            float outTimeVal = (totalDistance * timeToTravelTile);
-            if (includeHalfTileOffset) outTimeVal += (timeToTravelTile / 2);
-            return outTimeVal;
-        }
-
-        public virtual Vector2[] GetNodesByInPortIndex(int inPortIndex)
+        public virtual List<List<Vector2>> NodePathIndexesMapper()
         {
-            return inPortIndex switch
-            {
-                0 => new Vector2[] { pathNodes[0].position },
-                1 => new Vector2[] { pathNodes[0].position },
-                _ => throw new ArgumentException("Invalid inPort")
+            return new List<List<Vector2>> 
+            { 
+                new List<Vector2> { nodePositions[0].position },
             };
         }
 

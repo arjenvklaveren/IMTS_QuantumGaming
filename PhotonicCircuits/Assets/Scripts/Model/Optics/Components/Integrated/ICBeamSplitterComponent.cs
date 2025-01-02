@@ -4,17 +4,18 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.Events;
 
 namespace Game
 {
     public class ICBeamSplitterComponent : WaveGuideComponent
     {
         public override OpticComponentType Type => OpticComponentType.ICBeamSplitter;
-        public Action<Photon, Photon> OnSplitPhoton;
 
+        public Action<Photon, Photon> OnSplitPhoton;
         private Dictionary<Photon, ComponentPort> currentPhotons = new Dictionary<Photon, ComponentPort>();
         private Photon firstEnter = null;
-        float interactionTimeOffset;
+        private Vector2 interfereNode;
 
         public ICBeamSplitterComponent(
             GridData hostGrid,
@@ -35,6 +36,7 @@ namespace Game
         }
 
         public override void SetOrientation(Orientation orientation) => ComponentRotateUtil.SetOrientation(this, orientation);
+        public void SetInferereNode(Vector2 node) { interfereNode = node; }
 
         protected override IEnumerator HandlePhotonCo(ComponentPort port, Photon photon)
         {
@@ -60,7 +62,7 @@ namespace Game
                 KeyValuePair<Photon, ComponentPort> outerpair = currentPhotons.ElementAt(i);
                 if (outerpair.Value.portId == 0)
                 {
-                    ExternalCoroutineExecutionManager.Instance.StartExternalCoroutine(ResolveSplitPhoton(outerpair.Key, outerpair.Value));
+                    SetInterfereAction(() => ResolveSplitPhoton(outerpair.Key), outerpair);
                 }
                 else
                 {
@@ -73,7 +75,7 @@ namespace Game
                         if (PhotonInterferenceManager.Instance.IsInterfering(outerPair.Key, innerPair.Key, false) &&
                             IsInterferePort(outerPair.Value, innerPair.Value))
                         {
-                            ExternalCoroutineExecutionManager.Instance.StartExternalCoroutine(ResolveInterferePhotons(outerPair, innerPair));
+                            SetInterfereAction(() => ResolveInterferePhotons(outerPair, innerPair), outerPair, innerPair);
                             photonCount -= 2;
                             isInterfering = true;
                             i--;
@@ -82,7 +84,7 @@ namespace Game
                     }
                     if (!isInterfering)
                     {
-                        ExternalCoroutineExecutionManager.Instance.StartExternalCoroutine(ResolveContinueMove(outerPair.Key, outerPair.Value));
+                        SetInterfereAction(() => ResolveContinueMove(outerPair.Key, outerPair.Value), outerPair);
                         photonCount -= 1;
                         i--;
                     }
@@ -92,14 +94,15 @@ namespace Game
             currentPhotons.Clear();
         }
 
-        private IEnumerator ResolveSplitPhoton(Photon photon, ComponentPort port)
+        private void SetInterfereAction(UnityAction action, KeyValuePair<Photon, ComponentPort> photon1, KeyValuePair<Photon, ComponentPort>? photon2 = null)
+        {
+            nodeHandler.AddNodeAction(new NodeAction(interfereNode, photon1.Key, action));
+            if(photon2.HasValue) nodeHandler.AddNodeAction(new NodeAction(interfereNode, photon2.Value.Key, action));  
+        }
+
+        private void ResolveSplitPhoton(Photon photon)
         {
             currentPhotons.Remove(photon);
-
-            float totalWaitTime = totalNodeTravelTime - ((1f / PhotonMovementManager.Instance.MoveSpeed) / 2);
-            float splitWaitTime = interactionTimeOffset;
-
-            yield return new WaitForSeconds(splitWaitTime);
 
             float photonProbabilty = photon.GetAmplitude() / 2;
 
@@ -111,53 +114,35 @@ namespace Game
             bottomPhoton.SetAmplitude(photonProbabilty);
             OnSplitPhoton?.Invoke(topPhoton, bottomPhoton);
 
-            yield return new WaitForSeconds(totalWaitTime - splitWaitTime);
-
-            topPhoton.SetPosition(OutPorts[1].position);
-            bottomPhoton.SetPosition(OutPorts[2].position);
-
-            topPhoton.TriggerExitComponent(this);
-            TriggerOnPhotonExit(topPhoton);
-            bottomPhoton.TriggerExitComponent(this);
-            TriggerOnPhotonExit(bottomPhoton);
+            nodeHandler.AddNodeAction(new NodeAction(OutPorts[1].position, topPhoton, () => CallExitPhoton(topPhoton, OutPorts[1], true)));
+            nodeHandler.AddNodeAction(new NodeAction(OutPorts[2].position, bottomPhoton, () => CallExitPhoton(bottomPhoton, OutPorts[2], true)));
         }
 
-        private IEnumerator ResolveInterferePhotons(KeyValuePair<Photon, ComponentPort> photonA, KeyValuePair<Photon, ComponentPort> photonB)
+        private void ResolveInterferePhotons(KeyValuePair<Photon, ComponentPort> photonA, KeyValuePair<Photon, ComponentPort> photonB)
         {
-            float totalWaitTime = GetTotalWaitTimeWithOffset(photonA.Key.GetPhotonType());
-            float interfereWaitTime = interactionTimeOffset;
-
-            yield return new WaitForSeconds(totalWaitTime - interfereWaitTime);
-
             currentPhotons.Remove(photonA.Key);
             currentPhotons.Remove(photonB.Key);
-
-            yield return new WaitForSeconds(interfereWaitTime);
 
             if (photonA.Key.GetPropagation().IsOnSameAxis(orientation)) (photonA, photonB) = (photonB, photonA);
 
             PhotonInterferenceManager.Instance.HandleInterference(photonA.Key, photonB.Key, InterferenceType.Split);
 
-            ExitIfExist(photonA.Key);
-            ExitIfExist(photonB.Key);
+            ComponentPort outPort = GetOutPort(photonA.Value.portId);
+            nodeHandler.AddNodeAction(new NodeAction(outPort.position, photonA.Key, () => ExitIfExists(photonA.Key, outPort, true)));
+            nodeHandler.AddNodeAction(new NodeAction(outPort.position, photonB.Key, () => ExitIfExists(photonB.Key, outPort, true)));
         }
 
-        private IEnumerator ResolveContinueMove(Photon photon, ComponentPort port)
+        private void ResolveContinueMove(Photon photon, ComponentPort port)
         {
             currentPhotons.Remove(photon);
-
-            yield return new WaitForSeconds(totalNodeTravelTime - ((1f / PhotonMovementManager.Instance.MoveSpeed) / 2));
-
-            photon.SetPosition(GetOutPort(port.portId).position);
-            photon.TriggerExitComponent(this);
-            TriggerOnPhotonExit(photon);
+            ComponentPort outPort = GetOutPort(port.portId);
+            nodeHandler.AddNodeAction(new NodeAction(outPort.position, photon, () => CallExitPhoton(photon, outPort, true)));
         }
 
-        private void ExitIfExist(Photon photon)
+        private void ExitIfExists(Photon photon, ComponentPort port, bool portIsOutPort = false)
         {
             if (PhotonManager.Instance.FindPhoton(photon) == null) return;
-            photon.TriggerExitComponent(this);
-            TriggerOnPhotonExit(photon);
+            CallExitPhoton(photon, port, portIsOutPort);
         }
 
         private bool IsInterferePort(ComponentPort inPort, ComponentPort otherPort)
@@ -170,16 +155,6 @@ namespace Game
                 2 => (otherIndex == 1),
                 _ => throw new ArgumentException("Invalid inPort")
             };
-        }
-
-        public void SetInteractionTimeOffset(float timeOffset) { interactionTimeOffset = timeOffset; }
-        float GetTotalWaitTimeWithOffset(PhotonType type)
-        {
-            if (type == PhotonType.Quantum)
-            {
-                return totalNodeTravelTime - ((1f / PhotonMovementManager.Instance.MoveSpeed) / 2);
-            }
-            else return totalNodeTravelTime - ((1f / PhotonMovementManager.Instance.ClassicCombinedSpeed()) / 2);
         }
 
         public override ComponentPort GetOutPort(int inPortIndex)

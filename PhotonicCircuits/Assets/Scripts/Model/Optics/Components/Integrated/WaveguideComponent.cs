@@ -10,7 +10,8 @@ namespace Game
     {
         public override OpticComponentType Type => OpticComponentType.WaveGuideStraight;
         public Action<int> OnHandlePhoton;
-        protected float totalNodeTravelTime;
+
+        public WaveguideNodeHandler nodeHandler = new WaveguideNodeHandler();
 
         public WaveGuideComponent(
             GridData hostGrid,
@@ -27,16 +28,21 @@ namespace Game
                 inPorts,
                 outPorts)
         {
-        }
 
-        public void SetTotalTravelTime(float totalTravelTime) { this.totalNodeTravelTime = totalTravelTime; }
+        }
 
         protected override IEnumerator HandlePhotonCo(ComponentPort port, Photon photon)
         {
             OnHandlePhoton?.Invoke(port.portId);
-            yield return new WaitForSeconds(totalNodeTravelTime);
+            NodeAction endNodeAction = new NodeAction(GetOutPort(port.portId).position, photon,() => CallExitPhoton(photon, port));
+            nodeHandler.AddNodeAction(endNodeAction);
+            yield break;
+        }
 
-            photon.SetPosition(GetOutPort(port.portId).position);
+        public virtual void CallExitPhoton(Photon photon, ComponentPort port, bool portIsOutPort = false)
+        {
+            ComponentPort resolvePort = portIsOutPort ? port : GetOutPort(port.portId);
+            photon.SetPosition(resolvePort.position);
             photon.TriggerExitComponent(this);
             TriggerOnPhotonExit(photon);
         }

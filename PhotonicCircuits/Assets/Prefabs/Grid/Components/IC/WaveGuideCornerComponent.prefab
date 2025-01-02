@@ -157,7 +157,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3e663437d7014084da1326d5cfb983af, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  pathNodes:
+  nodePositions:
   - {fileID: 4287798863359684643}
   - {fileID: 5352091425905926903}
   visualsHolder: {fileID: 1114261678858985212}
