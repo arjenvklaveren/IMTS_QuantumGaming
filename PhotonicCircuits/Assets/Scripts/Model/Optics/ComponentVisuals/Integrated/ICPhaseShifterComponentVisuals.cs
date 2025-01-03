@@ -7,9 +7,6 @@ namespace Game
 {
     public class ICPhaseShifterComponentVisuals : ComponentVisuals
     {
-        [Header("Visuals Holder")]
-        [SerializeField] private Transform visualsHolder;
-
         protected override void HandlePhoton(PhotonVisuals photon)
         {
             if (photon is PhotonParticleVisuals)

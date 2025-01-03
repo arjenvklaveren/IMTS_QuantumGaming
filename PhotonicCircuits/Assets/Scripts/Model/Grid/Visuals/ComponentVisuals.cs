@@ -8,6 +8,10 @@ namespace Game
 {
     public abstract class ComponentVisuals : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     {
+        [Header("Component visuals")]
+        [SerializeField] protected Transform visualsHolder;
+        [SerializeField] private SpriteRenderer outlineSprite;
+
         public static event Action<ComponentVisuals> OnHover;
 
         public OpticComponent SourceComponent { get; private set; }
@@ -61,6 +65,8 @@ namespace Game
 
         protected virtual void HandlePhoton(PhotonVisuals photon) { }
         protected virtual void HandleRotationChanged(Orientation orientation) { }
+
+        public void SetOutlineState(bool state) { if(outlineSprite != null) outlineSprite.enabled = state; }
 
         protected void RotateToLookAtOrientation(Transform visuals, Orientation orientation)
         {

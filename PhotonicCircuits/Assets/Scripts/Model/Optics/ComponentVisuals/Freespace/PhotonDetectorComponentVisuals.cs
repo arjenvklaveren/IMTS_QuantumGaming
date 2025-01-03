@@ -5,9 +5,6 @@ namespace Game
 {
     public class PhotonDetectorComponentVisuals : ComponentVisuals
     {
-        [Header("Visuals Holder")]
-        [SerializeField] private Transform visualsHolder;
-
         protected override void HandlePhoton(PhotonVisuals photon)
         {
             if (photon is PhotonParticleVisuals)

@@ -11,9 +11,6 @@ namespace Game
         private PhotonVisuals photonPrefab;
         private BeamSplitterComponent sourceSplitter;
 
-        [Header("Visuals Holder")]
-        [SerializeField] private Transform visualsHolder;
-
         #region Awake / Destroy
         public override void SetSource(OpticComponent component)
         {

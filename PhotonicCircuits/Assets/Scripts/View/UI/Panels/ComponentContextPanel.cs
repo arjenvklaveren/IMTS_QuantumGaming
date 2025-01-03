@@ -20,6 +20,7 @@ namespace Game.UI
         [Header("Visuals references")]
         [SerializeField] TextMeshProUGUI componentText;
         [SerializeField] Image componentImage;
+        [SerializeField] Button componentEditButton;
 
         OpticComponent selectedComponent;
         List<ComponentPropertyContext> contexts = new List<ComponentPropertyContext>();
@@ -32,6 +33,7 @@ namespace Game.UI
         {
             selectionManager = ComponentSelectionManager.Instance;
             SetupListeners();
+            SetTopbarActive(false);
         }
 
         private void OnDestroy()
@@ -43,12 +45,16 @@ namespace Game.UI
         {
             selectionManager.OnSelectedComponent += ComponentSelectionManager_OnSelectComponent;
             selectionManager.OnDeselect += ComponentSelectionManager_OnDeselectComponent;
+            GridController.OnComponentRemoved += GridController_OnDeleteComponent;
+            GridController.OnGridChanged += GridController_OnGridChanged;
         }
 
         void RemoveListeners()
         {
             selectionManager.OnSelectedComponent -= ComponentSelectionManager_OnSelectComponent;
             selectionManager.OnDeselect -= ComponentSelectionManager_OnDeselectComponent;
+            GridController.OnComponentRemoved -= GridController_OnDeleteComponent;
+            GridController.OnGridChanged -= GridController_OnGridChanged;
         }
 
         private void ComponentSelectionManager_OnSelectComponent(ComponentVisuals component)
@@ -58,20 +64,29 @@ namespace Game.UI
             componentText.text = componentData.title;
             componentImage.sprite = componentData.iconSprite;
 
+            SetTopbarActive(true);
             ClearContextItems();
             ReflectComponentAttributes();
         }
 
+        #region Handle selected changes
         private void ComponentSelectionManager_OnDeselectComponent()
         {
-            
+            //TODO: IF DESELECT FUCNTIONALITY CHANGES IN FUTURE, THIS COMMENT MIGHT HAVE TO BE REMOVED FOR CONSISTENTCY
+            //ResetPanel();
         }
+        private void GridController_OnDeleteComponent(OpticComponent component)
+        {
+            if (ComponentSelectionManager.Instance.SelectedVisuals.SourceComponent == component) ResetPanel();
+        }
+        private void GridController_OnGridChanged(GridData gridData) { ResetPanel(); }
 
         void ReflectComponentAttributes()
         {       
             FieldInfo[] fields = PropertyContextUtils.GetContextAttributes(selectedComponent);
             foreach (FieldInfo field in fields) CreateContextItem(field);
         }
+        #endregion
 
         void CreateContextItem(FieldInfo field)
         {
@@ -111,6 +126,12 @@ namespace Game.UI
             contexts.Add(context);
         }
 
+        void ResetPanel()
+        {
+            SetTopbarActive(false);
+            ClearContextItems();
+        }
+
         void ClearContextItems()
         {
             contexts.Clear();
@@ -119,6 +140,13 @@ namespace Game.UI
                 Destroy(child.gameObject);
             }
             toggleDisableBackground = false;
+        }
+
+        void SetTopbarActive(bool state)
+        {
+            componentText.gameObject.SetActive(state);
+            componentImage.gameObject.SetActive(state);
+            componentEditButton.gameObject.SetActive(state);
         }
 
         ComponentPropertyType ConvertAttributeToPropertyType(FieldInfo field)

@@ -1,6 +1,7 @@
 using Game.Data;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -83,9 +84,13 @@ namespace Game.UI
 
         void GridController_OnDeleteComponent(OpticComponent component)
         {
-            foreach (KeyValuePair<ComponentVisuals, ComponentListItem> item in listItems)
+            foreach (KeyValuePair<ComponentVisuals, ComponentListItem> item in listItems.ToList())
             {
-                if (item.Key.SourceComponent == component) Destroy(item.Value.gameObject);
+                if (item.Key.SourceComponent == component)
+                {
+                    listItems.Remove(item.Key);
+                    Destroy(item.Value.gameObject);
+                }
             }
         }
 

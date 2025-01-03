@@ -14,9 +14,6 @@ namespace Game
         protected WaveGuideComponent sourceWaveguide;
         protected PhotonVisuals visuals;
 
-        [Header("Visuals Holder")]
-        [SerializeField] protected Transform visualsHolder;
-
         #region Awake/Destroy
         public override void SetSource(OpticComponent component)
         {

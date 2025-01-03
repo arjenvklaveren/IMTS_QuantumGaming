@@ -10,8 +10,6 @@ namespace Game
 {
     public class ICComponentVisuals : ComponentVisuals
     {
-        [SerializeField] private Transform visualsHolder;
-
         [Space]
         [SerializeField] private Transform inPortsHolder;
         [SerializeField] private Transform outPortsHolder;

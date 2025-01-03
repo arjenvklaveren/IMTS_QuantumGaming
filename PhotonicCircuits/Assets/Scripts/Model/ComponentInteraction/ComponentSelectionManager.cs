@@ -1,6 +1,7 @@
 using SadUtils;
 using System;
 using System.Diagnostics;
+using static Codice.Client.BaseCommands.Import.Commit;
 
 namespace Game
 {
@@ -46,11 +47,15 @@ namespace Game
         #region Manage Selection
         public void SelectComponent(ComponentVisuals selected)
         {
+            if(SelectedVisuals != null) SelectedVisuals.SetOutlineState(false);
+
             SelectedVisuals = selected;
 
             HasSelection = true;
 
             OnSelectedComponent?.Invoke(SelectedVisuals);
+
+            selected.SetOutlineState(true);
 
             // TEST
             if (selected.SourceComponent.Type == Data.OpticComponentType.IC1x1 ||
@@ -61,7 +66,6 @@ namespace Game
         public void Deselect()
         {
             HasSelection = false;
-
             OnDeselect?.Invoke();
         }
         #endregion

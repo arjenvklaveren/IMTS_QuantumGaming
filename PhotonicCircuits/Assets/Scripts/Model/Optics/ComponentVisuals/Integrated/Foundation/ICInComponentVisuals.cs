@@ -8,9 +8,6 @@ namespace Game
         [Header("Photon Settings")]
         [SerializeField] private PhotonVisuals photonPrefab;
 
-        [Header("Component Visuals")]
-        [SerializeField] private Transform visualsHolder;
-
         private ICInComponent sourceInComponent;
 
         #region Awake / Destroy

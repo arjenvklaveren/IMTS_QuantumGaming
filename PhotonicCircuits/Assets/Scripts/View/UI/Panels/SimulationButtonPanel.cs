@@ -5,11 +5,12 @@ using UnityEngine.UI;
 
 namespace Game.UI
 {
-    public class SimulationButtonPanel : MonoBehaviour
+    public class SimulationButtonPanel : Panel
     {
         [SerializeField] private GameObject startButtonObject;
         [SerializeField] private GameObject playButtonObject;
         [SerializeField] private GameObject pauseButtonObject;
+        [SerializeField] private Animator gridOutlineAnimator; 
 
         #region Awake/destroy
         private void Start()
@@ -50,6 +51,14 @@ namespace Game.UI
             startButtonObject.SetActive(!isPlaying && isMainToggle);
             playButtonObject.SetActive(!isPlaying && !isMainToggle);
             pauseButtonObject.SetActive(isPlaying);
+            SetOutlineAnimationState(isPlaying, isMainToggle);
+        }
+
+        void SetOutlineAnimationState(bool isPlaying, bool isMainToggle)
+        {
+            if (isMainToggle && isPlaying) gridOutlineAnimator.Play("GridOutlineBlink");
+            if (isMainToggle && !isPlaying) gridOutlineAnimator.Play("GridOutlineDefault");
+            if(!isMainToggle && !isPlaying) gridOutlineAnimator.Play("GridOutlineBlink", 0, 0.5f);
         }
         #endregion
     }

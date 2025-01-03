@@ -5,9 +5,6 @@ namespace Game
 {
     public class PhaseShifterComponentVisuals : ComponentVisuals
     {
-        [Header("Visuals Holder")]
-        [SerializeField] private Transform visualsHolder;
-
         protected override void HandlePhoton(PhotonVisuals photon)
         {
             if (photon is PhotonParticleVisuals)

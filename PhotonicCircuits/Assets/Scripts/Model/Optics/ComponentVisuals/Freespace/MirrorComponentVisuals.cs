@@ -5,8 +5,6 @@ namespace Game
 {
     public class MirrorComponentVisuals : ComponentVisuals
     {
-        [SerializeField] private Transform visualsHolder;
-
         protected override void HandlePhoton(PhotonVisuals photon)
         {
             if (photon is PhotonParticleVisuals)

@@ -5,8 +5,6 @@ namespace Game
 {
     public class ICOutComponentVisuals : ComponentVisuals
     {
-        [SerializeField] private Transform visualsHolder;
-
         protected override void HandlePhoton(PhotonVisuals photon)
         {
             Destroy(photon.gameObject);
