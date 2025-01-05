@@ -39,7 +39,6 @@ namespace Game.UI
         private void Start()
         {
             AddListeners();
-            GenerateComponentList();
         }
 
         private void OnDestroy()
@@ -54,6 +53,7 @@ namespace Game.UI
             selectComponentListButton.onClick.AddListener(ToggleListType);
             selectBlueprintListButton.onClick.AddListener(ToggleListType);
             ComponentPaintManager.Instance.OnPlaceDataChanged += ComponentPaintManager_OnPlaceDataChanged;
+            GridController.OnGridChanged += GridController_OnGridChanged;
         }
 
         void RemoveListeners()
@@ -63,6 +63,7 @@ namespace Game.UI
             selectComponentListButton.onClick.RemoveListener(ToggleListType);
             selectBlueprintListButton.onClick.RemoveListener(ToggleListType);
             ComponentPaintManager.Instance.OnPlaceDataChanged -= ComponentPaintManager_OnPlaceDataChanged;
+            GridController.OnGridChanged -= GridController_OnGridChanged;
         }
         #endregion
 
@@ -83,10 +84,24 @@ namespace Game.UI
             VisualiseSelectedList();
         }
 
+        void GridController_OnGridChanged(GridData data) 
+        {
+            if (isComponentList)
+            {
+                DestroyCurrentListItems();
+                GenerateComponentList();
+            }
+        }
+
         void GenerateComponentList()
         {
+            bool currentGridIsIntegrated = GridManager.Instance.GetActiveGrid().isIntegrated;
             foreach (ComponentPlaceDataSO placeData in allComponentPlaceData)
             {
+                bool isFreeSpace = placeData.restrictionType == PlaceRestrictionType.FreeSpaceOnly || placeData.restrictionType == PlaceRestrictionType.Both;
+
+                if (!currentGridIsIntegrated != isFreeSpace) continue;
+
                 ComponentListItem listItem = Instantiate(listItemPrefab, listItemHolder.transform);
                 UnityAction mainAction = () => ComponentPaintManager.Instance.SelectComponent(placeData);
                 listItem.SetButtonActions(mainAction, mainAction);

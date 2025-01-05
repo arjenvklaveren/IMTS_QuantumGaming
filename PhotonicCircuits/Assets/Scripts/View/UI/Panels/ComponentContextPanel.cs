@@ -77,6 +77,7 @@ namespace Game.UI
         }
         private void GridController_OnDeleteComponent(OpticComponent component)
         {
+            if (ComponentSelectionManager.Instance.SelectedVisuals == null) return;
             if (ComponentSelectionManager.Instance.SelectedVisuals.SourceComponent == component) ResetPanel();
         }
         private void GridController_OnGridChanged(GridData gridData) { ResetPanel(); }

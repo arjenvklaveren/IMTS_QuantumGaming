@@ -51,6 +51,12 @@ namespace Game.UI
 
         void GridController_OnGridChanged(GridData grid)
         {
+            StartCoroutine(GridChangeDelay());
+        }
+
+        IEnumerator GridChangeDelay()
+        {
+            yield return GridManager.Instance.WaitUntilGrid;
             CreateComponentItems();
         }
 

@@ -16,10 +16,28 @@ namespace Game.UI
         [SerializeField] GameObject referenceButtonHolder;
         [SerializeField] GameObject contentHolder;
 
+        #region Initialisation
         private void Start()
         {
             SyncPlaceholderItems();
+            SetupListeners();
         }
+
+        private void OnDestroy()
+        {
+            RemoveListeners();
+        }
+
+        void SetupListeners()
+        {
+            mainButton.onClick.AddListener(() => SetContentHolderState(true));
+        }
+
+        void RemoveListeners()
+        {
+            mainButton.onClick.RemoveListener(() => SetContentHolderState(true));
+        }
+        #endregion
 
         void SyncPlaceholderItems()
         {
@@ -49,13 +67,14 @@ namespace Game.UI
 
         public void OnPointerEnter(PointerEventData eventData)
         {
-            SetContentHolderState(true);
+            //SetContentHolderState(true);
         }
 
         public void OnPointerExit(PointerEventData eventData)
         {
             if (!eventData.fullyExited) return;
             SetContentHolderState(false);
+            EventSystem.current.SetSelectedGameObject(null);
         }
 
         private void SetContentHolderState(bool state)

@@ -283,6 +283,26 @@ PrefabInstance:
       propertyPath: m_FlexibleHeight
       value: -1
       objectReference: {fileID: 0}
+    - target: {fileID: 7026624538582200463, guid: 3ff7cd9965ad0854eb114428884614b0, type: 3}
+      propertyPath: m_fontSize
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 7026624538582200463, guid: 3ff7cd9965ad0854eb114428884614b0, type: 3}
+      propertyPath: m_fontSizeBase
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 7496314544869174869, guid: 3ff7cd9965ad0854eb114428884614b0, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 24
+      objectReference: {fileID: 0}
+    - target: {fileID: 7496314544869174869, guid: 3ff7cd9965ad0854eb114428884614b0, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 5.4438
+      objectReference: {fileID: 0}
+    - target: {fileID: 7496314544869174869, guid: 3ff7cd9965ad0854eb114428884614b0, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -0.7632
+      objectReference: {fileID: 0}
     - target: {fileID: 8022701678444254428, guid: 3ff7cd9965ad0854eb114428884614b0, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -362,6 +382,14 @@ PrefabInstance:
     - target: {fileID: 8022701678444254428, guid: 3ff7cd9965ad0854eb114428884614b0, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8632039778105136033, guid: 3ff7cd9965ad0854eb114428884614b0, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 25
+      objectReference: {fileID: 0}
+    - target: {fileID: 8632039778105136033, guid: 3ff7cd9965ad0854eb114428884614b0, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 25
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
