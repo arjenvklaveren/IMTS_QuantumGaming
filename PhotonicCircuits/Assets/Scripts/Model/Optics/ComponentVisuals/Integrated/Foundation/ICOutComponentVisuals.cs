@@ -1,5 +1,4 @@
 using Game.Data;
-using UnityEngine;
 
 namespace Game
 {
@@ -7,6 +6,9 @@ namespace Game
     {
         protected override void HandlePhoton(PhotonVisuals photon)
         {
+            if (photon.source.GetPhotonType() != PhotonType.Quantum)
+                return;
+
             Destroy(photon.gameObject);
         }
 

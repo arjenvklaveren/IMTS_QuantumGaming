@@ -121,7 +121,8 @@ namespace Game
 
                 ICComponentBase icComponent = component as ICComponentBase;
 
-                return ReferenceEquals(icComponent.InternalGrid, grid);
+                if (ReferenceEquals(icComponent.InternalGrid, grid))
+                    return true;
             }
 
             return false;

@@ -16,6 +16,9 @@ namespace Game
 
         [Header("Prefab References")]
         [SerializeField] private PhotonVisuals photonPrefab;
+        [SerializeField] private PhotonBeamVisuals photonBeamPrefab;
+
+        [Space]
         [SerializeField] private GameObject inPortPrefab;
         [SerializeField] private GameObject outPortPrefab;
 
@@ -90,9 +93,20 @@ namespace Game
         #region Handle Events
         private void ICComponentBase_OnPhotonExitIC(Photon photon, ComponentPort port)
         {
-            PhotonVisuals photonVisuals = Instantiate(photonPrefab);
+            PhotonVisuals prefab = GetVisualsPrefabToSpawn(photon.GetPhotonType());
+            PhotonVisuals photonVisuals = Instantiate(prefab);
 
             photonVisuals.SetSource(photon);
+        }
+
+        private PhotonVisuals GetVisualsPrefabToSpawn(PhotonType type)
+        {
+            return type switch
+            {
+                PhotonType.Quantum => photonPrefab,
+                PhotonType.Classical => photonBeamPrefab,
+                _ => null,
+            };
         }
         #endregion
 
@@ -241,6 +255,9 @@ namespace Game
         #region Handle Photon
         protected override void HandlePhoton(PhotonVisuals photon)
         {
+            if (photon.source.GetPhotonType() != PhotonType.Quantum)
+                return;
+
             Destroy(photon.gameObject);
         }
         #endregion

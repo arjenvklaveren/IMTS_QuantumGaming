@@ -132,6 +132,7 @@ MonoBehaviour:
   visualsHolder: {fileID: 6579677539905052706}
   outlineSprite: {fileID: 3205873861635465294}
   photonPrefab: {fileID: 1252529590538980857, guid: bed9709cd1adb9a40801087d54f0b24e, type: 3}
+  photonBeamVisuals: {fileID: 718248258048210290, guid: e66e7735f1c0afd42aa88124221dae85, type: 3}
 --- !u!1 &5692195313534666111
 GameObject:
   m_ObjectHideFlags: 0

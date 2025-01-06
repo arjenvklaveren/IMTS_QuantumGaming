@@ -8,6 +8,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 683591675067551286, guid: dfd388e0ab42c934fad9e35d7c26feb3, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 683591675067551286, guid: dfd388e0ab42c934fad9e35d7c26feb3, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 6807228466807070685, guid: dfd388e0ab42c934fad9e35d7c26feb3, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -50,7 +58,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6940779671512396237, guid: dfd388e0ab42c934fad9e35d7c26feb3, type: 3}
       propertyPath: m_Name
-      value: ICComponentBase Variant
+      value: ICComponent1x1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8262045092472539780, guid: dfd388e0ab42c934fad9e35d7c26feb3, type: 3}
+      propertyPath: m_DrawMode
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

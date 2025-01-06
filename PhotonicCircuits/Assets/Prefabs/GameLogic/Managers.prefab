@@ -76,6 +76,8 @@ GameObject:
   - component: {fileID: 1621376957184106166}
   - component: {fileID: 4962840066331526943}
   - component: {fileID: 3170076974266854427}
+  - component: {fileID: 7027972529430636686}
+  - component: {fileID: 8386634037916635774}
   m_Layer: 0
   m_Name: Managers
   m_TagString: Untagged
@@ -91,7 +93,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2212741880860176344}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -179,7 +181,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 80e74a38f9d5b1746a7d8885174e58e7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  <MoveSpeed>k__BackingField: 5
+  <MoveSpeed>k__BackingField: 1
   <ClassicSpeedMultiplier>k__BackingField: 2
 --- !u!114 &2533449734872756498
 MonoBehaviour:
@@ -227,6 +229,30 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d85cddde00bf68b41afe24c8814929fa, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &7027972529430636686
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2212741880860176344}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 66cbdd734d677f143bf6c55e28cc4508, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &8386634037916635774
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2212741880860176344}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4641efef05c46fa46b564ab9b0701085, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &6383092611696980103

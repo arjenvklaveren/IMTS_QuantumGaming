@@ -7,6 +7,7 @@ namespace Game
     {
         [Header("Photon Settings")]
         [SerializeField] private PhotonVisuals photonPrefab;
+        [SerializeField] private PhotonBeamVisuals photonBeamVisuals;
 
         private ICInComponent sourceInComponent;
 
@@ -50,9 +51,19 @@ namespace Game
 
         private void CreatePhotonVisuals(Photon photon)
         {
-            PhotonVisuals photonVisuals = Instantiate(photonPrefab);
+            PhotonVisuals photonVisuals = CreatePhotonVisualsOfPhotonType(photon.GetPhotonType());
 
             photonVisuals.SetSource(photon);
+        }
+
+        private PhotonVisuals CreatePhotonVisualsOfPhotonType(PhotonType photonType)
+        {
+            return photonType switch
+            {
+                PhotonType.Quantum => Instantiate(photonPrefab),
+                PhotonType.Classical => Instantiate(photonBeamVisuals),
+                _ => null,
+            };
         }
 
         private void DestroySelfCheck(OpticComponent component)
