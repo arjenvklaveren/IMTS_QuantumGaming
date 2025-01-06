@@ -76,12 +76,26 @@ namespace Game
 
             ComponentPlaceDataSO templatePlaceData = placeDatas[blueprintData.type];
 
-            blueprintPlaceData.previewScale = templatePlaceData.previewScale;
-            blueprintPlaceData.previewSprite = templatePlaceData.previewSprite;
-            blueprintPlaceData.title = blueprintName;
+            SetBlueprintPlaceDataDefaultValues(
+                blueprintPlaceData,
+                templatePlaceData,
+                blueprintName);
+
             blueprintPlaceData.SetBlueprintReference(templatePlaceData, blueprintData);
 
             SelectComponent(blueprintPlaceData);
+        }
+
+        private void SetBlueprintPlaceDataDefaultValues(
+            ICBlueprintPlaceDataSO blueprintPlaceData,
+            ComponentPlaceDataSO templatePlaceData,
+            string blueprintName)
+        {
+            blueprintPlaceData.title = blueprintName;
+
+            blueprintPlaceData.previewScale = templatePlaceData.previewScale;
+            blueprintPlaceData.previewSprite = templatePlaceData.previewSprite;
+            blueprintPlaceData.previewTileOffset = templatePlaceData.previewTileOffset;
         }
 
         public void SelectComponent(ComponentPlaceDataSO placeData)
