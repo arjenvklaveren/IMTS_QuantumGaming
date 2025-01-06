@@ -16,6 +16,7 @@ namespace Game.UI
         [SerializeField] private RectTransform dividerPrefab;
 
         private int lastPathLength = 0;
+        private bool isReconstructing;
 
         #region Awake / Destroy
         private IEnumerator Start()
@@ -51,11 +52,16 @@ namespace Game.UI
         #region Create Path
         private void ReconstructPath()
         {
+            if (isReconstructing)
+                return;
+
             StartCoroutine(ReconstructPathCo());
         }
 
         private IEnumerator ReconstructPathCo()
         {
+            isReconstructing = true;
+
             RemoveAllPathSteps();
 
             yield return null;
@@ -66,6 +72,8 @@ namespace Game.UI
 
             lastPathLength = grids.Count;
             LayoutRebuilder.ForceRebuildLayoutImmediate(pathHolder);
+
+            isReconstructing = false;
         }
         #endregion
 

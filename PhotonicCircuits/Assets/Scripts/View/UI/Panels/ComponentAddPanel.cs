@@ -1,9 +1,5 @@
-using Codice.CM.SEIDInfo;
 using Game.Data;
-using System.Collections;
 using System.Collections.Generic;
-using System.ComponentModel;
-using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
@@ -84,7 +80,7 @@ namespace Game.UI
             VisualiseSelectedList();
         }
 
-        void GridController_OnGridChanged(GridData data) 
+        void GridController_OnGridChanged(GridData data)
         {
             if (isComponentList)
             {
@@ -98,9 +94,13 @@ namespace Game.UI
             bool currentGridIsIntegrated = GridManager.Instance.GetActiveGrid().isIntegrated;
             foreach (ComponentPlaceDataSO placeData in allComponentPlaceData)
             {
-                bool isFreeSpace = placeData.restrictionType == PlaceRestrictionType.FreeSpaceOnly || placeData.restrictionType == PlaceRestrictionType.Both;
+                if (placeData.restrictionType != PlaceRestrictionType.Both)
+                {
+                    bool isFreeSpace = placeData.restrictionType == PlaceRestrictionType.FreeSpaceOnly;
 
-                if (!currentGridIsIntegrated != isFreeSpace) continue;
+                    if (currentGridIsIntegrated == isFreeSpace)
+                        continue;
+                }
 
                 ComponentListItem listItem = Instantiate(listItemPrefab, listItemHolder.transform);
                 UnityAction mainAction = () => ComponentPaintManager.Instance.SelectComponent(placeData);
@@ -138,10 +138,10 @@ namespace Game.UI
 
         void VisualiseSelectedItem(ComponentPlaceDataSO placeData)
         {
-            foreach(KeyValuePair<ComponentListItem, ComponentPlaceDataSO> data in currentPlaceDataList)
+            foreach (KeyValuePair<ComponentListItem, ComponentPlaceDataSO> data in currentPlaceDataList)
             {
                 if (placeData == null) { data.Key.SetActiveState(false); continue; }
-                if(isComponentList) data.Key.SetActiveState(placeData == data.Value);
+                if (isComponentList) data.Key.SetActiveState(placeData == data.Value);
                 else data.Key.SetActiveState(placeData.title == data.Key.GetItemName());
             }
         }

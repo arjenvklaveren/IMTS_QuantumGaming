@@ -127,14 +127,9 @@ namespace Game
             // Reset Component to Blueprint state
             component.SyncToBlueprint(data);
 
-            // Check if current grid is nested grid in discarded changes grid
-            if (GridManager.GetActiveGrid().gridName != data.Name)
-                if (!GridManager.GetActiveGrid().placedComponents.Contains(component))
-                    GridManager.ForceCloseActiveGrid();
-
             // If currently shown grid, refresh grid
             GridManager.ForceCloseActiveGrid();
-            GridManager.OpenGrid(component.InternalGrid);
+            GridManager.ForceOpenGrid(component.InternalGrid);
         }
         #endregion
 

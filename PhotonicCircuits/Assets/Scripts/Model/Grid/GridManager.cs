@@ -43,13 +43,15 @@ namespace Game
 
         public void OpenGrid(GridData grid)
         {
-            grids.Push(grid);
 
             if (grid.isIntegrated)
-                SaveProject(OpenCurrentGrid);
+                SaveProject(() => OpenGridAfterSave(grid));
 
             else
+            {
+                grids.Push(grid);
                 GridController.SetActiveGrid(grid);
+            }
         }
 
         public void LoadRootGrid(GridData grid)
@@ -67,10 +69,14 @@ namespace Game
             if (grids.Count <= 1)
                 return;
 
-            CloseAndCompileActiveGrid();
-
             // save closed Grid
-            SaveProject(OpenCurrentGrid);
+            SaveProject(CloseGridAfterSave);
+        }
+
+        public void ForceOpenGrid(GridData grid)
+        {
+            grids.Push(grid);
+            GridController.SetActiveGrid(grid);
         }
 
         public void ForceCloseActiveGrid()
@@ -87,9 +93,51 @@ namespace Game
 
         private void SaveProject(Action completeCallback)
         {
+            if (isSaving)
+                return;
+
             isSaving = true;
             // To save integrated grid, find dirty IC component in parent grid.
             SerializationManager.Instance.SerializeProject(completeCallback);
+        }
+
+        private void OpenGridAfterSave(GridData grid)
+        {
+            //Check if grid host to open still exists
+            if (CanOpenGrid(grid))
+                grids.Push(grid);
+
+            OpenCurrentGrid();
+        }
+
+        private bool CanOpenGrid(GridData grid)
+        {
+            GridData hostGrid = grids.Peek();
+
+            foreach (OpticComponent component in hostGrid.placedComponents)
+            {
+                if (!IsICBlueprintComponent(component.Type))
+                    continue;
+
+                ICComponentBase icComponent = component as ICComponentBase;
+
+                return ReferenceEquals(icComponent.InternalGrid, grid);
+            }
+
+            return false;
+        }
+
+        private bool IsICBlueprintComponent(OpticComponentType type)
+        {
+            int typeId = (int)type;
+            return typeId >= 100 && typeId < 200;
+        }
+
+        private void CloseGridAfterSave()
+        {
+            CloseAndCompileActiveGrid();
+
+            OpenCurrentGrid();
         }
 
         private void OpenCurrentGrid()
