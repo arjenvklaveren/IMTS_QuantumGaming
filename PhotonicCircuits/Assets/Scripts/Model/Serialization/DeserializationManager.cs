@@ -49,9 +49,16 @@ namespace Game
             {
                 string json = LoadFileContents(fileName);
 
-                return JsonConvert.DeserializeObject<ProjectData>(
-                    json,
-                    SerializationManager.GetAllConverters());
+                try
+                {
+                    return JsonConvert.DeserializeObject<ProjectData>(
+                        json,
+                        SerializationManager.GetAllConverters());
+                }
+                catch (System.Exception e)
+                {
+                    throw e;
+                }
             });
         }
 
