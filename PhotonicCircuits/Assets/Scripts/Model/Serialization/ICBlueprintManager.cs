@@ -62,11 +62,20 @@ namespace Game
         {
             string fileContents = await LoadFileContentsAsync(filePath);
 
-            ICBlueprintData blueprintData = JsonConvert.DeserializeObject<ICBlueprintData>(
-                fileContents,
-                SerializationManager.GetAllConverters());
+            try
+            {
+                ICBlueprintData blueprintData = JsonConvert.DeserializeObject<ICBlueprintData>(
+                    fileContents,
+                    SerializationManager.GetAllConverters());
 
-            loadedBlueprints.Add(blueprintData.Name, blueprintData);
+                loadedBlueprints.Add(blueprintData.Name, blueprintData);
+            }
+            catch (Exception e)
+            {
+                Debug.LogError($"An error occured while deserializing blueprint data!\n" +
+                    $"Error: {e.Message}\n" +
+                    $"File: {filePath}");
+            }
         }
 
         private async Task<string> LoadFileContentsAsync(string filePath)
