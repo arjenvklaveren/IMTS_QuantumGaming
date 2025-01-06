@@ -59,6 +59,7 @@ namespace Game
                 new ComponentPort[0])
         {
             InternalGrid = new(data.internalGrid);
+            ComponentPortsManager.Instance.CompileComponentPorts(InternalGrid);
 
             SetDefaultValues();
             containedBlueprints = new(data.containedBlueprints);
@@ -86,7 +87,12 @@ namespace Game
                 if (component.Type == OpticComponentType.ICIn)
                     inComponents.Add(component as ICInComponent);
                 else if (component.Type == OpticComponentType.ICOut)
-                    outComponents.Add(component as ICOutComponent);
+                {
+                    ICOutComponent icOutComponent = component as ICOutComponent;
+
+                    outComponents.Add(icOutComponent);
+                    icOutComponent.OnDetectPhoton += ICOutComponent_OnDetectPhoton;
+                }
             }
 
             GenerateInPorts();
