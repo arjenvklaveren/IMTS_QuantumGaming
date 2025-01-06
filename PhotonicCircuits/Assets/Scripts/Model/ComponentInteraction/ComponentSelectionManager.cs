@@ -1,7 +1,5 @@
 using SadUtils;
 using System;
-using System.Diagnostics;
-using static Codice.Client.BaseCommands.Import.Commit;
 
 namespace Game
 {
@@ -47,7 +45,7 @@ namespace Game
         #region Manage Selection
         public void SelectComponent(ComponentVisuals selected)
         {
-            if(SelectedVisuals != null) SelectedVisuals.SetOutlineState(false);
+            if (SelectedVisuals != null) SelectedVisuals.SetOutlineState(false);
 
             SelectedVisuals = selected;
 

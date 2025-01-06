@@ -13,9 +13,10 @@ MonoBehaviour:
   m_Name: IC2x2PlaceData
   m_EditorClassIdentifier: 
   title: 2x2 Integrated Circuit
+  canRotate: 1
   previewSprite: {fileID: 21300000, guid: 26227fcaa23483742bfc7ce9c73aa371, type: 3}
   previewScale: {x: 2, y: 2}
-  previewTileOffset: {x: 1, y: -1}
+  previewTileOffset: {x: -1, y: 0}
   iconSprite: {fileID: 21300000, guid: 9a22eaa65abd3e043a98728f066d8624, type: 3}
   restrictionType: 2
   tileOffsetsToOccupy:
