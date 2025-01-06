@@ -36,9 +36,6 @@ namespace Game
         {
             yield return PhotonMovementManager.Instance.GetWaitMoveTime(photon.GetPhotonType(), true);
 
-            Debug.Log(shiftValueRadians);
-            Debug.Log(offsetValue);
-
             photon.RotatePhase(shiftValueRadians + offsetValue);
             photon.TriggerExitComponent(this);
             TriggerOnPhotonExit(photon);

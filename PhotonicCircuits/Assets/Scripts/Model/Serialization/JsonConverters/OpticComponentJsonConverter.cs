@@ -33,6 +33,7 @@ namespace Game
 
             return data.type switch
             {
+                //Freespace Components
                 OpticComponentType.Test => LoadTestComponent(data),
                 OpticComponentType.SourceSingle => LoadSingleSourceComponent(data),
                 OpticComponentType.SourceLaser => LoadLaserSourceComponent(data),
@@ -40,6 +41,13 @@ namespace Game
                 OpticComponentType.BeamSplitter => LoadBeamSplitterComponent(data),
                 OpticComponentType.PhaseShifter => LoadPhaseShifterComponent(data),
                 OpticComponentType.Detector => LoadDetectorComponent(data),
+
+                //IC Components
+                OpticComponentType.WaveGuideStraight => LoadICWaveGuideStraightComponent(data),
+                OpticComponentType.WaveGuideCorner => LoadICWaveGuideCornerComponent(data),
+                OpticComponentType.ICBeamSplitter => LoadICBeamSplitterComponent(data),
+                OpticComponentType.ICPhaseShifter => LoadICPhaseShifterComponent(data),
+
 
                 // IC Formats
                 OpticComponentType.IC1x1 => LoadIC1x1Component(data),
@@ -135,6 +143,8 @@ namespace Game
                 data.outPorts);
         }
 
+
+
         #region IC
         #region IC Formats
         private ICComponent1x1 LoadIC1x1Component(OpticComponentData data)
@@ -186,6 +196,60 @@ namespace Game
                 data.outPorts,
                 portId);
         }
+
+
+        private WaveGuideComponent LoadICWaveGuideStraightComponent(OpticComponentData data)
+        {
+            return new(
+                null,
+                data.occupiedTiles,
+                data.orientation,
+                data.orientation,
+                data.inPorts,
+                data.outPorts);
+        }
+
+        private WaveGuideCornerComponent LoadICWaveGuideCornerComponent(OpticComponentData data)
+        {
+            bool isAltCorner;
+            bool.TryParse(data.args, out isAltCorner);
+
+            return new(
+                null,
+                data.occupiedTiles,
+                data.orientation,
+                data.orientation,
+                data.inPorts,
+                data.outPorts,
+                isAltCorner);
+        }
+
+        private ICBeamSplitterComponent LoadICBeamSplitterComponent(OpticComponentData data)
+        {
+            return new(
+               null,
+               data.occupiedTiles,
+               data.orientation,
+               data.orientation,
+               data.inPorts,
+               data.outPorts);
+        }
+
+        private ICPhaseShifterComponent LoadICPhaseShifterComponent(OpticComponentData data)
+        {
+            float shiftParse = 0;
+            float.TryParse(data.args, out shiftParse);
+
+            return new(
+               null,
+               data.occupiedTiles,
+               data.orientation,
+               data.orientation,
+               data.inPorts,
+               data.outPorts,
+               shiftParse);
+        }
+
         #endregion
         #endregion
         #endregion

@@ -6,6 +6,7 @@ namespace Game
     [CreateAssetMenu(fileName = "integratedPhaseShifterPlaceData", menuName = "ScriptableObjects/Components/Place Data/integrated phaseShifter")]
     public class ICPhaseShifterComponentPlaceDataSO : ComponentPlaceDataSO
     {
+        [SerializeField] private float shiftAmountRadians;
         public override OpticComponent CreateOpticComponent(GridData hostGrid, Vector2Int[] tilesToOccupy, Orientation placeOrientation)
         {
             return new ICPhaseShifterComponent(
@@ -14,7 +15,8 @@ namespace Game
                 defaultOrientation,
                 placeOrientation,
                 inPorts,
-                outPorts);
+                outPorts,
+                shiftAmountRadians);
         }
     }
 }

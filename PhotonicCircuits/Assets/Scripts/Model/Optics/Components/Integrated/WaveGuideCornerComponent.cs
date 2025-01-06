@@ -18,7 +18,8 @@ namespace Game
             Orientation defaultOrientation,
             Orientation placeOrientation,
             ComponentPort[] inPorts,
-            ComponentPort[] outPorts
+            ComponentPort[] outPorts,
+            bool isAltCorner
             ) : base(
                 hostGrid,
                 tilesToOccupy,
@@ -27,6 +28,7 @@ namespace Game
                 inPorts,
                 outPorts)
         {
+            this.isAltCorner = isAltCorner;
             if (isAltCorner) OnChangeCornerType(isAltCorner);
         }
 
@@ -61,6 +63,11 @@ namespace Game
                 1 => OutPorts[0],
                 _ => throw new ArgumentException("Invalid inPort")
             };
+        }
+
+        public override string SerializeArgs()
+        {
+            return isAltCorner.ToString();
         }
     }
 }
