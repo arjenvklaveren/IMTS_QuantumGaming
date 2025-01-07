@@ -6,33 +6,37 @@ using UnityEngine;
 
 namespace Game
 {
-    public abstract class ICComponentBase : OpticComponent
+    public class ICComponentBase : OpticComponent
     {
         public static event Action OnAnyBlueprintNameChanged;
 
         public event Action<Photon, ComponentPort> OnPhotonExitIC;
         public event Action<string> OnNameChanged;
 
+        public override OpticComponentType Type => type;
+
         public Dictionary<string, int> containedBlueprints;
 
-        public GridData InternalGrid { get; protected set; }
+        public GridData InternalGrid { get; private set; }
 
-        protected List<ICInComponent> inComponents;
-        protected List<ICOutComponent> outComponents;
+        public bool IsDirty { get; private set; }
+
+        private List<ICInComponent> inComponents;
+        private List<ICOutComponent> outComponents;
 
         private Vector2Int localBounds;
-
-        public bool IsDirty { get; protected set; }
+        private readonly OpticComponentType type;
 
         #region Constructors
         // Used when creating a new Blueprint
-        protected ICComponentBase(
+        public ICComponentBase(
             GridData hostGrid,
             Vector2Int[] tilesToOccupy,
             Orientation orientation,
             Vector2Int internalGridSize,
             Vector2 internalGridSpacing,
-            string title) : base(
+            string title,
+            OpticComponentType type) : base(
                 hostGrid,
                 tilesToOccupy,
                 orientation,
@@ -41,12 +45,14 @@ namespace Game
                 new ComponentPort[0])
         {
             InternalGrid = new(title, internalGridSpacing, internalGridSize, true);
+            this.type = type;
+
             SetDefaultValues();
             SetupListeners();
         }
 
         // Used when placing existing blueprint
-        protected ICComponentBase(
+        public ICComponentBase(
             GridData hostGrid,
             Vector2Int[] tilesToOccupy,
             Orientation orientation,
@@ -59,6 +65,8 @@ namespace Game
                 new ComponentPort[0])
         {
             InternalGrid = new(data.internalGrid);
+            type = data.type;
+
             ComponentPortsManager.Instance.CompileComponentPorts(InternalGrid);
 
             SetDefaultValues();
@@ -474,6 +482,10 @@ namespace Game
 
             OnPhotonExitIC?.Invoke(photon, port);
         }
+        #endregion
+
+        #region Rotation
+        public override void SetOrientation(Orientation orientation) => ComponentRotateUtil.SetOrientation(this, orientation);
         #endregion
 
         #region Serialization

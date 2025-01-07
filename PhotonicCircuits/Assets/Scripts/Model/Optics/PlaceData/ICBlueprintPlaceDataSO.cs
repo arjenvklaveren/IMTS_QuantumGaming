@@ -1,5 +1,4 @@
 using Game.Data;
-using System;
 using UnityEngine;
 
 namespace Game
@@ -20,32 +19,11 @@ namespace Game
 
         public override OpticComponent CreateOpticComponent(GridData hostGrid, Vector2Int[] tilesToOccupy, Orientation placeOrientation)
         {
-            return blueprintData.type switch
-            {
-                OpticComponentType.IC1x1 => Get1x1(hostGrid, tilesToOccupy),
-                OpticComponentType.IC2x2 => Get2x2(hostGrid, tilesToOccupy),
-                _ => throw new NotImplementedException($"Place data creation for type \"{blueprintData.type}\" has not been implemented.")
-            };
-        }
-
-        #region Create Optic Components
-        private ICComponent1x1 Get1x1(GridData hostGrid, Vector2Int[] tilesToOccupy)
-        {
-            return new(
+            return new ICComponentBase(
                 hostGrid,
                 tilesToOccupy,
                 Orientation.Up,
                 blueprintData);
         }
-
-        private ICComponent2x2 Get2x2(GridData hostGrid, Vector2Int[] tilesToOccupy)
-        {
-            return new(
-                hostGrid,
-                tilesToOccupy,
-                Orientation.Up,
-                blueprintData);
-        }
-        #endregion
     }
 }

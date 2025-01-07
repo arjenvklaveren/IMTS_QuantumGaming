@@ -678,18 +678,6 @@ PrefabInstance:
       propertyPath: m_SizeDelta.x
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 2695636319953209277, guid: 60748b1dfa61b4e47970f2fbd706bcfe, type: 3}
-      propertyPath: addCrossSprite
-      value: 
-      objectReference: {fileID: 21300000, guid: ab93ffe530aa17a49b906f7e8b2b6795, type: 3}
-    - target: {fileID: 2695636319953209277, guid: 60748b1dfa61b4e47970f2fbd706bcfe, type: 3}
-      propertyPath: listItemPrefab
-      value: 
-      objectReference: {fileID: 848463447342732006, guid: dc533bd28792173409daa518451d9752, type: 3}
-    - target: {fileID: 2695636319953209277, guid: 60748b1dfa61b4e47970f2fbd706bcfe, type: 3}
-      propertyPath: blueprintIconSprite
-      value: 
-      objectReference: {fileID: 21300000, guid: 9a22eaa65abd3e043a98728f066d8624, type: 3}
     - target: {fileID: 3041308303483296871, guid: 60748b1dfa61b4e47970f2fbd706bcfe, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0

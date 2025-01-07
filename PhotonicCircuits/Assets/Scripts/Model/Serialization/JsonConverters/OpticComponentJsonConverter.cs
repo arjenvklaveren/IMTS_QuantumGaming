@@ -50,8 +50,8 @@ namespace Game
 
 
                 // IC Formats
-                OpticComponentType.IC1x1 => LoadIC1x1Component(data),
-                OpticComponentType.IC2x2 => LoadIC2x2Component(data),
+                OpticComponentType.IC1x1 => LoadICComponent(data),
+                OpticComponentType.IC2x2 => LoadICComponent(data),
 
                 // IC
                 OpticComponentType.ICIn => LoadICInComponent(data),
@@ -62,6 +62,7 @@ namespace Game
         }
 
         #region Load Component Types
+        #region Free Space Components
         private TestComponent LoadTestComponent(OpticComponentData data)
         {
             return new(
@@ -119,8 +120,7 @@ namespace Game
 
         private PhaseShifterComponent LoadPhaseShifterComponent(OpticComponentData data)
         {
-            float shiftParse = 0;
-            float.TryParse(data.args, out shiftParse);
+            float.TryParse(data.args, out float shiftParse);
 
             return new(
                 null,
@@ -142,24 +142,11 @@ namespace Game
                 data.inPorts,
                 data.outPorts);
         }
-
-
+        #endregion
 
         #region IC
         #region IC Formats
-        private ICComponent1x1 LoadIC1x1Component(OpticComponentData data)
-        {
-            if (!ICBlueprintManager.TryGetBlueprintData(data.args, out ICBlueprintData blueprintData))
-                throw new Exception("Invalid Save data encountered!");
-
-            return new(
-                null,
-                data.occupiedTiles,
-                data.orientation,
-                blueprintData);
-        }
-
-        private ICComponent2x2 LoadIC2x2Component(OpticComponentData data)
+        private ICComponentBase LoadICComponent(OpticComponentData data)
         {
             if (!ICBlueprintManager.TryGetBlueprintData(data.args, out ICBlueprintData blueprintData))
                 throw new Exception("Invalid Save data encountered!");
@@ -196,7 +183,6 @@ namespace Game
                 data.outPorts,
                 portId);
         }
-
 
         private WaveGuideComponent LoadICWaveGuideStraightComponent(OpticComponentData data)
         {
@@ -249,7 +235,6 @@ namespace Game
                data.outPorts,
                shiftParse);
         }
-
         #endregion
         #endregion
         #endregion
