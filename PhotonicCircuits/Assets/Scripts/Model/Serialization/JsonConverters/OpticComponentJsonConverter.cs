@@ -211,8 +211,8 @@ namespace Game
 
         private WaveGuideCornerComponent LoadICWaveGuideCornerComponent(OpticComponentData data)
         {
-            bool isAltCorner;
-            bool.TryParse(data.args, out isAltCorner);
+            WaveGuideCornerComponent.CornerType cornerType;
+            Enum.TryParse(data.args, out cornerType);
 
             return new(
                 null,
@@ -221,7 +221,7 @@ namespace Game
                 data.orientation,
                 data.inPorts,
                 data.outPorts,
-                isAltCorner);
+                cornerType);
         }
 
         private ICBeamSplitterComponent LoadICBeamSplitterComponent(OpticComponentData data)

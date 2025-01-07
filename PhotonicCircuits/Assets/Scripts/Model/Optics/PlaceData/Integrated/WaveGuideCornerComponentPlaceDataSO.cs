@@ -6,7 +6,7 @@ namespace Game
     [CreateAssetMenu(fileName = "waveGuideCornerPlaceData", menuName = "ScriptableObjects/Components/Place Data/waveguide corner")]
     public class WaveGuideCornerComponentPlaceDataSO : ComponentPlaceDataSO
     {
-        [SerializeField] bool isAltCorner;
+        [SerializeField] WaveGuideCornerComponent.CornerType cornerType;
         public override OpticComponent CreateOpticComponent(GridData hostGrid, Vector2Int[] tilesToOccupy, Orientation placeOrientation)
         {
             return new WaveGuideCornerComponent(
@@ -16,7 +16,7 @@ namespace Game
                 placeOrientation,
                 inPorts,
                 outPorts,
-                isAltCorner);
+                cornerType);
         }
     }
 }

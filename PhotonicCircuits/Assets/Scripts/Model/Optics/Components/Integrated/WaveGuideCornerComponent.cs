@@ -7,10 +7,12 @@ namespace Game
     public class WaveGuideCornerComponent : WaveGuideComponent
     {
         public override OpticComponentType Type => OpticComponentType.WaveGuideCorner;
+        public enum CornerType { Default, DefaultFlipped, Alternative  }
 
-        public event Action<bool> OnChangeAltType;
+        [ComponentContext("Corner Type", nameof(SetCornerType))]
+        public CornerType cornerType = CornerType.Default;
 
-        [ComponentContext("Alt corner", "OnChangeCornerType")] public bool isAltCorner = false;
+        public event Action<CornerType> OnChangeCornerType;
 
         public WaveGuideCornerComponent(
             GridData hostGrid,
@@ -19,7 +21,7 @@ namespace Game
             Orientation placeOrientation,
             ComponentPort[] inPorts,
             ComponentPort[] outPorts,
-            bool isAltCorner
+            CornerType cornerType
             ) : base(
                 hostGrid,
                 tilesToOccupy,
@@ -28,31 +30,16 @@ namespace Game
                 inPorts,
                 outPorts)
         {
-            this.isAltCorner = isAltCorner;
-            if (isAltCorner) OnChangeCornerType(isAltCorner);
+            this.cornerType = cornerType;
+            if(cornerType != CornerType.Default) SetCornerType(cornerType);
         }
 
         public override void SetOrientation(Orientation orientation) => ComponentRotateUtil.SetOrientation(this, orientation);
 
-        public void OnChangeCornerType(bool isAlt)
+        public void SetCornerType(CornerType cornerType)
         {
-            if (isAltCorner == isAlt) return;
-
-            isAltCorner = isAlt;
-            OnChangeAltType?.Invoke(isAltCorner);
-
-            if (isAlt)
-            {
-                OutPorts[1].orientation = OutPorts[1].orientation.Subtract(1);
-                InPorts[1].orientation = InPorts[1].orientation.Subtract(1);
-                Debug.Log(OutPorts[1].orientation);
-            }
-            else
-            {
-                OutPorts[1].orientation = OutPorts[1].orientation.Add(1);
-                InPorts[1].orientation = InPorts[1].orientation.Add(1);
-                Debug.Log(OutPorts[1].orientation);
-            }
+            OnChangeCornerType.Invoke(cornerType);
+            this.cornerType = cornerType;
         }
 
         public override ComponentPort GetOutPort(int inPortIndex)
@@ -67,7 +54,7 @@ namespace Game
 
         public override string SerializeArgs()
         {
-            return isAltCorner.ToString();
+            return cornerType.ToString();
         }
     }
 }

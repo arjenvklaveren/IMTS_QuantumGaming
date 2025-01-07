@@ -248,8 +248,10 @@ MonoBehaviour:
   nodePositions:
   - {fileID: 4287798863359684643}
   - {fileID: 5352091425905926903}
-  cornerBase: {fileID: 8796361417170066136}
-  cornerAlt: {fileID: 4758057876512862151}
+  cornerBase: {fileID: 2398244767305531715}
+  cornerAlt: {fileID: 6261813088590824095}
+  outlineBase: {fileID: 7615401060916070944}
+  outlineAlt: {fileID: 5254331766630412588}
 --- !u!1 &2821371513943998317
 GameObject:
   m_ObjectHideFlags: 0
@@ -360,7 +362,7 @@ Transform:
   m_GameObject: {fileID: 4604821478506454291}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.182, y: 0.188, z: 0}
+  m_LocalPosition: {x: -0.182, y: 0.181, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

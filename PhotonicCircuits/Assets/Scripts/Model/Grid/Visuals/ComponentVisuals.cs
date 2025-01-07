@@ -67,6 +67,7 @@ namespace Game
         protected virtual void HandleRotationChanged(Orientation orientation) { }
 
         public void SetOutlineState(bool state) { if(outlineSprite != null) outlineSprite.enabled = state; }
+        public void ChangeOutlineSprite(SpriteRenderer outlineSprite) { this.outlineSprite = outlineSprite; }
 
         protected void RotateToLookAtOrientation(Transform visuals, Orientation orientation)
         {

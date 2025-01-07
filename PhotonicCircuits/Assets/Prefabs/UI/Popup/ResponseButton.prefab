@@ -67,15 +67,15 @@ MonoBehaviour:
       m_Calls: []
   m_text: Text
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 109f0bec8a2d74f429888c77f8ab3f50, type: 2}
+  m_sharedMaterial: {fileID: 6934324810568574855, guid: 109f0bec8a2d74f429888c77f8ab3f50, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4278190080
-  m_fontColor: {r: 0, g: 0, b: 0, a: 1}
+    rgba: 4280690214
+  m_fontColor: {r: 0.14901961, g: 0.14901961, b: 0.14901961, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -92,7 +92,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 52
+  m_fontSize: 34.1
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -171,7 +171,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 200, y: 0}
+  m_SizeDelta: {x: 200, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &3358656173467395842
 CanvasRenderer:
@@ -194,15 +194,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.019607844, g: 0.6627451, b: 0.80784315, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 0}
-  m_Type: 0
+  m_Sprite: {fileID: 21300000, guid: 071b30a20deaf7f4a9fe14f4be6c396c, type: 3}
+  m_Type: 1
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 4
@@ -210,7 +210,7 @@ MonoBehaviour:
   m_FillClockwise: 1
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
-  m_PixelsPerUnitMultiplier: 1
+  m_PixelsPerUnitMultiplier: 2
 --- !u!114 &6962531707900180
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -233,7 +233,7 @@ MonoBehaviour:
     dictionary:
     - key: 0
       value:
-        color: {r: 1, g: 1, b: 1, a: 1}
+        color: {r: 0.019607844, g: 0.6627451, b: 0.80784315, a: 1}
         colorTransitionDuration: 0.1
         sprite: {fileID: 0}
         transitionTrigger: Normal
@@ -243,7 +243,7 @@ MonoBehaviour:
         ignoreTimeScale: 0
     - key: 1
       value:
-        color: {r: 0.87358487, g: 0.97551835, b: 1, a: 1}
+        color: {r: 0.04510492, g: 0.5655918, b: 0.6830188, a: 1}
         colorTransitionDuration: 0.1
         sprite: {fileID: 0}
         transitionTrigger: Highlighted
@@ -253,7 +253,7 @@ MonoBehaviour:
         ignoreTimeScale: 0
     - key: 2
       value:
-        color: {r: 0.550509, g: 0.8037735, b: 0.7868205, a: 1}
+        color: {r: 0.04705883, g: 0.5647059, b: 0.68235296, a: 1}
         colorTransitionDuration: 0.1
         sprite: {fileID: 0}
         transitionTrigger: Pressed

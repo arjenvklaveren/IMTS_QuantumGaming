@@ -3,15 +3,21 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using CornerType = Game.WaveGuideCornerComponent.CornerType;
 
 namespace Game
 {
     public class WaveGuideCornerComponentVisuals : WaveGuideComponentVisuals
     {
-        [SerializeField] GameObject cornerBase;
-        [SerializeField] GameObject cornerAlt;
+        [SerializeField] SpriteRenderer cornerBase;
+        [SerializeField] SpriteRenderer cornerAlt;
+        [SerializeField] SpriteRenderer outlineBase;
+        [SerializeField] SpriteRenderer outlineAlt;
 
         private WaveGuideCornerComponent sourceCorner;
+
+        private SpriteRenderer currentCornerRenderer;
+        private SpriteRenderer currentOutlineRenderer;
 
         #region Awake / Destroy
         public override void SetSource(OpticComponent component)
@@ -35,19 +41,47 @@ namespace Game
 
         private void SetupListeners()
         {
-            sourceCorner.OnChangeAltType += Source_OnChangeAltType;
+            sourceCorner.OnChangeCornerType += Source_OnChangeCornerType;
         }
 
         private void RemoveListeners()
         {
-            sourceCorner.OnChangeAltType -= Source_OnChangeAltType;
+            sourceCorner.OnChangeCornerType -= Source_OnChangeCornerType;
         }
         #endregion
 
-        private void Source_OnChangeAltType(bool isAlt)
+        private void Source_OnChangeCornerType(CornerType cornerType)
         {
-            cornerBase.SetActive(!isAlt);
-            cornerAlt.SetActive(isAlt);
+            SetCornerVisuals(cornerType);
+        }
+
+        void SetCornerVisuals(CornerType cornerType)
+        {
+            bool isBaseType = (cornerType == CornerType.Default || cornerType == CornerType.DefaultFlipped);
+            bool isFlippedType = (cornerType == CornerType.DefaultFlipped);
+            if (isBaseType) { currentCornerRenderer = cornerBase; currentOutlineRenderer = outlineBase; }
+            else { currentCornerRenderer = cornerAlt; currentOutlineRenderer = outlineAlt; }
+
+            ToggleTypeVisuals(isBaseType);
+            MirrorTypeVisuals(isFlippedType);
+        }
+
+        void ToggleTypeVisuals(bool isBaseType)
+        {
+            cornerBase.gameObject.SetActive(isBaseType);
+            outlineBase.gameObject.SetActive(isBaseType);
+            cornerAlt.gameObject.SetActive(!isBaseType);
+            outlineAlt.gameObject.SetActive(!isBaseType);
+
+            SetOutlineState(false);
+            ChangeOutlineSprite(currentOutlineRenderer);
+            SetOutlineState(true);
+        }
+
+        void MirrorTypeVisuals(bool isFlippedType)
+        {
+            currentCornerRenderer.flipX = isFlippedType;
+            currentOutlineRenderer.flipX = isFlippedType;
         }
 
         public override List<List<Vector2>> NodePathIndexesMapper()
