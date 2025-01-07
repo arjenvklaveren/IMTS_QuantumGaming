@@ -2,7 +2,6 @@ using Game.Data;
 using Newtonsoft.Json;
 using SadUtils;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
@@ -28,19 +27,15 @@ namespace Game
             }
 
             SetInstance(this);
+
             SetDefaultValues();
+            Task.Run(LoadBlueprintsAsync);
         }
 
         private void SetDefaultValues()
         {
             loadedBlueprints = new();
-            blueprintDirectory = $"{Application.dataPath}{SerializationManager.blueprintDirectory}/";
-        }
-
-        private IEnumerator Start()
-        {
-            yield return SerializationManager.HasInstance;
-            Task.Run(() => LoadBlueprintsAsync());
+            blueprintDirectory = $"{Application.dataPath}{SerializationManager.BLUEPRINT_DIRECTORY}/";
         }
         #endregion
 

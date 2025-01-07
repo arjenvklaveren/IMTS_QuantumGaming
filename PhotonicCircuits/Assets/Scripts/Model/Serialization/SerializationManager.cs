@@ -12,8 +12,8 @@ namespace Game
 {
     public class SerializationManager : Singleton<SerializationManager>
     {
-        public const string saveDirectory = "/SaveData/Circuits";
-        public const string blueprintDirectory = "/SaveData/Blueprints";
+        public const string SAVE_DIRECTORY = "/SaveData/Circuits";
+        public const string BLUEPRINT_DIRECTORY = "/SaveData/Blueprints";
 
         private BlueprintSerializer blueprintSerializer;
         private SynchronizationContext mainThreadContext;
@@ -35,7 +35,9 @@ namespace Game
         }
         #endregion
 
-        public void SerializeProject(Action completeCallback = null)
+        public void SerializeProject() => SerializeProject(null);
+
+        public void SerializeProject(Action completeCallback)
         {
             if (isSaving)
                 return;
@@ -132,7 +134,7 @@ namespace Game
 
         public static string GetFilePath(string fileName, bool addExtension = true)
         {
-            string filePath = $"{Application.dataPath}{saveDirectory}/{fileName}";
+            string filePath = $"{Application.dataPath}{SAVE_DIRECTORY}/{fileName}";
 
             if (addExtension)
                 filePath += ".json";

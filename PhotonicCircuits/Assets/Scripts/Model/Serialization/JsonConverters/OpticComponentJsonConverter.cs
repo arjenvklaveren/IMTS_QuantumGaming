@@ -48,10 +48,15 @@ namespace Game
                 OpticComponentType.ICBeamSplitter => LoadICBeamSplitterComponent(data),
                 OpticComponentType.ICPhaseShifter => LoadICPhaseShifterComponent(data),
 
-
                 // IC Formats
                 OpticComponentType.IC1x1 => LoadICComponent(data),
                 OpticComponentType.IC2x2 => LoadICComponent(data),
+                OpticComponentType.IC2x4 => LoadICComponent(data),
+                OpticComponentType.IC2x8 => LoadICComponent(data),
+                OpticComponentType.IC4x2 => LoadICComponent(data),
+                OpticComponentType.IC4x4 => LoadICComponent(data),
+                OpticComponentType.IC8x2 => LoadICComponent(data),
+                OpticComponentType.IC8x4 => LoadICComponent(data),
 
                 // IC
                 OpticComponentType.ICIn => LoadICInComponent(data),
