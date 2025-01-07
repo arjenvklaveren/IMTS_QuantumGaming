@@ -96,6 +96,8 @@ namespace Game
             blueprintPlaceData.previewScale = templatePlaceData.previewScale;
             blueprintPlaceData.previewSprite = templatePlaceData.previewSprite;
             blueprintPlaceData.previewTileOffset = templatePlaceData.previewTileOffset;
+
+            blueprintPlaceData.defaultOrientation = templatePlaceData.defaultOrientation;
         }
 
         public void SelectComponent(ComponentPlaceDataSO placeData)
@@ -105,9 +107,6 @@ namespace Game
 
             if (placeData != null)
                 canRotateComponent = placeData.canRotate;
-
-            if (!canRotateComponent)
-                orientationOffset = Orientation.Up;
 
             selectedComponent = placeData;
             OnPlaceDataChanged?.Invoke(placeData);

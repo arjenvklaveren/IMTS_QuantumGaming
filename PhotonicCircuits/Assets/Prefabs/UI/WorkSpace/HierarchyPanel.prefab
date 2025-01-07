@@ -622,10 +622,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   componentItemContainer: {fileID: 1335228073981208691}
-  componentItemPrefab: {fileID: 0}
+  componentItemPrefab: {fileID: 848463447342732006, guid: dc533bd28792173409daa518451d9752, type: 3}
   rightArrowSprite: {fileID: 21300000, guid: 033d8a87c0db6394a85a0f6baf10ec9c, type: 3}
   componentVisualsHolder: {fileID: 0}
-  placeDataLookup: {fileID: 0}
+  placeDataLookup: {fileID: 11400000, guid: d3dfd018e64e7074abeb51a3cd881e88, type: 2}
 --- !u!114 &9161181898624744598
 MonoBehaviour:
   m_ObjectHideFlags: 0

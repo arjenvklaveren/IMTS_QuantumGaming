@@ -10,23 +10,51 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 7e7c70932f9c2a240aaf551fa426b760, type: 3}
-  m_Name: IC2x2PlaceData
+  m_Name: IC4x8PlaceData
   m_EditorClassIdentifier: 
-  title: 2x2 Integrated Circuit
+  title: 4x8 Integrated Circuit
   canRotate: 0
   previewSprite: {fileID: 21300000, guid: 26227fcaa23483742bfc7ce9c73aa371, type: 3}
-  previewScale: {x: 2, y: 2}
-  previewTileOffset: {x: 1, y: -1}
+  previewScale: {x: 4, y: 8}
+  previewTileOffset: {x: 3, y: -7}
   iconSprite: {fileID: 21300000, guid: 9a22eaa65abd3e043a98728f066d8624, type: 3}
   restrictionType: 2
   tileOffsetsToOccupy:
   - {x: 0, y: 0}
   - {x: 1, y: 0}
+  - {x: 2, y: 0}
+  - {x: 3, y: 0}
   - {x: 0, y: -1}
   - {x: 1, y: -1}
+  - {x: 2, y: -1}
+  - {x: 3, y: -1}
+  - {x: 0, y: -2}
+  - {x: 1, y: -2}
+  - {x: 2, y: -2}
+  - {x: 3, y: -2}
+  - {x: 0, y: -3}
+  - {x: 1, y: -3}
+  - {x: 2, y: -3}
+  - {x: 3, y: -3}
+  - {x: 0, y: -4}
+  - {x: 1, y: -4}
+  - {x: 2, y: -4}
+  - {x: 3, y: -4}
+  - {x: 0, y: -5}
+  - {x: 1, y: -5}
+  - {x: 2, y: -5}
+  - {x: 3, y: -5}
+  - {x: 0, y: -6}
+  - {x: 1, y: -6}
+  - {x: 2, y: -6}
+  - {x: 3, y: -6}
+  - {x: 0, y: -7}
+  - {x: 1, y: -7}
+  - {x: 2, y: -7}
+  - {x: 3, y: -7}
   defaultOrientation: 1
   inPorts: []
   outPorts: []
-  ICType: 101
-  gridSize: {x: 20, y: 20}
+  ICType: 107
+  gridSize: {x: 40, y: 80}
   gridSpacing: {x: 1, y: 1}

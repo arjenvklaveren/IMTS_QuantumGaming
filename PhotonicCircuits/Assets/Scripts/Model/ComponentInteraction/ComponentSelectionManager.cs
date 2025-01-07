@@ -56,9 +56,14 @@ namespace Game
             selected.SetOutlineState(true);
 
             // TEST
-            if (selected.SourceComponent.Type == Data.OpticComponentType.IC1x1 ||
-                selected.SourceComponent.Type == Data.OpticComponentType.IC2x2)
+            if (IsICComponentType(selected.SourceComponent.Type))
                 (selected as ICComponentVisuals).Interact();
+        }
+
+        private bool IsICComponentType(Data.OpticComponentType type)
+        {
+            int typeId = (int)type;
+            return typeId >= 100 && typeId < 200;
         }
 
         public void Deselect()

@@ -9,8 +9,7 @@ namespace Game
 
         public void SetBlueprintReference(ComponentPlaceDataSO templatePlaceData, ICBlueprintData blueprintData)
         {
-            // Load blueprint Data
-            //ICBlueprintManager.Instance.TryGetBlueprintData(blueprintName, out blueprintData);
+            // Store blueprint Data
             this.blueprintData = blueprintData;
 
             // Set place data from template
@@ -22,7 +21,7 @@ namespace Game
             return new ICComponentBase(
                 hostGrid,
                 tilesToOccupy,
-                Orientation.Up,
+                defaultOrientation,
                 blueprintData);
         }
     }

@@ -103,6 +103,7 @@ MonoBehaviour:
   previewHolder: {fileID: 4519823387705379721}
   imageHolder: {fileID: 187919298747679028}
   previewImage: {fileID: 3883776355746674768}
+  slicedPreviewImage: {fileID: 0}
 --- !u!1 &8830801988573398154
 GameObject:
   m_ObjectHideFlags: 0

@@ -76,7 +76,7 @@ namespace Game
         {
             currentDefaultOrientation = placeData.defaultOrientation;
 
-            previewImage.sprite = placeData.previewSprite;
+            ConfigureImageSprite(placeData.previewSprite);
             imageHolder.sizeDelta = defaultImageSizeDelta * placeData.previewScale;
 
             previewImage.rectTransform.anchoredPosition = (Vector2)placeData.previewTileOffset * tileOffsetSize;
@@ -86,6 +86,13 @@ namespace Game
                 previewHolder.gameObject.SetActive(true);
                 enabled = true;
             }
+        }
+
+        private void ConfigureImageSprite(Sprite previewSprite)
+        {
+            previewImage.sprite = previewSprite;
+
+            previewImage.type = previewImage.hasBorder ? Image.Type.Sliced : Image.Type.Simple;
         }
 
         private void HandleOrientationChanged(Orientation offsetOrientation)
