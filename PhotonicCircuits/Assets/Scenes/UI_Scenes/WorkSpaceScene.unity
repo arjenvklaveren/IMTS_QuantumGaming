@@ -238,12 +238,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8e833ae5ef3236b4c97530af139ef309, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 5
+  moveSpeed: 0
   dragSensitivity: 0.95
   zoomDragMultRange: {x: 0.5, y: 2}
   zoomSensitivity: 1
   zoomLimits: {x: 4, y: 20}
-  cam: {fileID: 0}
+  cam: {fileID: 262459210}
 --- !u!114 &262459207
 MonoBehaviour:
   m_ObjectHideFlags: 0

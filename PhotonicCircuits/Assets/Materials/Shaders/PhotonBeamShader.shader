@@ -79,7 +79,7 @@ Shader "Unlit/PhotonBeamShader"
                 if(_DirectionX != 0) axis = i.worldPos.x;
                 else axis = i.worldPos.y;
 
-                float timeOffset = _Time.y * _LineMoveSpeed;
+                float timeOffset = _Time.y * (_LineMoveSpeed / 2);
 
                 if(_DirectionX > 0) timeOffset = -timeOffset;
                 if(_DirectionY > 0) timeOffset = -timeOffset;
