@@ -41,9 +41,13 @@ namespace Game
             return grids;
         }
 
+        public void OpenProject(GridData rootGrid)
+        {
+            SaveProject(() => OpenProjectAfterSave(rootGrid));
+        }
+
         public void OpenGrid(GridData grid)
         {
-
             if (grid.isIntegrated)
                 SaveProject(() => OpenGridAfterSave(grid));
 
@@ -52,13 +56,6 @@ namespace Game
                 grids.Push(grid);
                 GridController.SetActiveGrid(grid);
             }
-        }
-
-        public void LoadRootGrid(GridData grid)
-        {
-            grids.Clear();
-
-            OpenGrid(grid);
         }
 
         public void CloseActiveGrid()
@@ -141,11 +138,21 @@ namespace Game
             OpenCurrentGrid();
         }
 
+        private void OpenProjectAfterSave(GridData rootGrid)
+        {
+            grids.Clear();
+
+            grids.Push(rootGrid);
+
+            OpenCurrentGrid();
+        }
+
         private void OpenCurrentGrid()
         {
             GridController.SetActiveGrid(grids.Peek());
 
             isSaving = false;
         }
+
     }
 }

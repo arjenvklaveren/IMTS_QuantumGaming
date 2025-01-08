@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6880691130036874528}
   - component: {fileID: 3253807044428499386}
-  - component: {fileID: 5483513941044445230}
+  - component: {fileID: 7513694884114919669}
   m_Layer: 0
   m_Name: Serialization
   m_TagString: Untagged
@@ -45,7 +45,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 56da9071b1292b14ca1826c74d178ea8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &5483513941044445230
+--- !u!114 &7513694884114919669
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
