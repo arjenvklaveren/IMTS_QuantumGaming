@@ -13,6 +13,8 @@ namespace Game
     {
         public Action<ICBlueprintData> OnBlueprintUpdated;
 
+        public bool Initialized;
+
         private Dictionary<string, ICBlueprintData> loadedBlueprints;
 
         private string blueprintDirectory;
@@ -46,6 +48,8 @@ namespace Game
 
             foreach (string filePath in filePaths)
                 await LoadBlueprintFileAsync(filePath);
+
+            Initialized = true;
         }
 
         private string[] GetAllBlueprintFilePaths()

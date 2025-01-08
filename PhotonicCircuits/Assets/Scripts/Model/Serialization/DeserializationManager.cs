@@ -2,6 +2,7 @@ using Game.Data;
 using Newtonsoft.Json;
 using SadUtils;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Threading;
@@ -28,7 +29,12 @@ namespace Game
             SetDefaultValues();
 
             SetInstance(this);
+        }
 
+        private IEnumerator Start()
+        {
+            // Wait for blueprints to be loaded before loading save files
+            yield return new WaitUntil(() => ICBlueprintManager.Instance.Initialized);
             Task.Run(LoadProjectData);
         }
 
