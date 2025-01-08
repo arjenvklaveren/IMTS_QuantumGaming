@@ -54,6 +54,9 @@ namespace Game
         {
             string projectFileDirectory = $"{Application.dataPath}{SerializationManager.SAVE_DIRECTORY}";
 
+            // Create Directory if directory doesn't exist
+            Directory.CreateDirectory(projectFileDirectory);
+
             string[] filePaths = Directory.GetFiles(projectFileDirectory, "*.json");
 
             foreach (string filePath in filePaths)

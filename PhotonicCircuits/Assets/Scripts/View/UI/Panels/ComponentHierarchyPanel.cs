@@ -69,18 +69,27 @@ namespace Game.UI
         void CreateComponentItems()
         {
             ClearComponentItems();
+
             foreach (ComponentVisuals component in componentVisualsHolder.GetComponentsInChildren<ComponentVisuals>())
             {
                 ComponentListItem listItem = Instantiate(componentItemPrefab, componentItemContainer.transform);
-                ComponentPlaceDataSO placeData = placeDataLookup.GetPlaceDataByType(component.SourceComponent.Type);
 
-                listItem.SetVisuals(placeData.title, placeData.iconSprite, rightArrowSprite);
+                // TEST
+                ComponentPlaceDataSO placeData;
+                if (placeDataLookup == null)
+                    listItem.SetVisuals("LOOKUP MISSING!!!", null, rightArrowSprite);
+                else
+                {
+                    placeData = placeDataLookup.GetPlaceDataByType(component.SourceComponent.Type);
+                    listItem.SetVisuals(placeData.title, placeData.iconSprite, rightArrowSprite);
+                }
 
                 UnityAction selectAction = () => { ComponentSelectionManager.Instance.SelectComponent(component); };
                 listItem.SetButtonActions(selectAction, selectAction);
 
                 listItems.Add(component, listItem);
             }
+
             SyncSelectedComponentVisual();
         }
 
@@ -108,10 +117,9 @@ namespace Game.UI
 
         void ClearComponentItems()
         {
-            foreach(Transform child in componentItemContainer.transform)
-            {
-                Destroy(child.gameObject);
-            }
+            for (int i = componentItemContainer.transform.childCount - 1; i >= 0; i--)
+                Destroy(componentItemContainer.transform.GetChild(i).gameObject);
+
             listItems.Clear();
         }
     }

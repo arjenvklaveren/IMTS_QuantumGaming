@@ -54,6 +54,9 @@ namespace Game
 
         private string[] GetAllBlueprintFilePaths()
         {
+            // Create Directory if folder does not exist
+            Directory.CreateDirectory(blueprintDirectory);
+
             return Directory.GetFiles(blueprintDirectory, "*.json");
         }
 
@@ -114,6 +117,9 @@ namespace Game
 
         private void WriteToFile(string json, string fileName)
         {
+            // Create directory if it does not exist
+            Directory.CreateDirectory(blueprintDirectory);
+
             // Compile file path
             string filePath = $"{blueprintDirectory}{fileName}.json";
 

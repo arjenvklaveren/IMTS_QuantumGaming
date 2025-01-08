@@ -4,9 +4,10 @@ namespace Game
     {
         protected override IInputDecoder[] CreateInputDecoders()
         {
-            return new IInputDecoder[2]
+            return new IInputDecoder[3]
             {
                 new CameraButtonMoveInputDecoder(),
+                new CameraDragInputDecoder(),
                 new CameraZoomInputDecoder(),
             };
         }

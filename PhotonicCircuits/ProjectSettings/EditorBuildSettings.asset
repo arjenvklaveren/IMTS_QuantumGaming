@@ -8,25 +8,25 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/TestScenes/Arvid's test shack.unity
     guid: 8c9cfa26abfee488c85f1582747f6a02
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/UI_Scenes/MasterScene.unity
     guid: 9db7f2142231d7640ac298cae93e1d66
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/UI_Scenes/BootstrapScene.unity
     guid: 32870e406d60bae4dbdb8f16cf1641d2
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/UI_Scenes/MainMenuScene.unity
     guid: 31ca106150a1ce64fa6d215b37b5aa6c
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/UI_Scenes/SettingsScene.unity
     guid: e45e92a3cb82ce74bb2960a52b8599d5
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/UI_Scenes/SimulationDataScene.unity
     guid: b66006e27c11f344b975b5ae8d185b6f
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/UI_Scenes/StaticHotbarScene.unity
     guid: b98f495441433d542ae340f6570a1cf3
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/UI_Scenes/WorkSpaceScene.unity
     guid: 74273edd52ebcac4a8a741ca5a38ff6e
   m_configObjects: {}

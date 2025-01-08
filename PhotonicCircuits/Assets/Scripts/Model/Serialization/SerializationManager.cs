@@ -61,15 +61,6 @@ namespace Game
             });
         }
 
-        public void SerializeGrid(GridData grid, Action completeCallback)
-        {
-            Task.Run(async () =>
-            {
-                await SerializeGridAsync(grid);
-                ExecuteOnMainThread(() => completeCallback?.Invoke());
-            });
-        }
-
         private async Task SerializeProjectAsync(IEnumerable<GridData> grids)
         {
             isSaving = true;
@@ -99,6 +90,10 @@ namespace Game
         {
             if (!string.IsNullOrEmpty(grid.gridName))
                 return true;
+
+            // Don't show popup if new project is empty
+            if (grid.placedComponents.Count == 0)
+                return false;
 
             Tuple<SetNamePopupResponse, string> response = await ShowSetNamePopup(error);
 
@@ -273,7 +268,12 @@ namespace Game
 
         public static string GetFilePath(string fileName, bool addExtension = true)
         {
-            string filePath = $"{Application.dataPath}{SAVE_DIRECTORY}/{fileName}";
+            string filePath = $"{Application.dataPath}{SAVE_DIRECTORY}";
+
+            // Create directory if it does not exist
+            Directory.CreateDirectory(filePath);
+
+            filePath += $"\\{fileName}";
 
             if (addExtension)
                 filePath += ".json";

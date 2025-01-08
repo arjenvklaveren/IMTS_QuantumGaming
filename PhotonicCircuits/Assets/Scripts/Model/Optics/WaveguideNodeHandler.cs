@@ -1,5 +1,3 @@
-using Codice.CM.Common.Tree;
-using Game.Data;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -30,7 +28,7 @@ namespace Game.Data
         public void SetupNodes(List<Vector2> nodes, List<List<Vector2>> nodePaths)
         {
             this.nodes.Clear();
-            foreach(Vector2 node in nodes) this.nodes.Add(node, new List<NodeAction>());
+            foreach (Vector2 node in nodes) this.nodes.Add(node, new List<NodeAction>());
             this.nodePaths = nodePaths;
             hasSetup = true;
         }
@@ -44,9 +42,9 @@ namespace Game.Data
             nodes[action.node].Add(action);
         }
 
-        public void ExecuteNodeActions(Photon photon, Vector2 node) 
-        { 
-            foreach(NodeAction action in nodes[node].ToList())
+        public void ExecuteNodeActions(Photon photon, Vector2 node)
+        {
+            foreach (NodeAction action in nodes[node].ToList())
             {
                 if (action.photon == photon)
                 {
@@ -58,24 +56,24 @@ namespace Game.Data
 
         public List<Vector2> GetNodePath(Vector2 startNode, Vector2 endNode, Vector2? middleNode = null)
         {
-            if(!nodes.ContainsKey(startNode) || !nodes.ContainsKey(endNode)) return null;
+            if (!nodes.ContainsKey(startNode) || !nodes.ContainsKey(endNode)) return null;
             if (middleNode.HasValue) if (!nodes.ContainsKey(middleNode.Value)) return null;
 
             Dictionary<int, Vector2Int> algDict = new Dictionary<int, Vector2Int>();
 
-            for(int i = 0; i < nodePaths.Count; i++)
+            for (int i = 0; i < nodePaths.Count; i++)
             {
                 Vector2? sNode = null;
                 Vector2? mNode = null;
                 Vector2Int nodesIndexes = new Vector2Int(0, 0);
 
-                for (int j = 0;  j < nodePaths[i].Count; j++)
+                for (int j = 0; j < nodePaths[i].Count; j++)
                 {
                     Vector2 cNode = nodePaths[i][j];
 
                     if (cNode == startNode) { sNode = cNode; nodesIndexes.x = j; }
                     if (middleNode.HasValue) if (cNode == middleNode.Value) mNode = middleNode.Value;
-                    if (cNode == endNode && sNode.HasValue) 
+                    if (cNode == endNode && sNode.HasValue)
                     {
                         if (middleNode.HasValue) if (!mNode.HasValue) break;
                         nodesIndexes.y = j;
@@ -95,7 +93,7 @@ namespace Game.Data
         private List<Vector2> GetPartOfNodePath(int nodePathIndex, Vector2Int range)
         {
             List<Vector2> returnList = new List<Vector2>();
-            for(int i = range.x; i <= range.y; i++)
+            for (int i = range.x; i <= range.y; i++)
             {
                 returnList.Add(nodePaths[nodePathIndex][i]);
             }

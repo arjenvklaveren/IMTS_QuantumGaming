@@ -1051,6 +1051,7 @@ GameObject:
   - component: {fileID: 7594400937933704761}
   - component: {fileID: 6265912552000966470}
   - component: {fileID: 5982168311288573429}
+  - component: {fileID: 387664379863585289}
   m_Layer: 0
   m_Name: ButtonBox
   m_TagString: Untagged
@@ -1134,6 +1135,18 @@ MonoBehaviour:
   m_ChildScaleWidth: 0
   m_ChildScaleHeight: 0
   m_ReverseArrangement: 1
+--- !u!114 &387664379863585289
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7651616935933229119}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0a2d56a6e378e5d4aac28633cfcce817, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &7966241797281876223
 GameObject:
   m_ObjectHideFlags: 0
@@ -1254,7 +1267,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 6957017424743332653}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 387664379863585289}
+        m_TargetAssemblyTypeName: Game.ApplicationStateChanger, Game.Model
+        m_MethodName: QuitApplication
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &8025415360207985226
 GameObject:
   m_ObjectHideFlags: 0
