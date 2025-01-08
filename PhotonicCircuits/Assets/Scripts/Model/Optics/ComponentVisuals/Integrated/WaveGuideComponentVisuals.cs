@@ -24,8 +24,8 @@ namespace Game
         protected virtual void SetDefaultValues()
         {
             sourceWaveguide = SourceComponent as WaveGuideComponent;
-            //if(!sourceWaveguide.nodeHandler.HasSetup()) 
-              //  sourceWaveguide.nodeHandler.SetupNodes(nodePositions.Select(t => (Vector2)t.position).ToList(), NodePathIndexesMapper());
+            if (!sourceWaveguide.nodeHandler.HasSetup())
+                sourceWaveguide.nodeHandler.SetupNodes(nodePositions.Select(t => (Vector2)t.position).ToList(), NodePathIndexesMapper());
         }
 
         protected override void OnDestroy()

@@ -68,7 +68,9 @@ namespace Game
 
         public void Deselect()
         {
+            if (SelectedVisuals != null) SelectedVisuals.SetOutlineState(false);
             HasSelection = false;
+            SelectedVisuals = null;
             OnDeselect?.Invoke();
         }
         #endregion

@@ -71,9 +71,8 @@ namespace Game.UI
 
         #region Handle selected changes
         private void ComponentSelectionManager_OnDeselectComponent()
-        {
-            //TODO: IF DESELECT FUCNTIONALITY CHANGES IN FUTURE, THIS COMMENT MIGHT HAVE TO BE REMOVED FOR CONSISTENTCY
-            //ResetPanel();
+        {        
+            ResetPanel();
         }
         private void GridController_OnDeleteComponent(OpticComponent component)
         {

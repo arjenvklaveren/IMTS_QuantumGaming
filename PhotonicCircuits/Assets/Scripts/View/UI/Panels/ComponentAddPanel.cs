@@ -27,6 +27,7 @@ namespace Game.UI
         [SerializeField] Sprite blueprintIconSprite;
 
         private bool isOpen;
+        private bool canOpen = true;
         private bool isComponentList = true;
 
         Dictionary<ComponentListItem, ComponentPlaceDataSO> currentPlaceDataList = new Dictionary<ComponentListItem, ComponentPlaceDataSO>();
@@ -50,6 +51,9 @@ namespace Game.UI
             selectBlueprintListButton.onClick.AddListener(ToggleListType);
             ComponentPaintManager.Instance.OnPlaceDataChanged += ComponentPaintManager_OnPlaceDataChanged;
             GridController.OnGridChanged += GridController_OnGridChanged;
+            SimulationManager.OnSimulationStart += ClosePanel;
+            SimulationManager.OnSimulationStart += () => SetCanOpenState(false);
+            SimulationManager.OnSimulationStop += () => SetCanOpenState(true);
         }
 
         void RemoveListeners()
@@ -60,16 +64,39 @@ namespace Game.UI
             selectBlueprintListButton.onClick.RemoveListener(ToggleListType);
             ComponentPaintManager.Instance.OnPlaceDataChanged -= ComponentPaintManager_OnPlaceDataChanged;
             GridController.OnGridChanged -= GridController_OnGridChanged;
+            SimulationManager.OnSimulationStart -= ClosePanel;
+            SimulationManager.OnSimulationStart -= () => SetCanOpenState(false);
+            SimulationManager.OnSimulationStop -= () => SetCanOpenState(true);
         }
         #endregion
 
+        #region Panel toggling
         void TogglePanel()
         {
+            if (!canOpen)
+            {
+                MessagePopupPanel.DisplayMessage("Cannot open this panel right now!", MessagePopupType.Error);
+                return;
+            };
+
             if (AnimatorIsPlaying()) return;
             isOpen = !isOpen;
-            if (isOpen) animator.Play("OpenAddComponentBox");
-            else animator.Play("CloseAddComponentBox");
+            if (isOpen) OpenPanel();
+            else ClosePanel();
         }
+
+        void OpenPanel()
+        {
+            animator.Play("OpenAddComponentBox");
+        }
+
+        void ClosePanel()
+        {
+            animator.Play("CloseAddComponentBox");
+        }
+
+        void SetCanOpenState(bool state) { canOpen = state; }
+        #endregion
 
         void ToggleListType()
         {

@@ -34,6 +34,7 @@ namespace Game.UI
             GridController.OnComponentAdded += GridController_OnAddComponent;
             GridController.OnComponentRemoved += GridController_OnDeleteComponent;
             ComponentSelectionManager.Instance.OnSelectedComponent += ComponentSelectionManager_OnSelectedComponent;
+            ComponentSelectionManager.Instance.OnDeselect += ComponentSelectionManager_OnDeselect;
         }
 
         void RemoveListeners()
@@ -42,9 +43,14 @@ namespace Game.UI
             GridController.OnComponentAdded -= GridController_OnAddComponent;
             GridController.OnComponentRemoved -= GridController_OnDeleteComponent;
             ComponentSelectionManager.Instance.OnSelectedComponent -= ComponentSelectionManager_OnSelectedComponent;
+            ComponentSelectionManager.Instance.OnDeselect -= ComponentSelectionManager_OnDeselect;
         }
 
         void ComponentSelectionManager_OnSelectedComponent(ComponentVisuals visuals)
+        {
+            SyncSelectedComponentVisual();
+        }
+        void ComponentSelectionManager_OnDeselect()
         {
             SyncSelectedComponentVisual();
         }

@@ -79,7 +79,7 @@ namespace Game
             else
                 routine = StartCoroutine(MovePhotonToGridEdgeCo(photon));
 
-            runningRoutines.Add(photon, routine);
+            if(!runningRoutines.ContainsKey(photon)) runningRoutines.Add(photon, routine);
         }
         #endregion
 

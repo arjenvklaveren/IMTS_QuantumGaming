@@ -35,6 +35,8 @@ namespace Game
 
         protected override IEnumerator HandlePhotonCo(ComponentPort port, Photon photon)
         {
+            if (currentPhotons.ContainsKey(photon)) yield break;
+
             currentPhotons.Add(photon, port);
             if (firstEnter == null)
                 ExternalCoroutineExecutionManager.Instance.StartExternalCoroutine(HandleFirstPhoton(photon));
