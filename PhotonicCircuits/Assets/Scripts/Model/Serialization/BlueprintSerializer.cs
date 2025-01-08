@@ -2,6 +2,7 @@ using Game.Data;
 using SadUtils.UI;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -146,9 +147,9 @@ namespace Game
         #endregion
 
         #region New Blueprint File
-        private async Task HandleNewFileResponse(ICComponentBase component)
+        private async Task HandleNewFileResponse(ICComponentBase component, string error = "")
         {
-            Tuple<NewFileResponse, string> responseData = await HandleNewFileNamePopup();
+            Tuple<NewFileResponse, string> responseData = await HandleNewFileNamePopup(error);
 
             NewFileResponse response = responseData.Item1;
 
@@ -163,7 +164,7 @@ namespace Game
             await HandleNewFilePromptResponse(component, responseData.Item2);
         }
 
-        private async Task<Tuple<NewFileResponse, string>> HandleNewFileNamePopup()
+        private async Task<Tuple<NewFileResponse, string>> HandleNewFileNamePopup(string error = "")
         {
             NewFileResponse? response = null;
             string submitData = "";
@@ -175,7 +176,8 @@ namespace Game
             PopupData popupData = GetNewFilePopupData(
                 UpdateSubmitData,
                 Submit,
-                Cancel);
+                Cancel,
+                error);
 
             ExecuteOnMainThread(() => PopupManager.ShowPopup(popupData));
 
@@ -192,11 +194,37 @@ namespace Game
 
         private async Task HandleNewFilePromptResponse(ICComponentBase component, string name)
         {
-            if (ICBlueprintManager.DoesBlueprintExist(name))
+            if (!IsValidName(name, out string error))
+                await HandleNewFileResponse(component, error);
+
+            else if (ICBlueprintManager.DoesBlueprintExist(name))
                 await HandleNameAlreadyExists(component, name);
 
             else
                 await SaveBlueprint(component, name);
+        }
+
+        private bool IsValidName(string name, out string error)
+        {
+            error = "";
+
+            if (string.IsNullOrEmpty(name))
+            {
+                error = "Name cannot be empty!";
+                return false;
+            }
+
+            char[] invalidChars = Path.GetInvalidFileNameChars();
+            foreach (char c in invalidChars)
+            {
+                if (name.Contains(c))
+                {
+                    error = $"Name cannot contain character \"{c}\"";
+                    return false;
+                }
+            }
+
+            return true;
         }
 
         private void TriggerRenameEvents(ICComponentBase component, string oldName, string newName)
@@ -302,15 +330,19 @@ namespace Game
         private PopupData GetNewFilePopupData(
             Action<string> formContentChangedCallback,
             Action submitCallback,
-            Action cancelCallback)
+            Action cancelCallback,
+            string error)
         {
             string title = "Create new blueprint";
 
-            PopupContentData[] contents = new PopupContentData[2]
+            List<PopupContentData> contents = new()
             {
                 new PopupTextContentData("Name the new blueprint"),
                 new PopupTextFormContentData(formContentChangedCallback, "Name")
             };
+
+            if (!string.IsNullOrEmpty(error))
+                contents.Insert(0, new PopupTextContentData($"<color=\"red\"><b>{error}</b></color>"));
 
             PopupTextButtonData[] buttons = new PopupTextButtonData[2]
             {

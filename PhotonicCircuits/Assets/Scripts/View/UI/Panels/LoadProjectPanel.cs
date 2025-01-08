@@ -12,12 +12,7 @@ namespace Game.UI
         [SerializeField] private RectTransform contentHolder;
         [SerializeField] private ProjectListItem listItemPrefab;
 
-        #region Awake
-        private void Awake()
-        {
-            SetDefaultValues();
-        }
-
+        #region Start
         private IEnumerator Start()
         {
             yield return DeserializationManager.WaitForInstance;
@@ -26,11 +21,6 @@ namespace Game.UI
                 GenerateListElements();
             else
                 SetupDeserializeListener();
-        }
-
-        private void SetDefaultValues()
-        {
-            gameObject.SetActive(false);
         }
 
         private void SetupDeserializeListener()

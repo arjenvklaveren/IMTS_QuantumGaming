@@ -36,17 +36,20 @@ namespace Game.UI
         {
             GridController.OnGridChanged += GridController_OnGridChanged;
             ICComponentBase.OnAnyBlueprintNameChanged += ReconstructPath;
+            GridManager.OnProjectRenamed += GridManager_OnProjectRenamed;
         }
 
         private void RemoveListeners()
         {
             GridController.OnGridChanged -= GridController_OnGridChanged;
             ICComponentBase.OnAnyBlueprintNameChanged -= ReconstructPath;
+            GridManager.OnProjectRenamed -= GridManager_OnProjectRenamed;
         }
         #endregion
 
         #region Handle Listeners
         private void GridController_OnGridChanged(GridData grid) => ReconstructPath();
+        private void GridManager_OnProjectRenamed(string name) => ReconstructPath();
         #endregion
 
         #region Create Path
@@ -99,6 +102,10 @@ namespace Game.UI
             GridPathButtonHandler buttonHandler = Instantiate(gridPathButtonPrefab, pathHolder);
 
             string gridName = grid.gridName;
+
+            if (string.IsNullOrEmpty(gridName))
+                gridName = "unnamed";
+
             buttonHandler.Init(HandleButtonClick, gridName);
         }
 

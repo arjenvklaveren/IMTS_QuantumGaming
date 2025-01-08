@@ -141,6 +141,8 @@ namespace Game
                     if (IsValidName(name, out string error))
                     {
                         grid.gridName = name;
+                        // Notify UI elements of name change
+                        ExecuteOnMainThread(() => GridManager.Instance.TriggerProjectRenamed(name));
                         return true;
                     }
                     else
@@ -155,6 +157,12 @@ namespace Game
         private bool IsValidName(string name, out string error)
         {
             error = "";
+
+            if (string.IsNullOrEmpty(name))
+            {
+                error = "Name cannot be empty!";
+                return false;
+            }
 
             if (DeserializationManager.Instance.ProjectWithNameExists(name))
             {

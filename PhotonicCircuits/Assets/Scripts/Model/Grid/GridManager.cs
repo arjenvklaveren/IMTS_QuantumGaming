@@ -8,6 +8,8 @@ namespace Game
 {
     public class GridManager : Singleton<GridManager>
     {
+        public event Action<string> OnProjectRenamed;
+
         public WaitUntil WaitUntilGrid { get; private set; }
 
         public GridController GridController { get; private set; }
@@ -16,6 +18,7 @@ namespace Game
 
         private bool isSaving;
 
+        #region Awake
         protected override void Awake()
         {
             SetDefaultValues();
@@ -30,7 +33,9 @@ namespace Game
 
             WaitUntilGrid = new WaitUntil(() => grids.Count > 0);
         }
+        #endregion
 
+        #region Get Grid Data
         public GridData GetActiveGrid()
         {
             return grids.Peek();
@@ -40,7 +45,9 @@ namespace Game
         {
             return grids;
         }
+        #endregion
 
+        #region Open Grid Data
         public void OpenProject(GridData rootGrid)
         {
             SaveProject(() => OpenProjectAfterSave(rootGrid));
@@ -58,6 +65,14 @@ namespace Game
             }
         }
 
+        public void ForceOpenGrid(GridData grid)
+        {
+            grids.Push(grid);
+            GridController.SetActiveGrid(grid);
+        }
+        #endregion
+
+        #region Close Grid
         public void CloseActiveGrid()
         {
             if (isSaving)
@@ -68,12 +83,6 @@ namespace Game
 
             // save closed Grid
             SaveProject(CloseGridAfterSave);
-        }
-
-        public void ForceOpenGrid(GridData grid)
-        {
-            grids.Push(grid);
-            GridController.SetActiveGrid(grid);
         }
 
         public void ForceCloseActiveGrid()
@@ -87,7 +96,9 @@ namespace Game
 
             ComponentPortsManager.Instance.CompileComponentPorts(closedGrid);
         }
+        #endregion
 
+        #region Handle Project Save
         private void SaveProject(Action completeCallback)
         {
             if (isSaving)
@@ -153,6 +164,10 @@ namespace Game
 
             isSaving = false;
         }
+        #endregion
 
+        #region Trigger Events
+        public void TriggerProjectRenamed(string newName) => OnProjectRenamed?.Invoke(newName);
+        #endregion
     }
 }
