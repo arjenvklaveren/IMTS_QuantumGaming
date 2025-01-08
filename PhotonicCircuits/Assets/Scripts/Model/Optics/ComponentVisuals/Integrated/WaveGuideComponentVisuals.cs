@@ -24,8 +24,8 @@ namespace Game
         protected virtual void SetDefaultValues()
         {
             sourceWaveguide = SourceComponent as WaveGuideComponent;
-            if(!sourceWaveguide.nodeHandler.HasSetup()) 
-                sourceWaveguide.nodeHandler.SetupNodes(nodePositions.Select(t => (Vector2)t.position).ToList(), NodePathIndexesMapper());
+            //if(!sourceWaveguide.nodeHandler.HasSetup()) 
+              //  sourceWaveguide.nodeHandler.SetupNodes(nodePositions.Select(t => (Vector2)t.position).ToList(), NodePathIndexesMapper());
         }
 
         protected override void OnDestroy()
@@ -60,6 +60,8 @@ namespace Game
                 new List<Vector2> { nodePositions[0].position },
             };
         }
+
+        public List<Transform> GetNodePositions() { return nodePositions; }
 
         #region Handle Rotation
         protected override void HandleRotationChanged(Orientation orientation)

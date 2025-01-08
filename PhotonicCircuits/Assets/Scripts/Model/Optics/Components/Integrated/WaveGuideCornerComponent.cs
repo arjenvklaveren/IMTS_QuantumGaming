@@ -7,12 +7,9 @@ namespace Game
     public class WaveGuideCornerComponent : WaveGuideComponent
     {
         public override OpticComponentType Type => OpticComponentType.WaveGuideCorner;
-        public enum CornerType { Default, DefaultFlipped, Alternative  }
 
-        [ComponentContext("Corner Type", nameof(SetCornerType))]
+        public enum CornerType { Default, Flipped, Alternative  }
         public CornerType cornerType = CornerType.Default;
-
-        public event Action<CornerType> OnChangeCornerType;
 
         public WaveGuideCornerComponent(
             GridData hostGrid,
@@ -31,16 +28,9 @@ namespace Game
                 outPorts)
         {
             this.cornerType = cornerType;
-            if(cornerType != CornerType.Default) SetCornerType(cornerType);
         }
 
         public override void SetOrientation(Orientation orientation) => ComponentRotateUtil.SetOrientation(this, orientation);
-
-        public void SetCornerType(CornerType cornerType)
-        {
-            OnChangeCornerType.Invoke(cornerType);
-            this.cornerType = cornerType;
-        }
 
         public override ComponentPort GetOutPort(int inPortIndex)
         {

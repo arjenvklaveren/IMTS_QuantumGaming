@@ -1,0 +1,1 @@
+{"name":"testGrid","gridData":{"gridName":"testGrid","spacing":[1.0,1.0],"size":[48,27],"placedComponents":[{"type":100,"occupiedTiles":[[22,14]],"orientation":0,"inPorts":[{"position":[0,0],"orientation":3}],"outPorts":[],"args":"Mooi"}],"isIntegrated":false},"timeStamp":"2025-01-08T09:45:10.0700697+01:00"}

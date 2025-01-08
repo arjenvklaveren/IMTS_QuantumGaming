@@ -2,6 +2,7 @@ using Game.Data;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 namespace Game
@@ -28,13 +29,18 @@ namespace Game
                 inPorts,
                 outPorts)
         {
-
+            
         }
 
         protected override IEnumerator HandlePhotonCo(ComponentPort port, Photon photon)
         {
             OnHandlePhoton?.Invoke(port.portId);
-            NodeAction endNodeAction = new NodeAction(GetOutPort(port.portId).position, photon,() => CallExitPhoton(photon, port));
+            NodeAction endNodeAction = new NodeAction(GetOutPort(port.portId).position, photon,() => 
+            {
+                photon.SetPropagation(GetOutPort(port.portId).orientation); 
+                CallExitPhoton(photon, port);
+            });
+
             nodeHandler.AddNodeAction(endNodeAction);
             yield break;
         }

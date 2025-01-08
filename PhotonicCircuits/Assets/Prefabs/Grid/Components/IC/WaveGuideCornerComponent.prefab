@@ -252,6 +252,7 @@ MonoBehaviour:
   cornerAlt: {fileID: 6261813088590824095}
   outlineBase: {fileID: 7615401060916070944}
   outlineAlt: {fileID: 5254331766630412588}
+  pathNodeTransform: {fileID: 1510708632268404487}
 --- !u!1 &2821371513943998317
 GameObject:
   m_ObjectHideFlags: 0
@@ -694,7 +695,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: f7d85925124b77c47b30fee444766494, type: 3}
+  m_Sprite: {fileID: 21300000, guid: c638ffc9bc635ef48a4786c493b75a80, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0

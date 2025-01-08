@@ -13,57 +13,54 @@ namespace Game
         [SerializeField] SpriteRenderer cornerAlt;
         [SerializeField] SpriteRenderer outlineBase;
         [SerializeField] SpriteRenderer outlineAlt;
+        [SerializeField] Transform pathNodeTransform;
 
         private WaveGuideCornerComponent sourceCorner;
 
         private SpriteRenderer currentCornerRenderer;
         private SpriteRenderer currentOutlineRenderer;
 
+        bool hasSetVisuals;
+
         #region Awake / Destroy
         public override void SetSource(OpticComponent component)
         {
             base.SetSource(component);
             SetDefaultValues();
-            SetupListeners();
         }
 
         protected override void OnDestroy()
         {
             base.OnDestroy();
-            RemoveListeners();
         }
 
         protected override void SetDefaultValues()
         {
-            base.SetDefaultValues();
             sourceCorner = SourceComponent as WaveGuideCornerComponent;
-        }
-
-        private void SetupListeners()
-        {
-            sourceCorner.OnChangeCornerType += Source_OnChangeCornerType;
-        }
-
-        private void RemoveListeners()
-        {
-            sourceCorner.OnChangeCornerType -= Source_OnChangeCornerType;
+            SetCornerVisuals(sourceCorner.cornerType);
+            base.SetDefaultValues();
         }
         #endregion
 
-        private void Source_OnChangeCornerType(CornerType cornerType)
-        {
-            SetCornerVisuals(cornerType);
-        }
-
         void SetCornerVisuals(CornerType cornerType)
         {
-            bool isBaseType = (cornerType == CornerType.Default || cornerType == CornerType.DefaultFlipped);
-            bool isFlippedType = (cornerType == CornerType.DefaultFlipped);
+            if (hasSetVisuals) return;   
+            
+            bool isBaseType = (cornerType == CornerType.Default || cornerType == CornerType.Flipped);
+            bool isFlippedType = cornerType == CornerType.Flipped;
+
             if (isBaseType) { currentCornerRenderer = cornerBase; currentOutlineRenderer = outlineBase; }
             else { currentCornerRenderer = cornerAlt; currentOutlineRenderer = outlineAlt; }
 
+            if (isFlippedType) 
+            {
+                pathNodeTransform.transform.Rotate(new Vector3(0, 0, 90));
+                currentCornerRenderer.flipX = isFlippedType;
+                currentOutlineRenderer.flipX = isFlippedType;
+            }
+
             ToggleTypeVisuals(isBaseType);
-            MirrorTypeVisuals(isFlippedType);
+            hasSetVisuals = true;
         }
 
         void ToggleTypeVisuals(bool isBaseType)
@@ -73,15 +70,7 @@ namespace Game
             cornerAlt.gameObject.SetActive(!isBaseType);
             outlineAlt.gameObject.SetActive(!isBaseType);
 
-            SetOutlineState(false);
             ChangeOutlineSprite(currentOutlineRenderer);
-            SetOutlineState(true);
-        }
-
-        void MirrorTypeVisuals(bool isFlippedType)
-        {
-            currentCornerRenderer.flipX = isFlippedType;
-            currentOutlineRenderer.flipX = isFlippedType;
         }
 
         public override List<List<Vector2>> NodePathIndexesMapper()

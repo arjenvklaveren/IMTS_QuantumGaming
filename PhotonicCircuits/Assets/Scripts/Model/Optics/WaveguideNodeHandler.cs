@@ -1,3 +1,4 @@
+using Codice.CM.Common.Tree;
 using Game.Data;
 using System.Collections.Generic;
 using System.Linq;
@@ -28,6 +29,7 @@ namespace Game.Data
 
         public void SetupNodes(List<Vector2> nodes, List<List<Vector2>> nodePaths)
         {
+            this.nodes.Clear();
             foreach(Vector2 node in nodes) this.nodes.Add(node, new List<NodeAction>());
             this.nodePaths = nodePaths;
             hasSetup = true;
@@ -38,6 +40,7 @@ namespace Game.Data
 
         public void AddNodeAction(NodeAction action)
         {
+            if (!nodes.ContainsKey(action.node)) { Debug.LogError("Node does not exist!"); return; }
             nodes[action.node].Add(action);
         }
 
@@ -88,7 +91,6 @@ namespace Game.Data
             List<Vector2> returnList = GetPartOfNodePath(algPair.Key, algPair.Value);
             return returnList;
         }
-
 
         private List<Vector2> GetPartOfNodePath(int nodePathIndex, Vector2Int range)
         {

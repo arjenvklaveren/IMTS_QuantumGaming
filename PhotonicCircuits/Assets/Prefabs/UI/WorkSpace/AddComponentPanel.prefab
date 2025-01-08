@@ -943,7 +943,7 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3995346318833169633}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -1001,6 +1001,8 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 8e4c9d920a37332459dc52c41ffd14f4, type: 2}
   - {fileID: 11400000, guid: 9d80036f5eac08d459c3e74b7fe3c7ad, type: 2}
   - {fileID: 11400000, guid: 1662e980d369199498659ba410a844b6, type: 2}
+  - {fileID: 11400000, guid: 2261704cebc85ed46a9449487566d756, type: 2}
+  - {fileID: 11400000, guid: fd5df2b507602ab40ba96478a96825dd, type: 2}
   - {fileID: 11400000, guid: f83937eef309b94489c756d78bf76ec2, type: 2}
   - {fileID: 11400000, guid: 2be5f791439626d47980903838ae6e03, type: 2}
   - {fileID: 11400000, guid: b55c79fa622110b49a3c2fa5b408de97, type: 2}
@@ -2188,7 +2190,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 300, y: 375}
+  m_SizeDelta: {x: 300, y: 425}
   m_Pivot: {x: 0, y: 0}
 --- !u!114 &4465437735672716225
 MonoBehaviour:
