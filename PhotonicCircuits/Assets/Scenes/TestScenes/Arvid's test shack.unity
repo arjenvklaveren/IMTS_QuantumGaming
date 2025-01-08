@@ -2828,7 +2828,7 @@ MonoBehaviour:
   dragSensitivity: 0.95
   zoomDragMultRange: {x: 0.5, y: 2}
   zoomSensitivity: 1
-  zoomLimits: {x: 4, y: 20}
+  zoomLimits: {x: 4, y: 17}
   cam: {fileID: 519420031}
 --- !u!1 &619394800
 GameObject:
