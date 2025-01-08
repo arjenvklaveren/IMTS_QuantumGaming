@@ -95,6 +95,15 @@ namespace Game
         #endregion
 
         #region Util
+        public bool ProjectWithNameExists(string name)
+        {
+            foreach (ProjectData projectData in CachedProjectData.Values)
+                if (projectData.name == name)
+                    return true;
+
+            return false;
+        }
+
         private void ExecuteOnMainThread(Action action)
         {
             mainThreadContext.Post(_ => action?.Invoke(), null);

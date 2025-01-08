@@ -15,7 +15,7 @@ namespace Game.Test
             yield return null;
 
             GridData data = new(
-                "testGrid",
+                "",
                 gridSpacing,
                 gridSize);
 
