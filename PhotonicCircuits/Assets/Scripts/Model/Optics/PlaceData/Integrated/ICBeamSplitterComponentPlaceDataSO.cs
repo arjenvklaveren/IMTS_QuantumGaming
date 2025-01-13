@@ -4,7 +4,7 @@ using UnityEngine;
 namespace Game
 {
     [CreateAssetMenu(fileName = "integratedBeamSplitterPlaceData", menuName = "ScriptableObjects/Components/Place Data/integrated beamSplitter")]
-    public class ICBeamSplitterComponentPlaceDataSO : ComponentPlaceDataSO
+    public class ICBeamSplitterComponentPlaceDataSO : WaveGuideComponentPlaceDataSO
     {
         public override OpticComponent CreateOpticComponent(GridData hostGrid, Vector2Int[] tilesToOccupy, Orientation placeOrientation)
         {
@@ -14,7 +14,8 @@ namespace Game
                 defaultOrientation,
                 placeOrientation,
                 inPorts,
-                outPorts);
+                outPorts,
+                nodePathLengths);
         }
     }
 }

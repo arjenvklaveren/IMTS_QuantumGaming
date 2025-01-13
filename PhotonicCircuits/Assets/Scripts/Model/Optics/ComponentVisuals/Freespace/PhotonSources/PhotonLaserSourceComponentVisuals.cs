@@ -4,55 +4,13 @@ using UnityEngine;
 
 namespace Game
 {
-    public class PhotonLaserSourceComponentVisuals : ComponentVisuals
+    public class PhotonLaserSourceComponentVisuals : PhotonSourceComponentVisuals
     {
-        [Header("Photon Visuals Settings")]
-        [SerializeField] private PhotonBeamVisuals photonPrefab;
-
-        #region Awake / Destroy
-        public override void SetSource(OpticComponent component)
+        protected override void HandlePhotonCreation(Photon photon)
         {
-            base.SetSource(component);
-
-            SetupListeners();
-            HandleRotationChanged(component.orientation);
-        }
-
-        protected override void OnDestroy()
-        {
-            base.OnDestroy();
-            RemoveListeners();
-        }
-
-        private void SetupListeners()
-        {
-            PhotonLaserSourceComponent source = SourceComponent as PhotonLaserSourceComponent;
-            source.OnCreatePhoton += Source_OnCreatePhoton;
-        }
-
-        private void RemoveListeners()
-        {
-            PhotonLaserSourceComponent source = SourceComponent as PhotonLaserSourceComponent;
-            source.OnCreatePhoton -= Source_OnCreatePhoton;
-        }
-        #endregion
-
-        #region Handle Events
-        private void Source_OnCreatePhoton(Photon photon) => HandlePhotonCreation(photon);
-
-        private void HandlePhotonCreation(Photon photon)
-        {
-            PhotonBeamVisuals photonVisuals = Instantiate(photonPrefab);
+            PhotonVisuals photonVisuals = Instantiate(photonPrefab);
             photonVisuals.transform.position = transform.position;
             photonVisuals.SetSource(photon);
         }
-        #endregion
-
-        #region Handle Rotation
-        protected override void HandleRotationChanged(Orientation orientation)
-        {
-            RotateToLookAtOrientation(visualsHolder, orientation);
-        }
-        #endregion 
     }
 }

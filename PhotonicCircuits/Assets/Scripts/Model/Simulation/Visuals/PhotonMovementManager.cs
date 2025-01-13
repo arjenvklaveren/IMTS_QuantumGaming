@@ -126,13 +126,13 @@ namespace Game
         }
 
 
-        public WaitForSeconds GetWaitMoveTime(PhotonType type, bool half = false)
+        public WaitForSeconds GetWaitMoveTime(PhotonType type, bool half = false, float tiles = 1)
         {
             float waitValue = 1f / MoveSpeed;
             if(type == PhotonType.Classical) waitValue = 1f / ClassicCombinedSpeed();
             if (half) waitValue /= 2;
 
-            return new WaitForSeconds(waitValue);
+            return new WaitForSeconds(waitValue * tiles);
         }
 
         public float ClassicCombinedSpeed()

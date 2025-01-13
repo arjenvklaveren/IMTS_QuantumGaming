@@ -68,6 +68,8 @@ namespace Game
 
         public void Deselect()
         {
+            //TEMP DISABLED DESELECTION DUE TO BUGS WHEN CLICKING
+            return;
             if (SelectedVisuals != null) SelectedVisuals.SetOutlineState(false);
             HasSelection = false;
             SelectedVisuals = null;

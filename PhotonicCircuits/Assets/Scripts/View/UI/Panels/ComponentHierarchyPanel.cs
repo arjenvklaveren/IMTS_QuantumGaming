@@ -32,7 +32,7 @@ namespace Game.UI
         {
             GridController.OnGridChanged += GridController_OnGridChanged;
             GridController.OnComponentAdded += GridController_OnAddComponent;
-            GridController.OnComponentRemoved += GridController_OnDeleteComponent;
+            GridController.OnComponentRemoved += GridController_OnRemoveComponent;
             ComponentSelectionManager.Instance.OnSelectedComponent += ComponentSelectionManager_OnSelectedComponent;
             ComponentSelectionManager.Instance.OnDeselect += ComponentSelectionManager_OnDeselect;
         }
@@ -41,7 +41,7 @@ namespace Game.UI
         {
             GridController.OnGridChanged -= GridController_OnGridChanged;
             GridController.OnComponentAdded -= GridController_OnAddComponent;
-            GridController.OnComponentRemoved -= GridController_OnDeleteComponent;
+            GridController.OnComponentRemoved -= GridController_OnRemoveComponent;
             ComponentSelectionManager.Instance.OnSelectedComponent -= ComponentSelectionManager_OnSelectedComponent;
             ComponentSelectionManager.Instance.OnDeselect -= ComponentSelectionManager_OnDeselect;
         }
@@ -103,7 +103,7 @@ namespace Game.UI
 
         void GridController_OnAddComponent(OpticComponent component) { CreateComponentItems(); }
 
-        void GridController_OnDeleteComponent(OpticComponent component)
+        void GridController_OnRemoveComponent(OpticComponent component)
         {
             foreach (KeyValuePair<ComponentVisuals, ComponentListItem> item in listItems.ToList())
             {

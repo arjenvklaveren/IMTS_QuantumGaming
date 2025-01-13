@@ -139,13 +139,16 @@ namespace Game
 
         private PhotonDetectorComponent LoadDetectorComponent(OpticComponentData data)
         {
+            int.TryParse(data.args, out int stateIdentifier);
+
             return new(
                 null,
                 data.occupiedTiles,
                 data.orientation,
                 data.orientation,
                 data.inPorts,
-                data.outPorts);
+                data.outPorts,
+                stateIdentifier);
         }
         #endregion
 
@@ -191,19 +194,7 @@ namespace Game
 
         private WaveGuideComponent LoadICWaveGuideStraightComponent(OpticComponentData data)
         {
-            return new(
-                null,
-                data.occupiedTiles,
-                data.orientation,
-                data.orientation,
-                data.inPorts,
-                data.outPorts);
-        }
-
-        private WaveGuideCornerComponent LoadICWaveGuideCornerComponent(OpticComponentData data)
-        {
-            WaveGuideCornerComponent.CornerType cornerType;
-            Enum.TryParse(data.args, out cornerType);
+            float[] nodepathLengths = JsonConvert.DeserializeObject<float[]>(data.args);
 
             return new(
                 null,
@@ -212,24 +203,44 @@ namespace Game
                 data.orientation,
                 data.inPorts,
                 data.outPorts,
-                cornerType);
+                nodepathLengths);
+        }
+
+        private WaveGuideCornerComponent LoadICWaveGuideCornerComponent(OpticComponentData data)
+        {
+            var args = JsonConvert.DeserializeObject<Dictionary<string, object>>(data.args);
+            float[] nodePathLengths = JsonConvert.DeserializeObject<float[]>(args["NodePathLengths"].ToString());
+            Enum.TryParse(args["CornerType"].ToString(), out WaveGuideCornerComponent.CornerType cornerType);
+
+            return new(
+                null,
+                data.occupiedTiles,
+                data.orientation,
+                data.orientation,
+                data.inPorts,
+                data.outPorts,
+                cornerType,
+                nodePathLengths
+                );
         }
 
         private ICBeamSplitterComponent LoadICBeamSplitterComponent(OpticComponentData data)
         {
+            float[] nodepathLengths = JsonConvert.DeserializeObject<float[]>(data.args);
+
             return new(
                null,
                data.occupiedTiles,
                data.orientation,
                data.orientation,
                data.inPorts,
-               data.outPorts);
+               data.outPorts,
+               nodepathLengths);
         }
 
         private ICPhaseShifterComponent LoadICPhaseShifterComponent(OpticComponentData data)
         {
-            float shiftParse = 0;
-            float.TryParse(data.args, out shiftParse);
+            float.TryParse(data.args, out float shiftParse);
 
             return new(
                null,

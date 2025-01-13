@@ -23,16 +23,18 @@ namespace Game
             Orientation defaultOrientation,
             Orientation placeOrientation,
             ComponentPort[] inPorts,
-            ComponentPort[] outPorts
+            ComponentPort[] outPorts,
+            float[] nodePathLengths
             ) : base(
                 hostGrid,
                 tilesToOccupy,
                 defaultOrientation,
                 placeOrientation,
                 inPorts,
-                outPorts)
+                outPorts,
+                nodePathLengths)
         {
-
+            
         }
 
         public override void SetOrientation(Orientation orientation) => ComponentRotateUtil.SetOrientation(this, orientation);
@@ -166,6 +168,11 @@ namespace Game
                 2 => OutPorts[0],
                 _ => throw new ArgumentException("Invalid inPort")
             };
+        }
+
+        public override string SerializeArgs()
+        {
+            return base.SerializeArgs();
         }
     }
 }

@@ -74,14 +74,12 @@ namespace Game
         }
         #endregion
 
-        public override List<List<Vector2>> NodePathIndexesMapper()
+        public override List<List<int>> NodePathsIndexesMapper()
         {
-            return new List<List<Vector2>>
+            return new List<List<int>>
             {
-                new List<Vector2> { nodePositions[0].position, nodePositions[1].position, nodePositions[2].position, nodePositions[3].position },
-                new List<Vector2> { nodePositions[0].position, nodePositions[1].position, nodePositions[4].position, nodePositions[5].position },
-                new List<Vector2> { nodePositions[3].position, nodePositions[2].position, nodePositions[1].position, nodePositions[0].position },
-                new List<Vector2> { nodePositions[5].position, nodePositions[4].position, nodePositions[1].position, nodePositions[0].position }
+                new List<int> { 0, 1, 2, 3 },
+                new List<int> { 0, 1, 4, 5 }
             };
         }
 

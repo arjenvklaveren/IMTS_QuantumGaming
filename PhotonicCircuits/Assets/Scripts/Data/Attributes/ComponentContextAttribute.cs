@@ -7,11 +7,13 @@ namespace Game.Data
     {
         public string attributeName;
         public string changeValueMethodName;
+        public bool uneditable;
 
-        public ComponentContextAttribute(string attributeName, string changeValueMethod)
+        public ComponentContextAttribute(string attributeName, string changeValueMethod, bool uneditable = false)
         {
             this.attributeName = attributeName;
             this.changeValueMethodName = changeValueMethod;
+            this.uneditable = uneditable;
         }
     }
 }

@@ -26,7 +26,7 @@ namespace Game.UI
         [SerializeField] Sprite addCrossSprite;
         [SerializeField] Sprite blueprintIconSprite;
 
-        private bool isOpen;
+        private bool isOpen = false;
         private bool canOpen = true;
         private bool isComponentList = true;
 
@@ -73,25 +73,28 @@ namespace Game.UI
         #region Panel toggling
         void TogglePanel()
         {
+            if (AnimatorIsPlaying()) return;
             if (!canOpen)
             {
-                MessagePopupPanel.DisplayMessage("Cannot open this panel right now!", MessagePopupType.Error);
+                MessagePopupPanelHandler.DisplayMessage("Cannot open this panel right now!", MessagePopupType.Info);
                 return;
             };
 
-            if (AnimatorIsPlaying()) return;
-            isOpen = !isOpen;
-            if (isOpen) OpenPanel();
-            else ClosePanel();
+            if (isOpen) ClosePanel();
+            else OpenPanel();
         }
 
         void OpenPanel()
         {
+            if (isOpen) return;
+            isOpen = true;
             animator.Play("OpenAddComponentBox");
         }
 
         void ClosePanel()
         {
+            if (!isOpen) return;
+            isOpen = false;
             animator.Play("CloseAddComponentBox");
         }
 

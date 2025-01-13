@@ -24,10 +24,13 @@ namespace Game
                 inPorts,
                 outPorts)
         {
+
         }
 
         protected override IEnumerator HandlePhotonCo(ComponentPort port, Photon photon)
         {
+            Debug.Log("PHOTON HITS MIRROR AAAAA");
+
             yield return PhotonMovementManager.Instance.GetWaitMoveTime(photon.GetPhotonType(), true);
 
             int outportID = GetOutPort(port.portId);
@@ -39,17 +42,7 @@ namespace Game
 
         private int GetOutPort(int inPort)
         {
-            return inPort switch
-            {
-                3 => 2,
-                2 => 3,
-                1 => 0,
-                0 => 1,
-                _ => throw new ArgumentException("Invalid inPort")
-            };
-
-            // could look like this:
-            // return inPort += inPort % 2 == 0 ? 1 : -1;
+            return inPort += inPort % 2 == 0 ? 1 : -1;
         }
 
         public override void SetOrientation(Orientation orientation) => ComponentRotateUtil.SetOrientation(this, orientation);

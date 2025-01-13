@@ -16,6 +16,7 @@ namespace Game.Data
 
         //external properties
         public GridData currentGrid;
+        private string uniqueSourceKey;
 
         //photon limit values
         const float MIN_PHOTON_WAVELENGTH = 380;
@@ -54,7 +55,9 @@ namespace Game.Data
 
         public Photon Clone()
         {
-            return new Photon(currentGrid, this.position, this.propagation, this.wavelength, this.amplitude, this.phase, this.polarization, this.type);
+            Photon returnPhoton = new Photon(currentGrid, position, propagation, wavelength, amplitude, phase, polarization, type);
+            returnPhoton.SetUniqueSourceKey(uniqueSourceKey);
+            return returnPhoton;
         }
 
         public void SetWavelength(float waveLength) { this.wavelength = Mathf.Clamp(waveLength, MIN_PHOTON_WAVELENGTH, MAX_PHOTON_WAVELENGTH); }
@@ -76,6 +79,8 @@ namespace Game.Data
         public Vector2Int GetPropagationIntVector() => propagation.ToVector2Int();
 
         public PhotonType GetPhotonType() { return type; }
+        public void SetUniqueSourceKey(string key) { uniqueSourceKey = key; }
+        public string GetUniqueSourceKey() { return uniqueSourceKey; }
 
         public bool IsIndistinguishable(Photon photon)
         {

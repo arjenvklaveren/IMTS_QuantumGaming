@@ -39,4 +39,6 @@ MonoBehaviour:
   - portId: 0
     position: {x: 1, y: -1}
     orientation: 1
+  nodePathLengths:
+  - 1.4142135
   cornerType: 1

@@ -14,7 +14,8 @@ namespace Game
                 defaultOrientation,
                 placeOrientation,
                 inPorts,
-                outPorts);
+                outPorts,
+                null);
         }
     }
 }

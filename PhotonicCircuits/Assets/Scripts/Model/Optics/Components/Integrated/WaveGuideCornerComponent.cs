@@ -1,6 +1,7 @@
 using Game.Data;
 using System;
 using UnityEngine;
+using Newtonsoft.Json;
 
 namespace Game
 {
@@ -18,14 +19,16 @@ namespace Game
             Orientation placeOrientation,
             ComponentPort[] inPorts,
             ComponentPort[] outPorts,
-            CornerType cornerType
+            CornerType cornerType,
+            float[] nodePathLengths
             ) : base(
                 hostGrid,
                 tilesToOccupy,
                 defaultOrientation,
                 placeOrientation,
                 inPorts,
-                outPorts)
+                outPorts, 
+                nodePathLengths)
         {
             this.cornerType = cornerType;
         }
@@ -44,7 +47,13 @@ namespace Game
 
         public override string SerializeArgs()
         {
-            return cornerType.ToString();
+            var args = new
+            {
+                NodePathLengths = nodePathLengths,
+                CornerType = cornerType
+            };
+
+            return JsonConvert.SerializeObject(args);
         }
     }
 }

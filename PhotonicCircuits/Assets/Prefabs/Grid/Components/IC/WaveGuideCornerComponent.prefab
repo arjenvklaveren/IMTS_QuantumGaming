@@ -245,9 +245,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   visualsHolder: {fileID: 1114261678858985212}
   outlineSprite: {fileID: 7615401060916070944}
-  nodePositions:
+  nodeTransforms:
   - {fileID: 4287798863359684643}
   - {fileID: 5352091425905926903}
+  waveguidePlaceData: {fileID: 11400000, guid: 1662e980d369199498659ba410a844b6, type: 2}
+  waveguidePlaceDataFlipped: {fileID: 11400000, guid: 2261704cebc85ed46a9449487566d756, type: 2}
+  waveguidePlaceDataAlt: {fileID: 11400000, guid: fd5df2b507602ab40ba96478a96825dd, type: 2}
   cornerBase: {fileID: 2398244767305531715}
   cornerAlt: {fileID: 6261813088590824095}
   outlineBase: {fileID: 7615401060916070944}

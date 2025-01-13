@@ -11,6 +11,8 @@ namespace Game.UI
     public class NumberFieldContext : ComponentPropertyContext
     {
         [SerializeField] TMP_InputField inputField;
+        [SerializeField] Image inputFieldImage;
+        [SerializeField] TextMeshProUGUI inputFieldText;
 
         private void Start()
         {
@@ -26,6 +28,12 @@ namespace Game.UI
         void SetInputFieldValues()
         {
             inputField.text = contextInfo.field.GetValue(contextInfo.component).ToString();
+            if (contextInfo.attribute.uneditable)
+            {
+                inputFieldImage.enabled = false;
+                inputFieldText.color = Color.white;
+                inputField.interactable = false;
+            }
         }
 
         void OnChangeInputFieldValue(string value)

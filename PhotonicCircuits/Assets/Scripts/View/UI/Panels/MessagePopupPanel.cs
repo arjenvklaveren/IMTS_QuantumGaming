@@ -14,19 +14,38 @@ namespace Game.UI
         static Animator animator;
         static TextMeshProUGUI messageText;
 
+        #region Initialisation
         void Start()
         {
             animator = GetComponent<Animator>();
             messageText = GetComponentInChildren<TextMeshProUGUI>();
-            closeButton.onClick.AddListener(() => ClosePopupPanel());
+            SetupListeners();
         }
+
+        private void OnDestroy()
+        {
+            RemoveListeners();   
+        }
+
+        void SetupListeners()
+        {
+            closeButton.onClick.AddListener(() => ClosePopupPanel());
+            MessagePopupPanelHandler.OnDisplayMessage += DisplayMessage;
+        }
+
+        void RemoveListeners()
+        {
+            closeButton.onClick.RemoveListener(() => ClosePopupPanel());
+            MessagePopupPanelHandler.OnDisplayMessage -= DisplayMessage;
+        }
+        #endregion
 
         void ClosePopupPanel()
         {
             animator.Play("DefaultMessagePanel", 0, 1);
         }
 
-        public static void DisplayMessage(string message, MessagePopupType type)
+        public void DisplayMessage(string message, MessagePopupType type)
         {
             animator.Play("DefaultMessagePanel", 0, 1);
             animator.Update(0);

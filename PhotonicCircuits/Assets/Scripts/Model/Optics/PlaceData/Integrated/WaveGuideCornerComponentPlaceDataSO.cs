@@ -4,7 +4,7 @@ using UnityEngine;
 namespace Game
 {
     [CreateAssetMenu(fileName = "waveGuideCornerPlaceData", menuName = "ScriptableObjects/Components/Place Data/waveguide corner")]
-    public class WaveGuideCornerComponentPlaceDataSO : ComponentPlaceDataSO
+    public class WaveGuideCornerComponentPlaceDataSO : WaveGuideComponentPlaceDataSO
     {
         [SerializeField] WaveGuideCornerComponent.CornerType cornerType;
         public override OpticComponent CreateOpticComponent(GridData hostGrid, Vector2Int[] tilesToOccupy, Orientation placeOrientation)
@@ -16,7 +16,8 @@ namespace Game
                 placeOrientation,
                 inPorts,
                 outPorts,
-                cornerType);
+                cornerType,
+                nodePathLengths);
         }
     }
 }

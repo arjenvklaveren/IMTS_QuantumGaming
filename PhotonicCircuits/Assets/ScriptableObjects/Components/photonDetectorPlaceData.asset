@@ -26,7 +26,4 @@ MonoBehaviour:
   - portId: 0
     position: {x: 0, y: 0}
     orientation: 3
-  - portId: 0
-    position: {x: 0, y: 0}
-    orientation: 0
   outPorts: []

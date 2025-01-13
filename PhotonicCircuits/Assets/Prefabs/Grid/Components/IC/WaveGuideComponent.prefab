@@ -80,8 +80,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   visualsHolder: {fileID: 1114261678858985212}
   outlineSprite: {fileID: 1151443880793086230}
-  nodePositions:
+  nodeTransforms:
   - {fileID: 64958900623924745}
+  waveguidePlaceData: {fileID: 11400000, guid: 9d80036f5eac08d459c3e74b7fe3c7ad, type: 2}
 --- !u!61 &770546391189370329
 BoxCollider2D:
   m_ObjectHideFlags: 0

@@ -9,7 +9,8 @@ namespace Game
 {
     public class WaveGuideComponentVisuals : ComponentVisuals
     {
-        [SerializeField] protected List<Transform> nodePositions = new List<Transform>();
+        [SerializeField] protected List<Transform> nodeTransforms = new List<Transform>();
+        [SerializeField] protected WaveGuideComponentPlaceDataSO waveguidePlaceData;
 
         protected WaveGuideComponent sourceWaveguide;
         protected PhotonVisuals visuals;
@@ -25,7 +26,8 @@ namespace Game
         {
             sourceWaveguide = SourceComponent as WaveGuideComponent;
             if (!sourceWaveguide.nodeHandler.HasSetup())
-                sourceWaveguide.nodeHandler.SetupNodes(nodePositions.Select(t => (Vector2)t.position).ToList(), NodePathIndexesMapper());
+                sourceWaveguide.nodeHandler.SetupNodes(nodeTransforms.Select(t => (Vector2)t.position).ToList(), NodePathsIndexesMapper());
+            SyncNodePathLengths();
         }
 
         protected override void OnDestroy()
@@ -53,15 +55,21 @@ namespace Game
             photon.ForceMoveAlongNodes(nodePath, sourceWaveguide.nodeHandler);
         }
 
-        public virtual List<List<Vector2>> NodePathIndexesMapper()
+        public virtual List<List<int>> NodePathsIndexesMapper()
         {
-            return new List<List<Vector2>> 
-            { 
-                new List<Vector2> { nodePositions[0].position },
+            return new List<List<int>>
+            {
+                new List<int> { 0 }
             };
         }
+        
+        protected void SyncNodePathLengths()
+        {
+            List<float> pathLengths = sourceWaveguide.nodeHandler.GetAllNodePathLengths();
+            waveguidePlaceData.SetNodePathLengths(pathLengths.ToArray());
+        }
 
-        public List<Transform> GetNodePositions() { return nodePositions; }
+        public List<Transform> GetNodePositions() { return nodeTransforms; }
 
         #region Handle Rotation
         protected override void HandleRotationChanged(Orientation orientation)

@@ -10,6 +10,7 @@ namespace Game
     {
         [SerializeField] List<List<Photon>> photons = new List<List<Photon>>();
         List<List<int>> entanglementIndexes = new List<List<int>>();
+
         List<PhotonBeamVisuals> storedBeamVisuals = new List<PhotonBeamVisuals>();
 
         #region Awake / Destroy
@@ -63,7 +64,8 @@ namespace Game
         //Photon addition
         public void AddPhoton(Photon photon)
         {
-            photons.Add(new List<Photon>() { photon });
+            List<Photon> newPhotonList = new List<Photon>() { photon };
+            photons.Add(newPhotonList);
         }
 
         public void AddEntangledPhotons(params Photon[] photons)
@@ -85,9 +87,6 @@ namespace Game
         //Photon removing
         public void RemovePhoton(Photon photon, bool isMeasure)
         {
-            Vector2Int? photonIndex = FindPhotonIndex2D(photon);
-            if (!photonIndex.HasValue) return;
-
             if (isMeasure)
             {
                 List<Photon> superpositions = GetPhotonSuperpositions(photon);
@@ -95,16 +94,15 @@ namespace Game
 
                 foreach (Photon sPhoton in superpositions.ToList())
                 {
-                    DestroyPhoton(sPhoton, photonIndex.Value);
+                    DestroyPhoton(sPhoton);
                 }
-                ShiftEntanglementIndexes(photonIndex.Value.x);
 
                 foreach (Photon ePhoton in entanglements.ToList())
                 {
                     //TODO photon entanglement logic
                 }
             }
-            else DestroyPhoton(photon, photonIndex.Value);
+            else DestroyPhoton(photon);
         }
 
         //Photon replacing
@@ -117,17 +115,19 @@ namespace Game
             photon.Destroy(photon.GetPhotonType() == PhotonType.Classical);
         }
 
-        void DestroyPhoton(Photon photon, Vector2Int photonIndex)
+        void DestroyPhoton(Photon photon)
         {
+            Vector2Int? photonIndex = FindPhotonIndex2D(photon);
+            if (!photonIndex.HasValue) return;
             photon.Destroy(photon.GetPhotonType() == PhotonType.Classical);
 
-            photons[photonIndex.x].RemoveAt(photonIndex.y);
-            if (photons[photonIndex.x].Count == 0)
+            photons[photonIndex.Value.x].RemoveAt(photonIndex.Value.y);
+            if (photons[photonIndex.Value.x].Count == 0)
             {
-                photons.RemoveAt(photonIndex.x);
-                ShiftEntanglementIndexes(photonIndex.x);
+                photons.RemoveAt(photonIndex.Value.x);
+                ShiftEntanglementIndexes(photonIndex.Value.x);
             }
-            else ReDistributeAmplitudeProbability(photon, photonIndex.x);
+            else ReDistributeAmplitudeProbability(photon, photonIndex.Value.x);
         }
 
         #region photon getters/finders

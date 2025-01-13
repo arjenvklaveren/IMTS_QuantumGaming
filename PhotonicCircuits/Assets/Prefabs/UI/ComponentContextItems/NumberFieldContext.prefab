@@ -54,6 +54,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   attributeText: {fileID: 6947552135178659825}
   inputField: {fileID: 598248055163917447}
+  inputFieldImage: {fileID: 8920931877212497719}
+  inputFieldText: {fileID: 8853373149043668238}
 --- !u!222 &5737078296339065332
 CanvasRenderer:
   m_ObjectHideFlags: 0

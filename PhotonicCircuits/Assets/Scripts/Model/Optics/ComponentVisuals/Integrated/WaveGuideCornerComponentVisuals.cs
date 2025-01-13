@@ -9,16 +9,24 @@ namespace Game
 {
     public class WaveGuideCornerComponentVisuals : WaveGuideComponentVisuals
     {
+        [SerializeField] private WaveGuideComponentPlaceDataSO waveguidePlaceDataFlipped;
+        [SerializeField] private WaveGuideComponentPlaceDataSO waveguidePlaceDataAlt;
+
+        [Header("Sprite references")]
         [SerializeField] SpriteRenderer cornerBase;
         [SerializeField] SpriteRenderer cornerAlt;
         [SerializeField] SpriteRenderer outlineBase;
         [SerializeField] SpriteRenderer outlineAlt;
+
+        [Header("Component references")]
         [SerializeField] Transform pathNodeTransform;
 
         private WaveGuideCornerComponent sourceCorner;
 
         private SpriteRenderer currentCornerRenderer;
         private SpriteRenderer currentOutlineRenderer;
+
+        private WaveGuideComponentPlaceDataSO waveguidePlaceDataCopy;
 
         bool hasSetVisuals;
 
@@ -36,6 +44,7 @@ namespace Game
 
         protected override void SetDefaultValues()
         {
+            waveguidePlaceDataCopy = waveguidePlaceData;
             sourceCorner = SourceComponent as WaveGuideCornerComponent;
             SetCornerVisuals(sourceCorner.cornerType);
             base.SetDefaultValues();
@@ -60,6 +69,7 @@ namespace Game
             }
 
             ToggleTypeVisuals(isBaseType);
+            SetCorrectPlaceDataRef(cornerType);
             hasSetVisuals = true;
         }
 
@@ -73,12 +83,27 @@ namespace Game
             ChangeOutlineSprite(currentOutlineRenderer);
         }
 
-        public override List<List<Vector2>> NodePathIndexesMapper()
+        void SetCorrectPlaceDataRef(CornerType cornerType)
         {
-            return new List<List<Vector2>>
+            switch (cornerType)
             {
-                new List<Vector2> { nodePositions[0].position, nodePositions[1].position },
-                new List<Vector2> { nodePositions[1].position, nodePositions[0].position },
+                case CornerType.Default:
+                    waveguidePlaceData = waveguidePlaceDataCopy;
+                    break;
+                case CornerType.Flipped:
+                    waveguidePlaceData = waveguidePlaceDataFlipped;
+                    break;
+                case CornerType.Alternative:
+                    waveguidePlaceData = waveguidePlaceDataAlt;
+                    break;
+            }
+        }
+
+        public override List<List<int>> NodePathsIndexesMapper()
+        {
+            return new List<List<int>>
+            {
+                new List<int> { 0, 1 }
             };
         }
 

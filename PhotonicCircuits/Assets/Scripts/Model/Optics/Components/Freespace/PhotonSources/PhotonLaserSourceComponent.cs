@@ -4,10 +4,8 @@ using UnityEngine;
 
 namespace Game
 {
-    public class PhotonLaserSourceComponent : OpticComponent
+    public class PhotonLaserSourceComponent : PhotonSourceComponent
     {
-        public event Action<Photon> OnCreatePhoton;
-
         public override OpticComponentType Type => OpticComponentType.SourceLaser;
 
         public PhotonLaserSourceComponent(
@@ -25,28 +23,11 @@ namespace Game
                 inPorts,
                 outPorts)
         {
-            SetupListeners();
+            
         }
-
-        #region Handle Events
-        private void SetupListeners()
-        {
-            SimulationManager.OnSimulationStart += SimulationManager_OnSimulationStart;
-        }
-
-        public override void Destroy()
-        {
-            SimulationManager.OnSimulationStart -= SimulationManager_OnSimulationStart;
-        }
-
-        private void SimulationManager_OnSimulationStart()
-        {
-            CreatePhoton();
-        }
-        #endregion
 
         #region Create Photons
-        private void CreatePhoton()
+        protected override void CreatePhoton()
         {
             ComponentPort spawnPort = OutPorts[0];
 
@@ -56,6 +37,8 @@ namespace Game
                 spawnPort.orientation);
             photon.SetAsClassicalType();
 
+            photon.SetUniqueSourceKey(GetUniqueSourceKey());
+
             PhotonManager.Instance.AddPhoton(photon);
             OnCreatePhoton?.Invoke(photon);
 
@@ -63,7 +46,5 @@ namespace Game
             TriggerOnPhotonExit(photon);
         }
         #endregion
-
-        public override void SetOrientation(Orientation orientation) => ComponentRotateUtil.SetOrientation(this, orientation);
     }
 }
