@@ -156,10 +156,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   contextPropertiesContainer: {fileID: 4056734728413530939}
   prefabLookup: {fileID: 11400000, guid: 13187966094a58046a20618025fe64ac, type: 2}
-  dataLookup: {fileID: 11400000, guid: d3dfd018e64e7074abeb51a3cd881e88, type: 2}
+  dataLookup: {fileID: 11400000, guid: 009b7f50fca2ac54e99b3e35a25671bf, type: 2}
   componentText: {fileID: 7026624538582200463}
   componentImage: {fileID: 8950746445090240261}
   componentEditButton: {fileID: 4049896128162019909}
+  testText: {fileID: 0}
 --- !u!222 &35793797418530317
 CanvasRenderer:
   m_ObjectHideFlags: 0

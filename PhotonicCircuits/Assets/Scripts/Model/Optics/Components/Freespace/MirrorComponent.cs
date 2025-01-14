@@ -29,8 +29,6 @@ namespace Game
 
         protected override IEnumerator HandlePhotonCo(ComponentPort port, Photon photon)
         {
-            Debug.Log("PHOTON HITS MIRROR AAAAA");
-
             yield return PhotonMovementManager.Instance.GetWaitMoveTime(photon.GetPhotonType(), true);
 
             int outportID = GetOutPort(port.portId);

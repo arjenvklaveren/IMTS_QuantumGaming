@@ -30,3 +30,4 @@ MonoBehaviour:
   - portId: 0
     position: {x: 0, y: 0}
     orientation: 1
+  shiftAmountRadians: 0

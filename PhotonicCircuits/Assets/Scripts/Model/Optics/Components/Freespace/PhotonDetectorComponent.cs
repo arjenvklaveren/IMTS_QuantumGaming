@@ -73,12 +73,15 @@ namespace Game
             float detectComparePercentage = Random.Range(0.0f, 100.0f);
 
             bool detected = detectComparePercentage <= photonDetectPercentage;
+
             if (detected)
             {
+                PhotonManager.Instance.RemovePhoton(photon, true);
                 MeasuringManager.Instance.MeasurePhoton(this, photon);
                 measurements++;
             }
-            PhotonManager.Instance.RemovePhoton(photon, detected);
+            else PhotonManager.Instance.RemovePhoton(photon, false);
+
 
             yield break;
         }

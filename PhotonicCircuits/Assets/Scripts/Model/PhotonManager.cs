@@ -119,7 +119,8 @@ namespace Game
         {
             Vector2Int? photonIndex = FindPhotonIndex2D(photon);
             if (!photonIndex.HasValue) return;
-            photon.Destroy(photon.GetPhotonType() == PhotonType.Classical);
+
+            bool destroyCompletely = photon.GetPhotonType() == PhotonType.Classical;
 
             photons[photonIndex.Value.x].RemoveAt(photonIndex.Value.y);
             if (photons[photonIndex.Value.x].Count == 0)
@@ -128,6 +129,13 @@ namespace Game
                 ShiftEntanglementIndexes(photonIndex.Value.x);
             }
             else ReDistributeAmplitudeProbability(photon, photonIndex.Value.x);
+
+            if (!destroyCompletely)
+            {
+                PhotonMovementManager.Instance.RemovePhotonRoutine(photon);
+                photon.SetAmplitude(0);
+            }
+            photon.Destroy(destroyCompletely);
         }
 
         #region photon getters/finders

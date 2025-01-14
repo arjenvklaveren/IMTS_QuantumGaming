@@ -100,6 +100,7 @@ namespace Game
                 bool reachedTarget = photonPos == targetPos;
                 OnPhotonDisplace?.Invoke(photon, reachedTarget);
             }
+            if (!runningRoutines.ContainsKey(photon)) yield break;
 
             runningRoutines.Remove(photon);
 
@@ -156,6 +157,8 @@ namespace Game
                 OnPhotonDisplace?.Invoke(photon, !IsPositionInGrid(photonPos, propagation, gridSize));
             }
 
+            if (!runningRoutines.ContainsKey(photon)) yield break;
+
             runningRoutines.Remove(photon);
             PhotonManager.RemovePhoton(photon, false);
         }
@@ -170,6 +173,15 @@ namespace Game
                 Orientation.Left => position.x >= 0,
                 _ => true
             };
+        }
+        #endregion
+
+        #region Photon destroy handling
+        public void RemovePhotonRoutine(Photon photon)
+        {
+            if (!runningRoutines.ContainsKey(photon)) return;
+            StopCoroutine(runningRoutines[photon]);
+            runningRoutines.Remove(photon);
         }
         #endregion
 

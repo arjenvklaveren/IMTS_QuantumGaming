@@ -57,8 +57,8 @@ namespace Game
             float phaseDiff = Mathf.Abs(data.photonA.GetPhase() - data.photonB.GetPhase()) % Mathf.PI;
             float phaseDiffNormalisedSlope = (phaseDiff <= Mathf.PI / 2) ? phaseDiff / (Mathf.PI / 2) : (Mathf.PI - phaseDiff) / (Mathf.PI / 2);
 
-            float photonProbabiltyA = combinedProbabilities * phaseDiffNormalisedSlope;
-            float photonProbabiltyB = combinedProbabilities - photonProbabiltyA;
+            float photonProbabiltyB = combinedProbabilities * phaseDiffNormalisedSlope;
+            float photonProbabiltyA = combinedProbabilities - photonProbabiltyB;
 
             data.photonA.SetAmplitude(photonProbabiltyA);
             data.photonB.SetAmplitude(photonProbabiltyB);

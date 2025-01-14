@@ -4,7 +4,6 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using TMPro;
-using Unity.VisualScripting.YamlDotNet.Core.Events;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -119,6 +118,9 @@ namespace Game.UI
                 SetDataBarMeasurementData();
                 currentMeasureIndexes.Clear();
                 currentMeasureCount = 0;
+
+                SimulationManager.Instance.StopSimulation();
+                SimulationManager.Instance.StartSimulation();
             }
         }
         #endregion
