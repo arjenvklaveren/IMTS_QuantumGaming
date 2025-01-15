@@ -1,6 +1,7 @@
 using Game.Data;
 using SadUtils;
 using System.Collections.Generic;
+using System.Collections;
 using UnityEngine;
 
 namespace Game
@@ -38,6 +39,13 @@ namespace Game
         #region Manage Input Handlers
         public void AddInputHandler(PlayerInputHandler inputHandler)
         {
+            StartCoroutine(AddInputHandlerWaitCo(inputHandler));
+        }
+
+        //Fixing bug where inputhandler would initialise and destroy itself at the same  time, causing stack overflow. Hacky fix, might be better to find root of problem
+        IEnumerator AddInputHandlerWaitCo(PlayerInputHandler inputHandler)
+        {
+            yield return null;
             if (inputHandlers.Count > 0)
                 inputHandlers.Peek().OnDisable();
 
