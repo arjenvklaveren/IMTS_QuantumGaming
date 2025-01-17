@@ -118,9 +118,6 @@ namespace Game.UI
                 SetDataBarMeasurementData();
                 currentMeasureIndexes.Clear();
                 currentMeasureCount = 0;
-
-                SimulationManager.Instance.StopSimulation();
-                SimulationManager.Instance.StartSimulation();
             }
         }
         #endregion
