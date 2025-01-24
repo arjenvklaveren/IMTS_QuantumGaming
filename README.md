@@ -1,6 +1,4 @@
-<a href="https://github.com/arjenvklaveren/IMTS_QuantumGaming">
-	<img align="left" alt="PhotonIC Lab logo" width="100%" src="https://github.com/arjenvklaveren/IMTS_QuantumGaming/tree/main/src/TitleGraphic.png">  
-</a>
+<img align="center" width="60%" src="/src/TitleGraphic.png">  
 
 PhotonIC Lab is a simulation toolkit for Photonic Integrated Circuits.  
 
